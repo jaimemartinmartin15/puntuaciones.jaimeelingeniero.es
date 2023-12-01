@@ -6,13 +6,7 @@ import { RouterOutlet } from '@angular/router';
   selector: 'app-root',
   standalone: true,
   imports: [CommonModule, RouterOutlet],
-  template: `
-    <h1>Welcome to {{title}}!</h1>
-
-    <router-outlet></router-outlet>
-  `,
-  styles: [],
+  template: '<router-outlet></router-outlet>',
+  styles: [':host{display: block; height: 100vh}'],
 })
-export class AppComponent {
-  title = 'puntuaciones';
-}
+export class AppComponent {}
