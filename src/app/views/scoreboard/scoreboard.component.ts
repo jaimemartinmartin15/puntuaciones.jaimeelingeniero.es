@@ -1,11 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { intervalArray } from '../../arrays';
+import { ROUTING_PATHS } from '../../app.routes';
+import { BottomControlsComponent } from '../../components/bottom-controls/bottom-controls.component';
 import { RoundInfoComponent } from '../../components/round-info/round-info.component';
 import { GameHolderService } from '../../game-services/game-holder.service';
-import { ROUTING_PATHS } from '../../routing-paths';
-import { BottomControlsComponent } from '../../components/bottom-controls/bottom-controls.component';
+import { intervalArray } from '../../utils/arrays';
 
 @Component({
   selector: 'app-scoreboard',

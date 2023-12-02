@@ -3,12 +3,12 @@ import { CommonModule, Location } from '@angular/common';
 import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, Inject, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ROUTING_PATHS } from '../../app.routes';
+import { LOCAL_STORE_KEYS } from '../../constants/local-storage-keys';
 import { GameHolderService } from '../../game-services/game-holder.service';
 import { GameService } from '../../game-services/game.service';
 import { GAME_SERVICES } from '../../game-services/utils';
-import { LOCAL_STORE_KEYS } from '../../local-storage-keys';
-import { Player } from '../../player';
-import { ROUTING_PATHS } from '../../routing-paths';
+import { Player } from '../../interfaces/player';
 import { GamesSvgModule } from '../../svg/generated/games-svg.module';
 
 @Component({

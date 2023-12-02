@@ -1,4 +1,4 @@
-import { Player } from '../player';
+import { Player } from '../interfaces/player';
 
 export interface GameService {
   readonly gameName: string;

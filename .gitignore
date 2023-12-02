@@ -42,4 +42,4 @@ testem.log
 Thumbs.db
 
 # Angular generate-icons builder
-src/app/svg/generated/**
+src/app/svg/generated/

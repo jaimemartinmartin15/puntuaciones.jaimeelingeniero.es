@@ -1,11 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component, Inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ROUTING_PATHS } from '../../app.routes';
+import { LOCAL_STORE_KEYS } from '../../constants/local-storage-keys';
 import { GameHolderService } from '../../game-services/game-holder.service';
 import { GameService } from '../../game-services/game.service';
-import { LOCAL_STORE_KEYS } from '../../local-storage-keys';
 import { GAME_SERVICES } from '../../game-services/utils';
-import { ROUTING_PATHS } from '../../routing-paths';
 
 @Component({
   selector: 'app-resume-game',

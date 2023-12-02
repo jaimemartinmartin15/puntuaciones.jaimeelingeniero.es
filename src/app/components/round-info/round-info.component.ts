@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, HostListener } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ROUTING_PATHS } from '../../app.routes';
 import { GameHolderService } from '../../game-services/game-holder.service';
-import { ROUTING_PATHS } from '../../routing-paths';
 
 @Component({
   selector: 'app-round-info',

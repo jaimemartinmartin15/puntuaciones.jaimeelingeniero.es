@@ -1,14 +1,23 @@
 import { Type } from '@angular/core';
 import { Data, Routes } from '@angular/router';
 import { AppComponent } from './app.component';
-import { ROUTING_PATHS } from './routing-paths';
-import { startNavigationGuard } from './start-navigation.guard';
+import { appGuard } from './app.guard';
 import { EnterScoreComponent } from './views/enter-score/enter-score.component';
 import { GameConfigComponent } from './views/game-config/game-config.component';
 import { RankingComponent } from './views/ranking/ranking.component';
 import { ResumeGameComponent } from './views/resume-game/resume-game.component';
 import { ScoreboardComponent } from './views/scoreboard/scoreboard.component';
 import { StatisticsComponent } from './views/statistics/statistics.component';
+
+export const ROUTING_PATHS = {
+  RESUME_GAME: 'reanudar-juego',
+  GAME_CONFIG: 'configuracion',
+  CHANGE_CONFIG: 'editar-configuracion',
+  RANKING: 'ranking',
+  SCOREBOARD: 'tabla',
+  STATISTICS: 'estadisticas',
+  ENTER_SCORE: 'apuntar',
+};
 
 const pathWithoutChildrens = (component: Type<any>, data?: Data): Routes => {
   return [
@@ -28,7 +37,7 @@ export const routes: Routes = [
   {
     path: '',
     component: AppComponent,
-    canActivateChild: [startNavigationGuard],
+    canActivateChild: [appGuard],
     children: [
       {
         path: ROUTING_PATHS.RESUME_GAME,

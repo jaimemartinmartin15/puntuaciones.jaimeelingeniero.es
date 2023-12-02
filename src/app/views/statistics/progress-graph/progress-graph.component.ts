@@ -1,10 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { intervalArray } from '../../../arrays';
 import { GameHolderService } from '../../../game-services/game-holder.service';
-import { Player } from '../../../player';
-import { ToEmojiPipe } from '../../../to-emoji.pipe';
+import { Player } from '../../../interfaces/player';
+import { intervalArray } from '../../../utils/arrays';
 import { SvgRoundMarker } from './svg-round-marker';
+import { ToEmojiPipe } from './to-emoji.pipe';
 
 @Component({
   selector: 'app-progress-graph',

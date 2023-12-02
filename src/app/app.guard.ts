@@ -1,7 +1,7 @@
 import { inject } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivateFn, Router, RouterStateSnapshot } from '@angular/router';
-import { LOCAL_STORE_KEYS } from './local-storage-keys';
-import { ROUTING_PATHS } from './routing-paths';
+import { CanActivateFn, Router } from '@angular/router';
+import { ROUTING_PATHS } from './app.routes';
+import { LOCAL_STORE_KEYS } from './constants/local-storage-keys';
 
 const isGameInProgress = (): boolean => {
   const lastSavedGameDate = localStorage.getItem(LOCAL_STORE_KEYS.TIME_LAST_GAME);
@@ -18,7 +18,7 @@ let userAlreadyConfirmedResumeGame = false;
  *
  * On next navigations (only possible through buttons in the app) allow all navigations (user already confirmed resume game)
  */
-export const startNavigationGuard: CanActivateFn = (_: ActivatedRouteSnapshot, state: RouterStateSnapshot) => {
+export const appGuard: CanActivateFn = () => {
   const router = inject(Router);
 
   if (userAlreadyConfirmedResumeGame) {
@@ -26,10 +26,12 @@ export const startNavigationGuard: CanActivateFn = (_: ActivatedRouteSnapshot, s
   }
 
   if (isGameInProgress() && !userAlreadyConfirmedResumeGame) {
-    userAlreadyConfirmedResumeGame = true; // user will confirm yes or no
-    return router.createUrlTree([state.url.split('/')[1], ROUTING_PATHS.RESUME_GAME]);
+    // There is a game in progress, send the user to resume the game. They will confirm yes or no
+    userAlreadyConfirmedResumeGame = true;
+    return router.createUrlTree([ROUTING_PATHS.RESUME_GAME]);
   }
 
-  userAlreadyConfirmedResumeGame = true; // no game in progress, change the flag
-  return router.createUrlTree([state.url.split('/')[1], ROUTING_PATHS.GAME_CONFIG]);
+  // no game in progress, change the flag and send user to configure a new game
+  userAlreadyConfirmedResumeGame = true;
+  return router.createUrlTree([ROUTING_PATHS.GAME_CONFIG]);
 };

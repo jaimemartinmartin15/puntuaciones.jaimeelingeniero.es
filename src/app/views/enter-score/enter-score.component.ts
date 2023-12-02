@@ -2,9 +2,9 @@ import { AnimationBuilder } from '@angular/animations';
 import { CommonModule, Location } from '@angular/common';
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
+import { LOCAL_STORE_KEYS } from '../../constants/local-storage-keys';
 import { GameHolderService } from '../../game-services/game-holder.service';
-import { LOCAL_STORE_KEYS } from '../../local-storage-keys';
-import { Player } from '../../player';
+import { Player } from '../../interfaces/player';
 import { playPlayerTransitionAnimation } from './enter-score.animation';
 
 @Component({
