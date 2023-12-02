@@ -1,27 +1,49 @@
 # Puntuaciones
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.0.3.
+This project is an Angular application deployed in AWS S3 under domain [puntuaciones.jaimeelingeniero.es](https://puntuaciones.jaimeelingeniero.es)
 
-## Development server
+<!-- TODO add workflow badge -->
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+## Development
 
-## Code scaffolding
+Clone the repository:
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+```text
+git clone https://github.com/jaimemartinmartin15/puntuaciones.jaimeelingeniero.es.git
+```
 
-## Build
+Install dependencies:
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+```text
+npm i
+```
 
-## Running unit tests
+**Note**: To download certain dependencies (scoped with _@jaimemartinmartin15_) from GPR (GitHub Package Registry), you  require a valid personal access token. If obtaining one is not possible, remove the dependency from the [package.json](./package.json). In this situation, work without creating icons and remove any component or module import that cannot be resolved.
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+Run the application in **localhost**:
 
-## Running end-to-end tests
+```text
+npm start
+```
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+Run the application in **private IP address**:
 
-## Further help
+```text
+npm run start:public
+```
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+## Deploy
+
+After doing the changes in your branch, increase the [package.json](./package.json) version and then run `npm i` to update the package-lock.json
+
+Update also [CHANGELOG.md](./CHANGELOG.md) file.
+
+Then merge the changes in `main` branch and create a tag with the same version than in the package.json
+
+When pushing the tag to the remote, it will trigger the workflow **build-and-publish.yml** automatically to deploy it.
+
+## Workflows
+
+### build-and-publish.yml
+
+Builds and deploys the application to the server.

@@ -1,0 +1,15 @@
+{
+    "inputDirs": [
+        "src/app/svg/files"
+    ],
+    "outputDir": "src/app/svg/generated",
+    "prefix": "app",
+    "modules": [
+        {
+            "name": "GamesSvg",
+            "files": [
+                "deal-cards"
+            ]
+        }
+    ]
+}
