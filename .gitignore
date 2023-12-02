@@ -40,3 +40,6 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
+
+# Angular generate-icons builder
+src/app/svg/generated/**
