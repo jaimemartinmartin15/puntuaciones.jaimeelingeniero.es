@@ -11,7 +11,10 @@
     <span>{{gameHolderService.service.getTotalScore(playerId)}}</span>
   </div>
   <div class="player-rounds-info">
-    <div>Última ronda: <strong>{{gameHolderService.service.getScoreLastRound(playerId)}}</strong></div>
+    <div>
+      Última ronda:
+      <strong (click)="navigateToSetNewScore()">{{gameHolderService.service.getScoreLastRound(playerId)}}</strong>
+    </div>
 
     <div *ngIf="gameHolderService.service.showMaximumReachedScorePlayerDisplay">
       Máximo alcanzado: {{gameHolderService.service.getMaximumReachedScore(playerId)}}

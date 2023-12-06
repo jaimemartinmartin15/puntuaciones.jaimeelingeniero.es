@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 1.2.0
+
+Navigate to change score of a player when clicking in last round number in Ranking view.
+
 ## 1.1.0
 
 Convert the application to PWA with new favicons
