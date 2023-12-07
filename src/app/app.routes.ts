@@ -1,7 +1,7 @@
 import { Type } from '@angular/core';
 import { Data, Routes } from '@angular/router';
-import { AppComponent } from './app.component';
 import { appGuard } from './app.guard';
+import { EnterScorePochaComponent } from './views/enter-score-pocha/enter-score-pocha.component';
 import { EnterScoreComponent } from './views/enter-score/enter-score.component';
 import { GameConfigComponent } from './views/game-config/game-config.component';
 import { RankingComponent } from './views/ranking/ranking.component';
@@ -17,6 +17,7 @@ export const ROUTING_PATHS = {
   SCOREBOARD: 'tabla',
   STATISTICS: 'estadisticas',
   ENTER_SCORE: 'apuntar',
+  ENTER_SCORE_POCHA: 'apuntar-pocha',
 };
 
 const pathWithoutChildrens = (component: Type<any>, data?: Data): Routes => {
@@ -36,7 +37,6 @@ const pathWithoutChildrens = (component: Type<any>, data?: Data): Routes => {
 export const routes: Routes = [
   {
     path: '',
-    component: AppComponent,
     canActivateChild: [appGuard],
     children: [
       {
@@ -54,6 +54,10 @@ export const routes: Routes = [
       {
         path: ROUTING_PATHS.ENTER_SCORE,
         children: pathWithoutChildrens(EnterScoreComponent),
+      },
+      {
+        path: ROUTING_PATHS.ENTER_SCORE_POCHA,
+        children: pathWithoutChildrens(EnterScorePochaComponent),
       },
       {
         path: ROUTING_PATHS.RANKING,
