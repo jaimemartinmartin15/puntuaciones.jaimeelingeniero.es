@@ -18,11 +18,8 @@
   </div>
 
   <div class="keyboard" (click)="onClickKeyboard($event)">
-    <button class="previous-player" (click)="currentPlayerIndex = currentPlayerIndex - 1"
-      [disabled]="currentPlayerIndex === 0">
-      ←
-    </button>
-    <button class="next-player" (click)="nextPlayer()">
+    <button class="previous-player" [disabled]="currentPlayerIndex === 0">←</button>
+    <button class="next-player">
       <ng-container *ngIf="currentPlayerIndex < players.length - 1">→</ng-container>
       <ng-container *ngIf="currentPlayerIndex === players.length - 1">✔️</ng-container>
     </button>
