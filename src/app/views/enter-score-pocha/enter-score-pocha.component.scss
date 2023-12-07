@@ -9,6 +9,9 @@
 }
 
 .content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   position: relative;
   height: 100%;
   padding: 20px;
@@ -60,7 +63,7 @@
         .player-name {
           font-size: 1.4rem;
         }
-        
+
         .score-display {
           display: inline-block;
           border-bottom: 2px solid black;
@@ -69,6 +72,96 @@
           padding: 0 10px;
         }
       }
+    }
+  }
+
+  .keyboard {
+    display: grid;
+    grid-template-rows: repeat(5, 1fr);
+    grid-template-columns: repeat(6, 1fr);
+    grid-gap: 10px;
+
+    button {
+      grid-column: span 2;
+      font-size: 1.5rem;
+      font-weight: 600;
+      border: 2px solid black;
+      border-radius: 5px;
+      cursor: pointer;
+
+      &:active {
+        transform: scale(1.08);
+      }
+
+      &:disabled {
+        background-color: $color-background-disabled;
+        color: $color-text-disabled;
+        border: none;
+      }
+    }
+
+    .previous-player,
+    .next-player {
+      grid-column: span 3;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 45px;
+      min-height: 60px;
+      border: 3px solid $color-orange;
+      background-color: $color-primary-button-text;
+    }
+
+    .subtract-10,
+    .add-10 {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      font-size: 1.2rem;
+    }
+
+    .subtract-10 {
+      background-color: #ffbcbc;
+      color: #b90000;
+    }
+
+    .add-10 {
+      background-color: #cbfbcb;
+      color: green;
+    }
+
+    .score-5 {
+      background-color: #f0fff0;
+    }
+
+    .score--10 {
+      background-color: #ffc3c3;
+    }
+    .score--20 {
+      background-color: #ff8787;
+    }
+    .score--30 {
+      background-color: #ff4b4b;
+    }
+
+    .score-10 {
+      background-color: #e1ffe1;
+    }
+    .score-20 {
+      background-color: #c3ffc3;
+    }
+    .score-30 {
+      background-color: #a5ffa5;
+    }
+    .score-40 {
+      background-color: #87ff87;
+    }
+    .score-50 {
+      background-color: #69ff69;
+    }
+    .score-60 {
+      background-color: #4bff4b;
     }
   }
 }

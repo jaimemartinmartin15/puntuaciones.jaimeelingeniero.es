@@ -28,4 +28,18 @@ export class EnterScorePochaComponent {
   public closeEnterScorePocha() {
     this.location.back();
   }
+
+  public nextPlayer() {
+    if (this.currentPlayerIndex === this.players.length - 1) {
+      // TODO it is last player to enter score, save and return
+
+      return;
+    }
+
+    this.currentPlayerIndex++;
+  }
+
+  public onClickKeyboard(event: any) {
+    // TODO set player punctuation
+  }
 }
