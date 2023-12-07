@@ -32,6 +32,7 @@ export class EnterScorePochaComponent {
   public constructor(private readonly router: Router, private readonly location: Location, private readonly gameHolderService: GameHolderService) {
     this.roundNumber = this.router.getCurrentNavigation()?.extras?.state?.['roundNumber'];
     this.players = this.router.getCurrentNavigation()?.extras?.state?.['players'];
+    this.players.forEach((p) => (p.punctuation = 5));
   }
 
   public closeEnterScorePocha() {
@@ -73,6 +74,15 @@ export class EnterScorePochaComponent {
   }
 
   public finishEnterScore() {
+    // validation: scores cannot be empty, and if it is editing all scores of a round, check at least one is negative
+    if (
+      this.players.some((p) => p.punctuation === 0) ||
+      (this.players.length === this.gameHolderService.service.players.length && this.players.every((p) => p.punctuation > 0))
+    ) {
+      this.currentPlayerIndex = this.players.indexOf(this.players.find((p) => p.punctuation == 0) || this.players[0]);
+      return;
+    }
+
     // change the player that deals only if it is a new round (not edition in table view)
     if (this.roundNumber === this.gameHolderService.service.getNextRoundNumber()) {
       this.gameHolderService.service.setNextDealingPlayer();
