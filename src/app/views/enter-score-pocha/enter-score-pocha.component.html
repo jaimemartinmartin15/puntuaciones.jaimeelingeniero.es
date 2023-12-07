@@ -1,5 +1,19 @@
 <div class="content">
-  <div class="close-button"></div>
+  <div class="close-button" (click)="closeEnterScorePocha()"></div>
 
+  <div class="round-container">
+    <h1>Ronda {{roundNumber}}</h1>
 
+    <div class="players-animation-container" [@animatePlayer]="currentPlayerIndex">
+      <ng-container *ngFor="let player of players; let i = index" class="players-animation-container">
+        <div *ngIf="i === currentPlayerIndex" class="player">
+          <div>Puntuación para</div>
+
+          <div><strong class="player-name">{{player.name}}</strong></div>
+
+          <span class="score-display">{{player.punctuation}}</span>
+        </div>
+      </ng-container>
+    </div>
+  </div>
 </div>

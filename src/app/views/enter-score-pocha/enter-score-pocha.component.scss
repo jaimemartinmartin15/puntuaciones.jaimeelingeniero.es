@@ -11,6 +11,8 @@
 .content {
   position: relative;
   height: 100%;
+  padding: 20px;
+  box-sizing: border-box;
   border: 3px solid $color-orange;
   border-radius: 5px;
   background-color: white;
@@ -42,6 +44,31 @@
         80% 0%,
         50% 30%
       );
+    }
+  }
+
+  .round-container {
+    text-align: center;
+
+    .players-animation-container {
+      position: relative;
+      overflow: hidden;
+
+      .player {
+        width: 100%;
+
+        .player-name {
+          font-size: 1.4rem;
+        }
+        
+        .score-display {
+          display: inline-block;
+          border-bottom: 2px solid black;
+          font-size: 1rem;
+          margin-top: 15px;
+          padding: 0 10px;
+        }
+      }
     }
   }
 }
