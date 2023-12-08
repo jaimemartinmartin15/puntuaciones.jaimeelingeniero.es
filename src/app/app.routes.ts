@@ -18,7 +18,9 @@ export const ROUTING_PATHS = {
   STATISTICS: 'estadisticas',
   ENTER_SCORE: 'apuntar',
   ENTER_SCORE_POCHA: 'apuntar-pocha',
-};
+} as const;
+
+export type RoutingPath = (typeof ROUTING_PATHS)[keyof typeof ROUTING_PATHS];
 
 const pathWithoutChildrens = (component: Type<any>, data?: Data): Routes => {
   return [
