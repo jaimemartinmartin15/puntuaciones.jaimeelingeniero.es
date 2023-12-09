@@ -1,11 +1,9 @@
-import { AnimationBuilder } from '@angular/animations';
 import { CommonModule, Location } from '@angular/common';
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { LOCAL_STORE_KEYS } from '../../constants/local-storage-keys';
 import { GameHolderService } from '../../game-services/game-holder.service';
-import { Player } from '../../interfaces/player';
-import { playPlayerTransitionAnimation } from './enter-score.animation';
+import { EnterScoreBase } from '../../shared/enter-score/EnterScoreBase';
+import { enterScoreBaseAnimation } from '../../shared/enter-score/enter-score-base.animation';
 
 @Component({
   selector: 'app-enter-score',
@@ -13,49 +11,46 @@ import { playPlayerTransitionAnimation } from './enter-score.animation';
   imports: [CommonModule],
   templateUrl: './enter-score.component.html',
   styleUrls: ['./enter-score.component.scss'],
+  animations: [enterScoreBaseAnimation],
 })
-export class EnterScoreComponent {
-  @ViewChild('playersContainer') playersContainerElement: ElementRef;
+export class EnterScoreComponent extends EnterScoreBase {
+  private sign: '+' | '-' = '+';
 
-  public players: Player[];
-  public roundNumber: number;
-
-  public currentPlayer = 0;
-  public sign: '+' | '-' = '+';
-
-  public get puntuationCurrentPlayer() {
-    return this.players[this.currentPlayer].punctuation;
-  }
-
-  public set puntuationCurrentPlayer(punctuation: number) {
-    this.players[this.currentPlayer].punctuation = punctuation;
-  }
-
-  public constructor(
-    private readonly animationBuilder: AnimationBuilder,
-    private readonly location: Location,
-    private readonly router: Router,
-    private readonly gameHolderService: GameHolderService
-  ) {
-    this.roundNumber = this.router.getCurrentNavigation()?.extras?.state?.['roundNumber'];
-    this.players = this.router.getCurrentNavigation()?.extras?.state?.['players'];
+  public constructor(location: Location, router: Router, gameHolderService: GameHolderService) {
+    super(location, router, gameHolderService);
     this.sign = this.puntuationCurrentPlayer >= 0 ? '+' : '-';
   }
 
-  public closeEnterScore() {
-    this.location.back();
+  protected override passValidation(): boolean {
+    return true;
+  }
+
+  protected override getPlayerIndexWithWrongScore(): number {
+    // Note: this method is not called because passValidation returns always true
+    return -1;
   }
 
   public onClickKeyBoard(event: Event) {
-    const buttonKey = (event.target as HTMLElement).textContent;
+    const buttonKey = (event.target as HTMLElement).closest('button')?.textContent;
 
-    if (buttonKey === '→' || buttonKey === '✔️') {
-      this.goNextPlayer();
+    if (buttonKey == null) {
+      // clicked the keyboard, but not a button
       return;
     }
 
-    if (buttonKey === '←') {
-      this.goPreviousPlayer();
+    if (buttonKey === '→' || buttonKey === '✔️') {
+      this.currentPlayerIndex++;
+      if (this.currentPlayerIndex === this.players.length) {
+        this.finishEnterScore();
+        return;
+      }
+      this.sign = this.puntuationCurrentPlayer >= 0 ? '+' : '-';
+      return;
+    }
+
+    if (buttonKey === '←' && this.currentPlayerIndex > 0) {
+      this.currentPlayerIndex--;
+      this.sign = this.puntuationCurrentPlayer >= 0 ? '+' : '-';
       return;
     }
 
@@ -78,44 +73,5 @@ export class EnterScoreComponent {
     // user pressed number key
     const key = +buttonKey!;
     this.puntuationCurrentPlayer = +`${this.sign}${Math.abs(this.puntuationCurrentPlayer)}${key}`;
-  }
-
-  private goNextPlayer() {
-    if (++this.currentPlayer == this.players.length) {
-      // change the player that deals only if it is a new round (not edition in table view)
-      if (this.roundNumber === this.gameHolderService.service.getNextRoundNumber()) {
-        this.gameHolderService.service.setNextDealingPlayer();
-      }
-      this.players.forEach((p) => (p.scores[this.roundNumber - 1] = p.punctuation));
-      this.saveGameLocalStorage();
-      this.location.back();
-      return;
-    }
-
-    playPlayerTransitionAnimation(this.animationBuilder, this.currentPlayer, this.playersContainerElement);
-    this.sign = this.puntuationCurrentPlayer >= 0 ? '+' : '-';
-  }
-
-  private goPreviousPlayer() {
-    if (this.currentPlayer > 0) {
-      this.currentPlayer--;
-      this.sign = this.puntuationCurrentPlayer >= 0 ? '+' : '-';
-      playPlayerTransitionAnimation(this.animationBuilder, this.currentPlayer, this.playersContainerElement);
-    }
-  }
-
-  private saveGameLocalStorage() {
-    localStorage.setItem(LOCAL_STORE_KEYS.PLAYERS, JSON.stringify(this.gameHolderService.service.players));
-    localStorage.setItem(
-      LOCAL_STORE_KEYS.CONFIG,
-      JSON.stringify({
-        numberOfCards: this.gameHolderService.service.numberOfCards,
-        limitScore: this.gameHolderService.service.limitScore,
-        winner: this.gameHolderService.service.winner,
-      })
-    );
-    localStorage.setItem(LOCAL_STORE_KEYS.DEALING_PLAYER_INDEX, JSON.stringify(this.gameHolderService.service.dealingPlayerIndex));
-    localStorage.setItem(LOCAL_STORE_KEYS.GAME_NAME, this.gameHolderService.service.gameName);
-    localStorage.setItem(LOCAL_STORE_KEYS.TIME_LAST_GAME, JSON.stringify(Date.now()));
   }
 }

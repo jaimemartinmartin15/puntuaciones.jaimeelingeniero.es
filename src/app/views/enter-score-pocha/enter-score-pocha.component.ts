@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { GameHolderService } from '../../game-services/game-holder.service';
 import { EnterScoreBase } from '../../shared/enter-score/EnterScoreBase';
-import { enterScorePochaAnimation } from './enter-score-pocha.animation';
+import { enterScoreBaseAnimation } from '../../shared/enter-score/enter-score-base.animation';
 
 @Component({
   selector: 'app-enter-score-pocha',
@@ -12,31 +12,34 @@ import { enterScorePochaAnimation } from './enter-score-pocha.animation';
   providers: [Location],
   templateUrl: './enter-score-pocha.component.html',
   styleUrls: ['./enter-score-pocha.component.scss'],
-  animations: [enterScorePochaAnimation],
+  animations: [enterScoreBaseAnimation],
 })
 export class EnterScorePochaComponent extends EnterScoreBase {
   public constructor(router: Router, location: Location, gameHolderService: GameHolderService) {
     super(location, router, gameHolderService);
-    this.players.forEach((p) => (p.punctuation = 5));
+    if (this.roundNumber === this.gameHolderService.service.getNextRoundNumber()) {
+      // only if it is a new round, init to 5 by default
+      this.players.forEach((p) => (p.punctuation = 5));
+    }
   }
 
   protected override passValidation(): boolean {
-    // scores cannot be empty, and if it is editing all scores of a round, check at least one is negative
-    return (
-      this.players.some((p) => p.punctuation === 0) ||
+    // scores cannot be empty or -5, -15, ..., and if it is editing all scores of a round, check at least one is negative
+    return !(
+      this.players.some((p) => p.punctuation === 0 || p.punctuation % 10 === -5) ||
       (this.players.length === this.gameHolderService.service.players.length && this.players.every((p) => p.punctuation > 0))
     );
   }
 
   protected override getPlayerIndexWithWrongScore(): number {
-    return this.players.indexOf(this.players.find((p) => p.punctuation == 0) || this.players[0]);
+    return this.players.indexOf(this.players.find((p) => p.punctuation == 0 || p.punctuation % 10 === -5) || this.players[0]);
   }
 
   public onClickKeyboard(event: Event) {
     const buttonKey = (event.target as HTMLElement).closest('button')?.textContent;
 
     if (buttonKey == null) {
-      // clicked the keyboard, but not any button
+      // clicked the keyboard, but not a button
       return;
     }
 

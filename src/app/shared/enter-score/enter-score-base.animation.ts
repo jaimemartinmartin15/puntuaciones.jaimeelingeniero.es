@@ -1,6 +1,6 @@
 import { animate, group, query, style, transition, trigger } from '@angular/animations';
 
-export const enterScorePochaAnimation = trigger('animatePlayer', [
+export const enterScoreBaseAnimation = trigger('animatePlayer', [
   transition(':increment', [
     group([
       query(

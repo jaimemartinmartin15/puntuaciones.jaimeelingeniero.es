@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, HostBinding, Input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ROUTING_PATHS } from '../../../app.routes';
 import { GameHolderService } from '../../../game-services/game-holder.service';
 
 @Component({
@@ -37,6 +36,6 @@ export class PlayerDisplayComponent {
       players: [{ ...player, punctuation }],
       roundNumber: this.gameHolderService.service.getNextRoundNumber() - 1,
     };
-    this.router.navigate(['../', ROUTING_PATHS.ENTER_SCORE], { relativeTo: this.activatedRoute, state });
+    this.router.navigate(['../', this.gameHolderService.service.enterScoreRoute], { relativeTo: this.activatedRoute, state });
   }
 }
