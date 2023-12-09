@@ -2,7 +2,7 @@
 
 This project is an Angular application deployed in AWS S3 under domain [puntuaciones.jaimeelingeniero.es](https://puntuaciones.jaimeelingeniero.es)
 
-<!-- TODO add workflow badge -->
+[![Build And Deploy](https://github.com/jaimemartinmartin15/puntuaciones.jaimeelingeniero.es/actions/workflows/build-and-publish.yml/badge.svg)](https://github.com/jaimemartinmartin15/puntuaciones.jaimeelingeniero.es/actions/workflows/build-and-publish.yml)
 
 ## Development
 

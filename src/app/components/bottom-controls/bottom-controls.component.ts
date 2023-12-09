@@ -30,6 +30,6 @@ export class BottomControlsComponent {
       players: this.gameHolderService.service.players.map((p) => ({ ...p, punctuation: 0 })),
       roundNumber: this.gameHolderService.service.getNextRoundNumber(),
     };
-    this.router.navigate(['../', ROUTING_PATHS.ENTER_SCORE], { relativeTo: this.activatedRoute, state });
+    this.router.navigate(['../', this.gameHolderService.service.enterScoreRoute], { relativeTo: this.activatedRoute, state });
   }
 }

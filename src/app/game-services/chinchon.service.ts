@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { ROUTING_PATHS } from '../app.routes';
 import { Player } from '../interfaces/player';
 import { GameService } from './game.service';
 
@@ -6,6 +7,8 @@ import { GameService } from './game.service';
 export class ChinchonService implements GameService {
   private readonly svgLimitScoreMargin = 5;
   public readonly gameName = 'Chinchón';
+
+  public readonly enterScoreRoute = ROUTING_PATHS.ENTER_SCORE;
 
   private _players: Player[];
   public get players(): Player[] {

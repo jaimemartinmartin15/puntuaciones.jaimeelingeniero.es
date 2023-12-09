@@ -1,4 +1,4 @@
- @import "../../styles/colors";
+@import "../../styles/colors";
 
 :host {
     position: fixed;
@@ -168,7 +168,9 @@ label {
         list-style: none;
 
         .cdk-drag-preview {
-            box-shadow: 3px 3px 5px $color-box-shadow, -3px -3px 5px $color-box-shadow;
+            box-shadow:
+                3px 3px 5px $color-box-shadow,
+                -3px -3px 5px $color-box-shadow;
             background-color: white;
             padding: 5px !important;
             height: auto !important;
@@ -204,6 +206,7 @@ label {
             .deal-cards-icon {
                 width: 20px;
                 filter: grayscale(3) opacity(0.3);
+                cursor: pointer;
 
                 &--active {
                     filter: none;
@@ -214,6 +217,7 @@ label {
                 display: inline-block;
                 width: 20px;
                 height: 20px;
+                cursor: pointer;
 
                 &::after {
                     content: "";

@@ -1,10 +1,13 @@
 import { Injectable } from '@angular/core';
+import { ROUTING_PATHS } from '../app.routes';
 import { Player } from '../interfaces/player';
 import { GameService } from './game.service';
 
 @Injectable()
 export class PochaService implements GameService {
   public readonly gameName = 'Pocha';
+
+  public readonly enterScoreRoute = ROUTING_PATHS.ENTER_SCORE_POCHA;
 
   private _players: Player[];
   public get players(): Player[] {

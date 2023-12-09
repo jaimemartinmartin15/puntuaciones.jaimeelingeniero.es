@@ -1,7 +1,10 @@
+import { RoutingPath } from '../app.routes';
 import { Player } from '../interfaces/player';
 
 export interface GameService {
   readonly gameName: string;
+
+  readonly enterScoreRoute: RoutingPath;
 
   get players(): Player[];
   set players(value: Player[]);

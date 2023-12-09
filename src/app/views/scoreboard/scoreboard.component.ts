@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ROUTING_PATHS } from '../../app.routes';
 import { BottomControlsComponent } from '../../components/bottom-controls/bottom-controls.component';
 import { RoundInfoComponent } from '../../components/round-info/round-info.component';
 import { GameHolderService } from '../../game-services/game-holder.service';
@@ -26,7 +25,7 @@ export class ScoreboardComponent {
       players: this.gameHolderService.service.players.map((p) => ({ ...p, punctuation: p.scores[round] })),
       roundNumber: round + 1,
     };
-    this.router.navigate(['../', ROUTING_PATHS.ENTER_SCORE], { relativeTo: this.activatedRoute, state });
+    this.router.navigate(['../', this.gameHolderService.service.enterScoreRoute], { relativeTo: this.activatedRoute, state });
   }
 
   public changeScoreForPlayerAndRound(playerId: number, round: number) {
@@ -35,7 +34,7 @@ export class ScoreboardComponent {
       players: [{ ...player, punctuation: player.scores[round] }],
       roundNumber: round + 1,
     };
-    this.router.navigate(['../', ROUTING_PATHS.ENTER_SCORE], { relativeTo: this.activatedRoute, state });
+    this.router.navigate(['../', this.gameHolderService.service.enterScoreRoute], { relativeTo: this.activatedRoute, state });
   }
 
   public getRoundNumbersAsArray() {

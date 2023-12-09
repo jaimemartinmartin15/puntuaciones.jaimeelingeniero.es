@@ -1,12 +1,18 @@
 # CHANGELOG
 
+## 1.3.0
+
+Added view enter-score-pocha, and refactor navigation depending on game.
+
+Some style fixes.
+
 ## 1.2.0
 
 Navigate to change score of a player when clicking in last round number in Ranking view.
 
 ## 1.1.0
 
-Convert the application to PWA with new favicons
+Convert the application to PWA with new favicons.
 
 ## 1.0.0
 
