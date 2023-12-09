@@ -24,15 +24,21 @@ export class EnterScorePochaComponent extends EnterScoreBase {
   }
 
   protected override passValidation(): boolean {
-    // scores cannot be empty or -5, -15, ..., and if it is editing all scores of a round, check at least one is negative
-    return !(
-      this.players.some((p) => p.punctuation === 0 || p.punctuation % 10 === -5) ||
-      (this.players.length === this.gameHolderService.service.players.length && this.players.every((p) => p.punctuation > 0))
-    );
+    let isInvalid = false;
+
+    // scores cannot be ... , -15 , -5 , 0 , 15 , 25 , ...
+    isInvalid ||= this.players.some((p) => p.punctuation === 0 || (p.punctuation !== 5 && Math.abs(p.punctuation % 10) === 5));
+
+    // if it is editing all scores of a round, check at least one is negative
+    isInvalid ||= this.players.length === this.gameHolderService.service.players.length && this.players.every((p) => p.punctuation > 0);
+
+    return !isInvalid;
   }
 
   protected override getPlayerIndexWithWrongScore(): number {
-    return this.players.indexOf(this.players.find((p) => p.punctuation == 0 || p.punctuation % 10 === -5) || this.players[0]);
+    return this.players.indexOf(
+      this.players.find((p) => p.punctuation == 0 || (p.punctuation !== 5 && Math.abs(p.punctuation % 10) === 5)) || this.players[0]
+    );
   }
 
   public onClickKeyboard(event: Event) {
