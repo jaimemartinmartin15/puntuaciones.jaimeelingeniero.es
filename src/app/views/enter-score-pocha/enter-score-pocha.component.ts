@@ -9,7 +9,6 @@ import { enterScoreBaseAnimation } from '../../shared/enter-score/enter-score-ba
   selector: 'app-enter-score-pocha',
   standalone: true,
   imports: [CommonModule],
-  providers: [Location],
   templateUrl: './enter-score-pocha.component.html',
   styleUrls: ['./enter-score-pocha.component.scss'],
   animations: [enterScoreBaseAnimation],
