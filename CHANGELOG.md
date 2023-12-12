@@ -1,5 +1,7 @@
 # CHANGELOG
 
+Avoid navigating back if editing the config of a game has empty player names.
+
 Change lang attribute to "es" in index.html.
 
 Make components desktop design and fix css cursors.

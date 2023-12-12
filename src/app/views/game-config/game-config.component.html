@@ -73,6 +73,8 @@
 </div>
 
 <div class="button-group">
-  <button class="app-button" *ngIf="!isEdition" (click)="startGame()" [disabled]="startButtonDisabled">Empezar</button>
-  <button class="app-button" *ngIf="isEdition" (click)="editConfigCurrentGame()">Volver</button>
+  <button class="app-button" *ngIf="!isEdition" (click)="startGame()" [disabled]="buttonsDisabled">Empezar</button>
+  <button class="app-button" *ngIf="isEdition" (click)="editConfigCurrentGame()" [disabled]="buttonsDisabled">
+    Volver
+  </button>
 </div>
