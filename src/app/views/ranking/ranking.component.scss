@@ -1,6 +1,8 @@
 :host {
-    position: fixed;
-    inset: 0;
+    height: 100dvh;
+    box-sizing: border-box;
+    max-width: 500px;
+    margin: 0 auto;
     padding: 15px;
     display: flex;
     flex-direction: column;

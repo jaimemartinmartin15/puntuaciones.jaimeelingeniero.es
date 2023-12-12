@@ -1,5 +1,7 @@
 # CHANGELOG
 
+Make components desktop design and fix css cursors.
+
 Reorder keyboard buttons in enter score pocha.
 
 ## 1.3.0
