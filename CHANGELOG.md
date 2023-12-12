@@ -1,5 +1,7 @@
 # CHANGELOG
 
+Reorder keyboard buttons in enter score pocha.
+
 ## 1.3.0
 
 Added view enter-score-pocha, and refactor navigation depending on game.
