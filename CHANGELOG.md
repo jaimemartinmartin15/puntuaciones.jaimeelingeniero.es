@@ -1,5 +1,7 @@
 # CHANGELOG
 
+Change lang attribute to "es" in index.html.
+
 Make components desktop design and fix css cursors.
 
 Reorder keyboard buttons in enter score pocha.
