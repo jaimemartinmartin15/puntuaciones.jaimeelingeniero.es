@@ -43,3 +43,7 @@ Thumbs.db
 
 # Angular generate-icons builder
 src/app/svg/generated/
+
+# Cypress
+cypress/downloads/
+cypress/screenshots/
