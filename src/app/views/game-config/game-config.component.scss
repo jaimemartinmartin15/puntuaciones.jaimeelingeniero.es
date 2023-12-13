@@ -1,8 +1,10 @@
 @import "../../styles/colors";
 
 :host {
-    position: fixed;
-    inset: 0 0 66px 0; // 66px is the height of bottom control
+    height: 100dvh;
+    box-sizing: border-box;
+    max-width: 350px;
+    margin: 0 auto;
     padding: 15px 15px 0 15px;
     display: flex;
     flex-direction: column;
@@ -23,6 +25,7 @@ label {
         padding: 10px;
         font-size: 1.2rem;
         position: relative;
+        cursor: pointer;
 
         &::after {
             content: "";
@@ -51,6 +54,7 @@ label {
         display: flex;
         flex-direction: column;
         align-items: center;
+        cursor: pointer;
 
         div {
             padding: 15px;
@@ -66,6 +70,8 @@ label {
 
 .limit-score,
 .number-of-cards {
+    cursor: grab;
+
     .input-number {
         display: flex;
         border: 2px solid $color-orange;
@@ -94,6 +100,7 @@ label {
         display: flex;
         align-items: center;
         gap: 8px;
+        cursor: pointer;
 
         .radio-button {
             position: relative;
@@ -138,6 +145,7 @@ label {
         width: 15px;
         height: 15px;
         margin-left: 8px;
+        cursor: pointer;
 
         &::after {
             content: "";
@@ -189,6 +197,7 @@ label {
             .player-id {
                 min-width: 2.5ch;
                 text-align: right;
+                cursor: grab;
             }
 
             .input {
@@ -250,10 +259,8 @@ label {
     display: flex;
     justify-content: center;
     gap: 20px;
-    position: fixed;
+    position: sticky;
     bottom: 0;
-    left: 0;
-    right: 0;
     padding: 20px;
     background-color: white;
 

@@ -6,12 +6,13 @@
   padding: 15px;
   box-sizing: border-box;
   background-color: $color-blue;
+  overflow: hidden;
 }
 
 .content {
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
+  justify-content: center;
   gap: 50px;
   padding: 20px;
   border: 3px solid $color-orange;
@@ -82,6 +83,9 @@
     grid-template-rows: repeat(5, 1fr);
     grid-template-columns: repeat(6, 1fr);
     grid-gap: 10px;
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
 
     button {
       grid-column: span 2;

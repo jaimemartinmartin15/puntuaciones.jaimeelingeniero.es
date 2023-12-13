@@ -138,7 +138,7 @@ export class GameConfigComponent implements OnInit, AfterViewInit {
     this.dealingPlayerIndex = playerNameDealingIndex !== -1 ? playerNameDealingIndex : playerBefore !== -1 ? playerBefore : 0;
   }
 
-  public get startButtonDisabled(): boolean {
+  public get buttonsDisabled(): boolean {
     return this.playerNames.some((p) => p.trim() === '');
   }
 

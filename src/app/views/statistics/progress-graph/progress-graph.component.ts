@@ -120,7 +120,7 @@ export class ProgressGraphComponent implements OnInit {
     const point = DOMPoint.fromPoint(this.graph.nativeElement);
     point.x = xCoord;
     point.y = yCoord;
-    const svgXCoord = point.matrixTransform(this.graph.nativeElement.getScreenCTM().inverse()).x;
+    const svgXCoord = point.matrixTransform(this.graph.nativeElement.getCTM().inverse()).x;
 
     // calculate the round
     const numberOfRounds = this.gameHolderService.service.getNextRoundNumber() - 1;

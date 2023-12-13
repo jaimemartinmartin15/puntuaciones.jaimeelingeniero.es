@@ -1,5 +1,15 @@
 # CHANGELOG
 
+## 1.4.0
+
+Avoid navigating back if editing the config of a game has empty player names.
+
+Change lang attribute to "es" in index.html.
+
+Make components desktop design and fix css cursors.
+
+Reorder keyboard buttons in enter score pocha.
+
 ## 1.3.0
 
 Added view enter-score-pocha, and refactor navigation depending on game.
