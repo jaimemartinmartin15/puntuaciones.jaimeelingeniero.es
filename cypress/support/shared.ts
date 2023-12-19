@@ -73,14 +73,12 @@ declare namespace Cypress {
         maximumReachedScore?: number;
         numberOfRejoins?: number;
       }[]
-    ): typeof verifyPlayerDisplay;
+    ): typeof verifyAllPlayerDisplays;
   }
 }
 
 function enterPlayerNames(names: string[]): void {
-  for (let i = 0; i < names.length; i++) {
-    cy.get('[data-cy-test-id="player-name-inputs"]').eq(i).type(names[i]);
-  }
+  cy.get('[data-cy-test-id="player-name-inputs"]').each(($input, index) => cy.wrap($input).type(names[index]).blur());
 }
 
 function verifyRoundInfo(data: {
@@ -92,30 +90,28 @@ function verifyRoundInfo(data: {
   gameHasFinished?: boolean;
 }): void {
   if (data.gameName !== undefined) {
-    cy.get('app-round-info [data-cy-test-id="round-info-game-name"]').contains(data.gameName);
+    cy.get('[data-cy-test-id="round-info-game-name"]').contains(data.gameName);
   } else {
-    cy.get('app-round-info [data-cy-test-id="round-info-game-name"]').should('not.exist');
+    cy.get('[data-cy-test-id="round-info-game-name"]').should('not.exist');
   }
 
   if (data.gameHasFinished) {
-    cy.get('app-round-info [data-cy-test-id="round-info-game-has-finished"]').contains('Fin de la partida');
+    cy.get('[data-cy-test-id="round-info-game-has-finished"]').contains('Fin de la partida');
   } else {
-    cy.get('app-round-info [data-cy-test-id="round-info-game-has-finished"]').should('not.exist');
-    cy.get('app-round-info [data-cy-test-id="round-info-next-round-number"]').contains(`Ronda: ${data.nextRoundNumber}`);
-    cy.get('app-round-info [data-cy-test-id="round-info-player-name-that-deals"]').contains(`Reparte: ${data.playerNameThatDeals}`);
+    cy.get('[data-cy-test-id="round-info-game-has-finished"]').should('not.exist');
+    cy.get('[data-cy-test-id="round-info-next-round-number"]').contains(`Ronda: ${data.nextRoundNumber}`);
+    cy.get('[data-cy-test-id="round-info-player-name-that-deals"]').contains(`Reparte: ${data.playerNameThatDeals}`);
 
     if (data.numberOfCardsToDealNextRound !== undefined) {
-      cy.get('app-round-info [data-cy-test-id="round-info-number-of-cards-to-deal-next-round"]').contains(
-        `Cartas: ${data.numberOfCardsToDealNextRound}`
-      );
+      cy.get('[data-cy-test-id="round-info-number-of-cards-to-deal-next-round"]').contains(`Cartas: ${data.numberOfCardsToDealNextRound}`);
     } else {
-      cy.get('app-round-info [data-cy-test-id="round-info-number-of-cards-to-deal-next-round"]').should('not.exist');
+      cy.get('[data-cy-test-id="round-info-number-of-cards-to-deal-next-round"]').should('not.exist');
     }
 
     if (data.limitScore !== undefined) {
-      cy.get('app-round-info [data-cy-test-id="round-info-limit-score"]').contains(`Limite: ${data.limitScore}`);
+      cy.get('[data-cy-test-id="round-info-limit-score"]').contains(`Limite: ${data.limitScore}`);
     } else {
-      cy.get('app-round-info [data-cy-test-id="round-info-limit-score"]').should('not.exist');
+      cy.get('[data-cy-test-id="round-info-limit-score"]').should('not.exist');
     }
   }
 }
@@ -159,9 +155,7 @@ function verifyAllPlayerDisplays(
     numberOfRejoins?: number;
   }[]
 ): void {
-  playersData.forEach((p, i) => {
-    cy.verifyPlayerDisplay(i, p);
-  });
+  playersData.forEach((p, i) => cy.verifyPlayerDisplay(i, p));
 }
 
 Cypress.Commands.add('enterPlayerNames', enterPlayerNames);
