@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { ROUTING_PATHS } from '../../app.routes';
+import { ROUTING_PATHS } from '../../constants/routes';
 import { GameHolderService } from '../../game-services/game-holder.service';
 
 @Component({

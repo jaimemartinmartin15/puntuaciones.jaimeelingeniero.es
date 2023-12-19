@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, Inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ROUTING_PATHS } from '../../app.routes';
 import { LOCAL_STORE_KEYS } from '../../constants/local-storage-keys';
+import { ROUTING_PATHS } from '../../constants/routes';
 import { GameHolderService } from '../../game-services/game-holder.service';
 import { GameService } from '../../game-services/game.service';
 import { GAME_SERVICES } from '../../game-services/utils';
