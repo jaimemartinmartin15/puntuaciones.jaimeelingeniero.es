@@ -2,7 +2,7 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "outDir": "./out-tsc/app",
+    "outDir": "./dist/out-tsc",
     "forceConsistentCasingInFileNames": true,
     "strict": true,
     "noImplicitOverride": true,
@@ -13,6 +13,7 @@
     "sourceMap": true,
     "declaration": false,
     "experimentalDecorators": true,
+    "strictPropertyInitialization": false,
     "moduleResolution": "node",
     "importHelpers": true,
     "target": "ES2022",
@@ -21,16 +22,8 @@
     "lib": [
       "ES2022",
       "dom"
-    ],
-    "strictPropertyInitialization": false,
-    "types": []
+    ]
   },
-  "files": [
-    "src/main.ts"
-  ],
-  "include": [
-    "src/**/*.d.ts"
-  ],
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
     "strictInjectionParameters": true,

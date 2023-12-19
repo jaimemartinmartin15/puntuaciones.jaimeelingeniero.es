@@ -32,6 +32,8 @@ Run the application in **private IP address**:
 npm run start:public
 ```
 
+<!-- TODO add testing steps -->
+
 ## Deploy
 
 After doing the changes in your branch, increase the [package.json](./package.json) version and then run `npm i` to update the package-lock.json
