@@ -1,8 +1,17 @@
-<button class="app-button" (click)="goToGameConfigView()">Juego nuevo</button>
-<button class="app-button" (click)="showViewNavigation = !showViewNavigation">Cambiar vista</button>
-<button class="app-button" (click)="enterNewRound()">Nueva ronda</button>
+<button class="app-button" data-test-id="btn-new-game" (click)="goToGameConfigView()">
+  Juego nuevo
+</button>
 
-<div class="view-list" *ngIf="showViewNavigation" (click)="showViewNavigation = false">
+<button class="app-button" data-test-id="btn-change-view" (click)="showViewNavigation = !showViewNavigation">
+  Cambiar vista
+</button>
+
+<button class="app-button" data-test-id="btn-new-round" (click)="enterNewRound()">
+  Nueva ronda
+</button>
+
+<div class="view-list" data-test-id="change-view-pop-up" *ngIf="showViewNavigation"
+  (click)="showViewNavigation = false">
   <a [routerLink]="['../', ROUTING_PATHS.RANKING]">🥇 Ranking</a>
   <a [routerLink]="['../', ROUTING_PATHS.SCOREBOARD]">📋 Tabla</a>
   <a [routerLink]="['../', ROUTING_PATHS.STATISTICS]">📊 Estadísticas</a>
