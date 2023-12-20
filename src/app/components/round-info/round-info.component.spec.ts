@@ -3,6 +3,7 @@ import { By } from '@angular/platform-browser';
 import { provideRouter } from '@angular/router';
 import { ChinchonService } from '../../game-services/chinchon.service';
 import { GameHolderService } from '../../game-services/game-holder.service';
+import { OtherGameService } from '../../game-services/other-game.service';
 import { PochaService } from '../../game-services/pocha.service';
 import { provideGameService } from '../../game-services/utils';
 import { RoundInfoComponent } from './round-info.component';
@@ -168,6 +169,67 @@ describe('RoundInfoComponent', () => {
 
       const gameHasFinished = fixture.debugElement.query(By.css(SELECTORS.GAME_HAS_FINISHED)).nativeElement;
       expect(gameHasFinished.textContent.length).toBeGreaterThan(5); // whatever number, just check it is not empty
+    });
+  });
+
+  describe('Other game', () => {
+    beforeEach(() => {
+      TestBed.configureTestingModule({
+        imports: [RoundInfoComponent],
+        providers: [
+          provideRouter([]),
+          { provide: ComponentFixtureAutoDetect, useValue: true },
+          { provide: GameHolderService, useClass: GameHolderService },
+          provideGameService(OtherGameService),
+        ],
+      });
+      gameHolderService = TestBed.inject(GameHolderService);
+      gameHolderService.service.players = [
+        { id: 0, name: 'Player 1', scores: [], punctuation: 0 },
+        { id: 1, name: 'Player 2', scores: [], punctuation: 0 },
+      ];
+      fixture = TestBed.createComponent(RoundInfoComponent);
+    });
+
+    it('should not show the game name', () => {
+      const gameName = fixture.debugElement.query(By.css(SELECTORS.GAME_NAME));
+      expect(gameName).toBeNull();
+    });
+
+    it('should show the next round number', () => {
+      const nextRoundNumber = fixture.debugElement.query(By.css(SELECTORS.NEXT_ROUND_NUMBER)).nativeElement;
+      expect(nextRoundNumber.textContent).toContain('Ronda: 1');
+
+      gameHolderService.service.players = [
+        { id: 0, name: 'Player 1', scores: [23], punctuation: 0 },
+        { id: 1, name: 'Player 2', scores: [7], punctuation: 0 },
+      ];
+      fixture.detectChanges();
+      expect(nextRoundNumber.textContent).toContain('Ronda: 2');
+    });
+
+    it('should show the player name that deals', () => {
+      const playerNameThatDeals = fixture.debugElement.query(By.css(SELECTORS.PLAYER_NAME_THAT_DEALS)).nativeElement;
+      expect(playerNameThatDeals.textContent).toContain('Reparte: Player 1');
+
+      gameHolderService.service.dealingPlayerIndex = 1;
+      fixture.detectChanges();
+      expect(playerNameThatDeals.textContent).toContain('Reparte: Player 2');
+    });
+
+    it('should not show the number of cards to deal in next round', () => {
+      const numberOfCardsToDeal = fixture.debugElement.query(By.css(SELECTORS.NUMBER_OF_CARDS_TO_DEAL_NEXT_ROUND));
+      expect(numberOfCardsToDeal).toBeNull();
+    });
+
+    it('should not show the limit score', () => {
+      const limitScore = fixture.debugElement.query(By.css(SELECTORS.LIMINT_SCORE));
+      expect(limitScore).toBeNull();
+    });
+
+    it('should not show if the game has finished', () => {
+      const gameHasFinished = fixture.debugElement.query(By.css(SELECTORS.GAME_HAS_FINISHED));
+      expect(gameHasFinished).toBeNull();
     });
   });
 });
