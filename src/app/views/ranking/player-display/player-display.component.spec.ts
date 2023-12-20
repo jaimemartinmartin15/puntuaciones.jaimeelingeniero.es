@@ -1,6 +1,7 @@
 import { ComponentFixture, ComponentFixtureAutoDetect, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { provideRouter } from '@angular/router';
+import { Router, provideRouter } from '@angular/router';
+import { ROUTING_PATHS } from '../../../constants/routes';
 import { ChinchonService } from '../../../game-services/chinchon.service';
 import { GameHolderService } from '../../../game-services/game-holder.service';
 import { PochaService } from '../../../game-services/pocha.service';
@@ -77,7 +78,8 @@ describe('PlayerDisplayComponent', () => {
       expect(fixture.debugElement.query(By.css(SELECTORS.PLAYER_NAME_AND_TOTAL_SCORE)).nativeElement.innerText).toContain('Player 4\n-5');
     });
 
-    it('should show the last round score', () => {
+    it('should show the last round score and navigate to enter score pocha when clicking the number', () => {
+      const navigateSpy = spyOn(TestBed.inject(Router), 'navigate');
       gameHolderService.service.players = [
         { id: 0, name: 'Player 1', scores: [5, 10], punctuation: 0 },
         { id: 1, name: 'Player 2', scores: [10, -10], punctuation: 0 },
@@ -93,6 +95,16 @@ describe('PlayerDisplayComponent', () => {
       fixture.componentInstance.playerId = 1;
       fixture.detectChanges();
       expect(fixture.debugElement.query(By.css(SELECTORS.LAST_ROUND_SCORE)).nativeElement.innerText).toContain('Última ronda: -10');
+
+      fixture.componentInstance.playerId = 2;
+      fixture.detectChanges();
+      fixture.debugElement.query(By.css(`${SELECTORS.LAST_ROUND_SCORE} strong`)).nativeElement.click();
+      expect(navigateSpy).toHaveBeenCalledWith(
+        ['../', ROUTING_PATHS.ENTER_SCORE_POCHA],
+        jasmine.objectContaining({
+          state: { players: [{ id: 2, name: 'Player 3', scores: [-10, 5], punctuation: 5 }], roundNumber: 2 },
+        })
+      );
     });
 
     it('should show maximum reached score', () => {
@@ -184,6 +196,31 @@ describe('PlayerDisplayComponent', () => {
       fixture.componentInstance.playerId = 1;
       fixture.detectChanges();
       expect(fixture.debugElement.query(By.css(SELECTORS.PLAYER_NAME_AND_TOTAL_SCORE)).nativeElement.innerText).toContain('Player 2\n10');
+    });
+
+    it('should show the last round score and navigate to enter score when clicking the number', () => {
+      const navigateSpy = spyOn(TestBed.inject(Router), 'navigate');
+      gameHolderService.service.players = [
+        { id: 0, name: 'Player 1', scores: [1, 1, 1], punctuation: 0 },
+        { id: 1, name: 'Player 2', scores: [2, 1, 10], punctuation: 0 },
+        { id: 2, name: 'Player 3', scores: [3, 6, 1], punctuation: 0 },
+        { id: 3, name: 'Player 4', scores: [12, 8, 2], punctuation: 0 },
+      ];
+      fixture = TestBed.createComponent(PlayerDisplayComponent);
+
+      fixture.componentInstance.playerId = 1;
+      fixture.detectChanges();
+      expect(fixture.debugElement.query(By.css(SELECTORS.LAST_ROUND_SCORE)).nativeElement.innerText).toContain('Última ronda: 10');
+
+      fixture.componentInstance.playerId = 3;
+      fixture.detectChanges();
+      fixture.debugElement.query(By.css(`${SELECTORS.LAST_ROUND_SCORE} strong`)).nativeElement.click();
+      expect(navigateSpy).toHaveBeenCalledWith(
+        ['../', ROUTING_PATHS.ENTER_SCORE],
+        jasmine.objectContaining({
+          state: { players: [{ id: 3, name: 'Player 4', scores: [12, 8, 2], punctuation: 2 }], roundNumber: 3 },
+        })
+      );
     });
 
     it('should not show maximum reached score', () => {
