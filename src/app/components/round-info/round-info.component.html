@@ -1,24 +1,25 @@
 <ng-container *ngIf="gameHolderService.service.showGameNameInfo">
-  <span><strong>{{gameHolderService.service.gameName}}</strong></span>
+  <span><strong data-test-id="game-name">{{gameHolderService.service.gameName}}</strong></span>
   <br>
 </ng-container>
 
 <ng-container *ngIf="!gameHolderService.service.gameHasFinished()">
-  <span>
+  <span data-test-id="next-round-number">
     Ronda: <strong>{{gameHolderService.service.getNextRoundNumber()}}</strong>
   </span>
 
-  <span>
+  <span data-test-id="player-name-that-deals">
     Reparte: <strong>{{gameHolderService.service.getPlayerNameThatDeals()}}</strong>
   </span>
 
-  <span *ngIf="gameHolderService.service.showNumberOfCardsToDealNextRound">
+  <span data-test-id="number-of-cards-to-deal-next-round"
+    *ngIf="gameHolderService.service.showNumberOfCardsToDealNextRound">
     Cartas: <strong>{{gameHolderService.service.getNumberOfCardsToDealNextRound()}}</strong>
   </span>
 
-  <span *ngIf="gameHolderService.service.showLimitScoreInfo">
+  <span data-test-id="limit-score" *ngIf="gameHolderService.service.showLimitScoreInfo">
     Límite: <strong>{{gameHolderService.service.limitScore}}</strong>
   </span>
 </ng-container>
 
-<span *ngIf="gameHolderService.service.gameHasFinished()">Fin de la partida</span>
+<span data-test-id="game-has-finished" *ngIf="gameHolderService.service.gameHasFinished()">Fin de la partida</span>
