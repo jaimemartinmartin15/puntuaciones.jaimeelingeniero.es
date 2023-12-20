@@ -4,6 +4,7 @@ import { Router, provideRouter } from '@angular/router';
 import { ROUTING_PATHS } from '../../../constants/routes';
 import { ChinchonService } from '../../../game-services/chinchon.service';
 import { GameHolderService } from '../../../game-services/game-holder.service';
+import { OtherGameService } from '../../../game-services/other-game.service';
 import { PochaService } from '../../../game-services/pocha.service';
 import { provideGameService } from '../../../game-services/utils';
 import { PlayerDisplayComponent } from './player-display.component';
@@ -257,6 +258,102 @@ describe('PlayerDisplayComponent', () => {
       fixture.componentInstance.playerId = 3;
       fixture.detectChanges();
       expect(fixture.debugElement.query(By.css(SELECTORS.NUMBER_OF_REJOINS)).nativeElement.innerText).toContain('Reenganches: 3');
+    });
+  });
+
+  describe('Other game', () => {
+    beforeEach(() => {
+      TestBed.configureTestingModule({
+        imports: [PlayerDisplayComponent],
+        providers: [
+          provideRouter([]),
+          { provide: ComponentFixtureAutoDetect, useValue: true },
+          { provide: GameHolderService, useClass: GameHolderService },
+          provideGameService(OtherGameService),
+        ],
+      });
+      gameHolderService = TestBed.inject(GameHolderService);
+    });
+
+    it('should show the position number and medal with proper css class', () => {
+      gameHolderService.service.players = [
+        { id: 0, name: 'Player 1', scores: [15, 8, 9, 12], punctuation: 0 },
+        { id: 1, name: 'Player 2', scores: [2, 19, 3, 8], punctuation: 0 },
+        { id: 2, name: 'Player 3', scores: [2, 15, 10, 8], punctuation: 0 },
+        { id: 3, name: 'Player 4', scores: [2, 10, 5, 14], punctuation: 0 },
+      ];
+      gameHolderService.service.winner = 'lowestScore';
+      fixture = TestBed.createComponent(PlayerDisplayComponent);
+
+      fixture.componentInstance.playerId = 3;
+      fixture.detectChanges();
+      expect(fixture.debugElement.query(By.css(SELECTORS.POSITION)).nativeElement.innerText).toContain('1\n🥇');
+      expect(fixture.nativeElement).toHaveClass('position-1');
+
+      fixture.componentInstance.playerId = 1;
+      fixture.detectChanges();
+      expect(fixture.debugElement.query(By.css(SELECTORS.POSITION)).nativeElement.innerText).toContain('2\n🥈');
+      expect(fixture.nativeElement).toHaveClass('position-2');
+
+      fixture.componentInstance.playerId = 2;
+      fixture.detectChanges();
+      expect(fixture.debugElement.query(By.css(SELECTORS.POSITION)).nativeElement.innerText).toContain('3\n🥉');
+      expect(fixture.nativeElement).toHaveClass('position-3');
+
+      fixture.componentInstance.playerId = 0;
+      fixture.detectChanges();
+      expect(fixture.debugElement.query(By.css(SELECTORS.POSITION)).nativeElement.innerText).toContain('4');
+      expect(fixture.nativeElement).toHaveClass('position-4');
+    });
+
+    it('should show the player name and total score', () => {
+      gameHolderService.service.players = [{ id: 0, name: 'Player 1', scores: [12, 5, 8], punctuation: 0 }];
+      fixture = TestBed.createComponent(PlayerDisplayComponent);
+
+      fixture.componentInstance.playerId = 0;
+      fixture.detectChanges();
+      expect(fixture.debugElement.query(By.css(SELECTORS.PLAYER_NAME_AND_TOTAL_SCORE)).nativeElement.innerText).toContain('Player 1\n25');
+    });
+
+    it('should show the last round score and navigate to enter score when clicking the number', () => {
+      const navigateSpy = spyOn(TestBed.inject(Router), 'navigate');
+      gameHolderService.service.players = [
+        { id: 0, name: 'Player 1', scores: [23, 14, 86], punctuation: 0 },
+        { id: 1, name: 'Player 2', scores: [35, 76, 41], punctuation: 0 },
+      ];
+      fixture = TestBed.createComponent(PlayerDisplayComponent);
+
+      fixture.componentInstance.playerId = 0;
+      fixture.detectChanges();
+      expect(fixture.debugElement.query(By.css(SELECTORS.LAST_ROUND_SCORE)).nativeElement.innerText).toContain('Última ronda: 86');
+
+      fixture.componentInstance.playerId = 1;
+      fixture.detectChanges();
+      fixture.debugElement.query(By.css(`${SELECTORS.LAST_ROUND_SCORE} strong`)).nativeElement.click();
+      expect(navigateSpy).toHaveBeenCalledWith(
+        ['../', ROUTING_PATHS.ENTER_SCORE],
+        jasmine.objectContaining({
+          state: { players: [{ id: 1, name: 'Player 2', scores: [35, 76, 41], punctuation: 41 }], roundNumber: 3 },
+        })
+      );
+    });
+
+    it('should not show maximum reached score', () => {
+      gameHolderService.service.players = [{ id: 0, name: 'Player 1', scores: [5, 10], punctuation: 0 }];
+      fixture = TestBed.createComponent(PlayerDisplayComponent);
+
+      fixture.componentInstance.playerId = 0;
+      fixture.detectChanges();
+      expect(fixture.debugElement.query(By.css(SELECTORS.MAXIMUM_REACHED_SCORE))).toBeNull();
+    });
+
+    it('should not show number of rejoins', () => {
+      gameHolderService.service.players = [{ id: 0, name: 'Player 1', scores: [5, 10], punctuation: 0 }];
+      fixture = TestBed.createComponent(PlayerDisplayComponent);
+
+      fixture.componentInstance.playerId = 0;
+      fixture.detectChanges();
+      expect(fixture.debugElement.query(By.css(SELECTORS.NUMBER_OF_REJOINS))).toBeNull();
     });
   });
 });
