@@ -30,7 +30,7 @@ const SELECTORS = {
   KB_BTN_5: '[data-test-id="kb-btn-5"]',
 } as const;
 
-fdescribe('EnterScorePochaComponent', () => {
+describe('EnterScorePochaComponent', () => {
   let fixture: ComponentFixture<EnterScorePochaComponent>;
   let gameHolderService: GameHolderService;
   let locationBackSpy: jasmine.Spy;
