@@ -3,6 +3,7 @@ import { ComponentFixture, ComponentFixtureAutoDetect, TestBed } from '@angular/
 import { By } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { Navigation, Router, provideRouter } from '@angular/router';
+import { LOCAL_STORE_KEYS } from '../../constants/local-storage-keys';
 import { GameHolderService } from '../../game-services/game-holder.service';
 import { PochaService } from '../../game-services/pocha.service';
 import { provideGameService } from '../../game-services/utils';
@@ -29,10 +30,14 @@ const SELECTORS = {
   KB_BTN_5: '[data-test-id="kb-btn-5"]',
 } as const;
 
-describe('EnterScorePochaComponent', () => {
+fdescribe('EnterScorePochaComponent', () => {
   let fixture: ComponentFixture<EnterScorePochaComponent>;
   let gameHolderService: GameHolderService;
   let locationBackSpy: jasmine.Spy;
+
+  beforeEach(() => {
+    localStorage.clear();
+  });
 
   describe('Entering a new round', () => {
     beforeEach(() => {
@@ -66,11 +71,12 @@ describe('EnterScorePochaComponent', () => {
       fixture.detectChanges();
     });
 
-    it('should request to enter score for all players and check validations', () => {
+    it('should allow to enter score for all players', () => {
       const prevButton = fixture.debugElement.query(By.css(SELECTORS.KB_BTN_PREV)).nativeElement;
       const nextButton = fixture.debugElement.query(By.css(SELECTORS.KB_BTN_NEXT)).nativeElement;
       let playerName = fixture.debugElement.query(By.css(SELECTORS.PLAYER_NAME)).nativeElement;
       let playerPunctuation = fixture.debugElement.query(By.css(SELECTORS.PLAYER_PUNCTUATION)).nativeElement;
+      const dealingPlayerIndex = gameHolderService.service.dealingPlayerIndex;
 
       expect(prevButton.disabled).toBeTrue();
       expect(playerName.textContent).toContain('Player 1');
@@ -91,7 +97,7 @@ describe('EnterScorePochaComponent', () => {
       playerPunctuation = fixture.debugElement.query(By.css(SELECTORS.PLAYER_PUNCTUATION)).nativeElement;
       expect(playerPunctuation.textContent).toContain('5');
 
-      // checking validation there is a negative value
+      // checking validation there is at least a negative value
       nextButton.click();
       expect(locationBackSpy).not.toHaveBeenCalled();
 
@@ -103,10 +109,12 @@ describe('EnterScorePochaComponent', () => {
 
       nextButton.click();
       expect(locationBackSpy).toHaveBeenCalled();
+      expect(dealingPlayerIndex + 1).toBe(gameHolderService.service.dealingPlayerIndex);
+      expect(localStorage.getItem(LOCAL_STORE_KEYS.PLAYERS)).not.toBeNull();
     });
   });
 
-  describe('Entering scores for all players in a previous round', () => {
+  describe('Changing scores of a previous round', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
         imports: [EnterScorePochaComponent],
@@ -138,11 +146,12 @@ describe('EnterScorePochaComponent', () => {
       fixture.detectChanges();
     });
 
-    it('should request to enter score for all players with previous punctuation and check validations', () => {
+    it('should allow to change score for all players', () => {
       const prevButton = fixture.debugElement.query(By.css(SELECTORS.KB_BTN_PREV)).nativeElement;
       const nextButton = fixture.debugElement.query(By.css(SELECTORS.KB_BTN_NEXT)).nativeElement;
       let playerName = fixture.debugElement.query(By.css(SELECTORS.PLAYER_NAME)).nativeElement;
       let playerPunctuation = fixture.debugElement.query(By.css(SELECTORS.PLAYER_PUNCTUATION)).nativeElement;
+      const dealingPlayerIndex = gameHolderService.service.dealingPlayerIndex;
 
       expect(prevButton.disabled).toBeTrue();
       expect(playerName.textContent).toContain('Player 1');
@@ -176,6 +185,71 @@ describe('EnterScorePochaComponent', () => {
       expect(locationBackSpy).toHaveBeenCalled();
 
       expect(gameHolderService.service.players[2].scores[1]).toBe(5);
+      expect(dealingPlayerIndex).toBe(gameHolderService.service.dealingPlayerIndex);
+      expect(localStorage.getItem(LOCAL_STORE_KEYS.PLAYERS)).not.toBeNull();
+    });
+  });
+
+  describe('Changing score for one player', () => {
+    beforeEach(() => {
+      TestBed.configureTestingModule({
+        imports: [EnterScorePochaComponent],
+        providers: [
+          provideNoopAnimations(),
+          provideRouter([]),
+          { provide: ComponentFixtureAutoDetect, useValue: true },
+          { provide: GameHolderService, useClass: GameHolderService },
+          provideGameService(PochaService),
+        ],
+      });
+      const players = [
+        { id: 0, name: 'Player 1', scores: [5, -10], punctuation: 10 },
+        { id: 1, name: 'Player 2', scores: [-10, 5], punctuation: -10 },
+        { id: 2, name: 'Player 3', scores: [-10, 10], punctuation: 10 },
+      ];
+      spyOn(TestBed.inject(Router), 'getCurrentNavigation').and.returnValue({
+        extras: {
+          state: {
+            roundNumber: 1,
+            players: [players[1]],
+          },
+        },
+      } as unknown as Navigation);
+      locationBackSpy = spyOn(TestBed.inject(Location), 'back');
+      gameHolderService = TestBed.inject(GameHolderService);
+      gameHolderService.service.players = players;
+      fixture = TestBed.createComponent(EnterScorePochaComponent);
+      fixture.detectChanges();
+    });
+
+    it('should allow to change the score', () => {
+      const nextButton = fixture.debugElement.query(By.css(SELECTORS.KB_BTN_NEXT)).nativeElement;
+      let playerName = fixture.debugElement.query(By.css(SELECTORS.PLAYER_NAME)).nativeElement;
+      let playerPunctuation = fixture.debugElement.query(By.css(SELECTORS.PLAYER_PUNCTUATION)).nativeElement;
+      const dealingPlayerIndex = gameHolderService.service.dealingPlayerIndex;
+
+      expect(playerName.textContent).toContain('Player 2');
+      expect(playerPunctuation.textContent).toContain('-10');
+
+      fixture.debugElement.query(By.css(SELECTORS.KB_BTN_SUBTRACT_10)).nativeElement.click();
+      expect(playerPunctuation.textContent).toContain('-20');
+
+      fixture.debugElement.query(By.css(SELECTORS.KB_BTN_60)).nativeElement.click();
+      fixture.debugElement.query(By.css(SELECTORS.KB_BTN_ADD_10)).nativeElement.click();
+      expect(playerPunctuation.textContent).toContain('70');
+
+      nextButton.click();
+      expect(locationBackSpy).toHaveBeenCalled();
+
+      expect(gameHolderService.service.players[1].scores[1]).toBe(5);
+      expect(localStorage.getItem(LOCAL_STORE_KEYS.PLAYERS)).not.toBeNull();
+      expect(dealingPlayerIndex).toBe(gameHolderService.service.dealingPlayerIndex);
+    });
+
+    it('should allow to cancel without saving changes', () => {
+      fixture.debugElement.query(By.css(SELECTORS.CLOSE_BUTTON)).nativeElement.click();
+      expect(locationBackSpy).toHaveBeenCalled();
+      expect(localStorage.getItem(LOCAL_STORE_KEYS.PLAYERS)).toBeNull();
     });
   });
 });
