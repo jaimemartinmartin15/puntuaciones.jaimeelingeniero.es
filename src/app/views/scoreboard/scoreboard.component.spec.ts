@@ -7,6 +7,7 @@ import { GameHolderService } from '../../game-services/game-holder.service';
 import { PochaService } from '../../game-services/pocha.service';
 import { provideGameService } from '../../game-services/utils';
 import { ScoreboardComponent } from './scoreboard.component';
+import { OtherGameService } from '../../game-services/other-game.service';
 
 const SELECTORS = {
   EMPTY_MESSAGE: '[data-test-id="empty-state"]',
@@ -247,6 +248,97 @@ describe('ScoreboardComponent', () => {
 
       totalScore = fixture.debugElement.query(By.css(SELECTORS.TOTAL_SCORE_PLAYER(3))).nativeElement.textContent;
       expect(totalScore).toContain('67');
+    });
+  });
+
+  describe('Other game', () => {
+    beforeEach(() => {
+      TestBed.configureTestingModule({
+        imports: [ScoreboardComponent],
+        providers: [
+          provideRouter([]),
+          { provide: ComponentFixtureAutoDetect, useValue: true },
+          { provide: GameHolderService, useClass: GameHolderService },
+          provideGameService(OtherGameService),
+        ],
+      });
+      gameHolderService = TestBed.inject(GameHolderService);
+      gameHolderService.service.players = [
+        { id: 0, name: 'Player 1', scores: [0, 15, 23], punctuation: 0 },
+        { id: 1, name: 'Player 2', scores: [-5, -23, 75], punctuation: 0 },
+        { id: 2, name: 'Player 3', scores: [8, 45, 3], punctuation: 0 },
+        { id: 3, name: 'Player 4', scores: [7, 10, 11], punctuation: 0 },
+      ];
+      navigateSpy = spyOn(TestBed.inject(Router), 'navigate');
+      fixture = TestBed.createComponent(ScoreboardComponent);
+    });
+
+    it('should show player names', () => {
+      const playerNames = fixture.debugElement.query(By.css(SELECTORS.TOP_ROW_HEADER)).nativeElement.textContent;
+      expect(playerNames).toEqual('RondaPlayer 1Player 2Player 3Player 4');
+    });
+
+    it('should show round number and allows to change scores', () => {
+      const roundNumberEl = fixture.debugElement.query(By.css(SELECTORS.ROUND_NUMBER(2))).nativeElement;
+      expect(roundNumberEl.textContent).toContain('3');
+
+      roundNumberEl.click();
+
+      expect(navigateSpy).toHaveBeenCalledWith(
+        ['../', ROUTING_PATHS.ENTER_SCORE],
+        jasmine.objectContaining({
+          state: {
+            roundNumber: 3,
+            players: [
+              { id: 0, name: 'Player 1', scores: [0, 15, 23], punctuation: 23 },
+              { id: 1, name: 'Player 2', scores: [-5, -23, 75], punctuation: 75 },
+              { id: 2, name: 'Player 3', scores: [8, 45, 3], punctuation: 3 },
+              { id: 3, name: 'Player 4', scores: [7, 10, 11], punctuation: 11 },
+            ],
+          },
+        })
+      );
+    });
+
+    it('should show player scores and allows to change it', () => {
+      const playerScoreEl = fixture.debugElement.query(By.css(SELECTORS.SCORE_PLAYER(1, 1))).nativeElement;
+      expect(playerScoreEl.textContent).toContain('-23');
+
+      playerScoreEl.click();
+      expect(navigateSpy).toHaveBeenCalledWith(
+        ['../', ROUTING_PATHS.ENTER_SCORE],
+        jasmine.objectContaining({
+          state: {
+            roundNumber: 2,
+            players: [{ id: 1, name: 'Player 2', scores: [-5, -23, 75], punctuation: -23 }],
+          },
+        })
+      );
+    });
+
+    it('should show accumulated scores', () => {
+      let accumulatedScore = fixture.debugElement.query(By.css(SELECTORS.ACCUMULATED_SCORE_PLAYER(1, 1))).nativeElement.textContent;
+      expect(accumulatedScore).toContain('-28');
+
+      accumulatedScore = fixture.debugElement.query(By.css(SELECTORS.ACCUMULATED_SCORE_PLAYER(0, 2))).nativeElement.textContent;
+      expect(accumulatedScore).toContain('38');
+
+      accumulatedScore = fixture.debugElement.query(By.css(SELECTORS.ACCUMULATED_SCORE_PLAYER(3, 2))).nativeElement.textContent;
+      expect(accumulatedScore).toContain('28');
+    });
+
+    it('should show total scores', () => {
+      let totalScore = fixture.debugElement.query(By.css(SELECTORS.TOTAL_SCORE_PLAYER(0))).nativeElement.textContent;
+      expect(totalScore).toContain('38');
+
+      totalScore = fixture.debugElement.query(By.css(SELECTORS.TOTAL_SCORE_PLAYER(1))).nativeElement.textContent;
+      expect(totalScore).toContain('47');
+
+      totalScore = fixture.debugElement.query(By.css(SELECTORS.TOTAL_SCORE_PLAYER(2))).nativeElement.textContent;
+      expect(totalScore).toContain('56');
+
+      totalScore = fixture.debugElement.query(By.css(SELECTORS.TOTAL_SCORE_PLAYER(3))).nativeElement.textContent;
+      expect(totalScore).toContain('28');
     });
   });
 });
