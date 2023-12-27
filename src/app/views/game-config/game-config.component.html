@@ -1,13 +1,14 @@
 <div class="game-name" *ngIf="!isEdition">
   <label>Juego</label>
 
-  <div class="select" [ngClass]="{open: selectGameNameDropDownOpen}"
+  <div class="select" [ngClass]="{open: selectGameNameDropDownOpen}" data-test-id="select-game-name"
     (click)="selectGameNameDropDownOpen = !selectGameNameDropDownOpen">
     {{gameHolderService.service.gameName}}
   </div>
 
   <div class="options" *ngIf="selectGameNameDropDownOpen">
-    <div *ngFor="let gameService of gameServices" (click)="onSelectGameName(gameService)">
+    <div *ngFor="let gameService of gameServices" (click)="onSelectGameName(gameService)"
+      [attr.data-test-id]="'game-name-option-'+gameService.gameName">
       {{gameService.gameName}}
     </div>
   </div>
@@ -19,7 +20,7 @@
   <div #numberOfCards class="input-number" (scroll)="calculateNumberOfSelectedCards()">
     <span (click)="setNumberOfCards = getNumberOfCards - 2">{{getNumberOfCards - 2}}</span>
     <span (click)="setNumberOfCards = getNumberOfCards - 1">{{getNumberOfCards - 1}}</span>
-    <span class="selected">{{getNumberOfCards}}</span>
+    <span class="selected" data-test-id="selected-number-of-cards">{{getNumberOfCards}}</span>
     <span (click)="setNumberOfCards = getNumberOfCards + 1">{{getNumberOfCards + 1}}</span>
     <span (click)="setNumberOfCards = getNumberOfCards + 2">{{getNumberOfCards + 2}}</span>
   </div>
@@ -31,7 +32,7 @@
   <div #limitScore class="input-number" (scroll)="calculateLimitScore()">
     <span (click)="setLimitScore = getLimitScore - 2">{{getLimitScore - 2}}</span>
     <span (click)="setLimitScore = getLimitScore - 1">{{getLimitScore - 1}}</span>
-    <span class="selected">{{getLimitScore}}</span>
+    <span class="selected" data-test-id="selected-limit-score">{{getLimitScore}}</span>
     <span (click)="setLimitScore = getLimitScore + 1">{{getLimitScore + 1}}</span>
     <span (click)="setLimitScore = getLimitScore + 2">{{getLimitScore + 2}}</span>
   </div>
@@ -40,19 +41,19 @@
 <div class="winner" *ngIf="gameHolderService.service.showWinnerConfig">
   <label>Ganador</label>
 
-  <div class="radio-element" (click)="setWinnerConfigHighestScore()">
+  <div class="radio-element" (click)="setWinnerConfigHighestScore()" data-test-id="option-winner-highest-score">
     <span class="radio-button" [ngClass]="{selected: gameHolderService.service.winner === 'highestScore'}"></span>
     Quien más puntos tiene
   </div>
 
-  <div class="radio-element" (click)="setWinnerConfigLowestScore()">
+  <div class="radio-element" (click)="setWinnerConfigLowestScore()" data-test-id="option-winner-lowest-score">
     <span class="radio-button" [ngClass]="{selected: gameHolderService.service.winner === 'lowestScore'}"></span>
     Quien menos puntos tiene
   </div>
 </div>
 
 <div class="players">
-  <label>Jugadores <span class="add-player-button" (click)="addPlayer()"></span></label>
+  <label>Jugadores <span class="add-player-button" data-test-id="btn-add-player" (click)="addPlayer()"></span></label>
 
   <ul cdkDropList (cdkDropListDropped)="onReorderingPlayer($event)" class="players-list">
     <li cdkDrag cdkDragPreviewContainer="parent" class="player-item"
@@ -62,19 +63,24 @@
 
       <span class="player-id" cdkDragHandle>{{i + 1}}. </span>
 
-      <input class="input" #playerInput type="text" [(ngModel)]="playerNames[i]">
+      <input class="input" #playerInput type="text" [(ngModel)]="playerNames[i]"
+        [attr.data-test-id]="'player-input-'+i">
 
       <svg appDealCardsSvg viewBox="0 0 1000 1000" (click)="dealingPlayerIndex = i" class="deal-cards-icon"
+        [attr.data-test-id]="'dealing-player-icon-'+i"
         [ngClass]="{'deal-cards-icon--active': dealingPlayerIndex === i}"></svg>
 
-      <span class="delete-icon" (click)="deletePlayer(i)" *ngIf="this.playerNames.length > 1"></span>
+      <span class="delete-icon" (click)="deletePlayer(i)" [attr.data-test-id]="'btn-delete-player-'+i"
+        *ngIf="this.playerNames.length > 1"></span>
     </li>
   </ul>
 </div>
 
 <div class="button-group">
-  <button class="app-button" *ngIf="!isEdition" (click)="startGame()" [disabled]="buttonsDisabled">Empezar</button>
-  <button class="app-button" *ngIf="isEdition" (click)="editConfigCurrentGame()" [disabled]="buttonsDisabled">
+  <button class="app-button" *ngIf="!isEdition" (click)="startGame()" [disabled]="buttonsDisabled"
+    data-test-id="btn-start">Empezar</button>
+  <button class="app-button" *ngIf="isEdition" (click)="editConfigCurrentGame()" [disabled]="buttonsDisabled"
+    data-test-id="btn-go-back">
     Volver
   </button>
 </div>
