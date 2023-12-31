@@ -18,3 +18,7 @@
 
 import './shared';
 import './pocha';
+
+Cypress.Screenshot.defaults({
+  overwrite: true,
+});

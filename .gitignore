@@ -46,4 +46,5 @@ src/app/svg/generated/
 
 # Cypress
 cypress/downloads/
-cypress/screenshots/
+cypress/screenshots/*
+!cypress/screenshots/pocha/
