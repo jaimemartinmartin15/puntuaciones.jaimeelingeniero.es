@@ -32,6 +32,20 @@ Run the application in **private IP address**:
 npm run start:public
 ```
 
+## Testing
+
+To run the unit test in development mode (watch changes and open karma) run:
+
+```text
+npm run test
+```
+
+To just run the unit test once and exit:
+
+```text
+npm run test:ci
+```
+
 ## Deploy
 
 After doing the changes in your branch, increase the [package.json](./package.json) version and then run `npm i` to update the package-lock.json

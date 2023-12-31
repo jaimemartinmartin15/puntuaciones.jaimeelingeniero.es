@@ -1,43 +1,45 @@
 <div class="content">
-  <div class="close-button" (click)="closeEnterScore()"></div>
+  <div class="close-button" data-test-id="close-button" (click)="closeEnterScore()"></div>
 
   <div class="round-container">
-    <h1>Ronda {{roundNumber}}</h1>
+    <h1 data-test-id="round-number">Ronda {{roundNumber}}</h1>
 
     <div class="players-animation-container" [@animatePlayer]="currentPlayerIndex">
       <ng-container *ngFor="let player of players; let i = index" class="players-animation-container">
         <div *ngIf="i === currentPlayerIndex" class="player">
           <div>Puntuación para</div>
 
-          <div><strong class="player-name">{{player.name}}</strong></div>
+          <div><strong class="player-name" data-test-id="player-name">{{player.name}}</strong></div>
 
-          <span class="score-display">{{player.punctuation}}</span>
+          <span class="score-display" data-test-id="player-punctuation">{{player.punctuation}}</span>
         </div>
       </ng-container>
     </div>
   </div>
 
   <div class="keyboard" (click)="onClickKeyBoard($event)">
-    <button class="previous-player" [disabled]="currentPlayerIndex === 0">←</button>
-    <button class="next-player">
+    <button class="previous-player" [disabled]="currentPlayerIndex === 0" data-test-id="kb-btn-prev">
+      ←
+    </button>
+    <button class="next-player" data-test-id="kb-btn-next">
       <ng-container *ngIf="currentPlayerIndex < players.length - 1">→</ng-container>
       <ng-container *ngIf="currentPlayerIndex === players.length - 1">✔️</ng-container>
     </button>
 
-    <button>1</button>
-    <button>2</button>
-    <button>3</button>
+    <button data-test-id="kb-btn-1">1</button>
+    <button data-test-id="kb-btn-2">2</button>
+    <button data-test-id="kb-btn-3">3</button>
 
-    <button>4</button>
-    <button>5</button>
-    <button>6</button>
+    <button data-test-id="kb-btn-4">4</button>
+    <button data-test-id="kb-btn-5">5</button>
+    <button data-test-id="kb-btn-6">6</button>
 
-    <button>7</button>
-    <button>8</button>
-    <button>9</button>
+    <button data-test-id="kb-btn-7">7</button>
+    <button data-test-id="kb-btn-8">8</button>
+    <button data-test-id="kb-btn-9">9</button>
 
-    <button>±</button>
-    <button>0</button>
-    <button>⌫</button>
+    <button data-test-id="kb-btn-sign">±</button>
+    <button data-test-id="kb-btn-0">0</button>
+    <button data-test-id="kb-btn-delete">⌫</button>
   </div>
 </div>

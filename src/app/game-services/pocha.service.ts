@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ROUTING_PATHS } from '../app.routes';
+import { ROUTING_PATHS } from '../constants/routes';
 import { Player } from '../interfaces/player';
 import { GameService } from './game.service';
 

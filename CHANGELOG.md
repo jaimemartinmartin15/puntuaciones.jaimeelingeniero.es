@@ -1,5 +1,7 @@
 # CHANGELOG
 
+Added unit tests and updated workflow
+
 ## 1.4.0
 
 Avoid navigating back if editing the config of a game has empty player names.

@@ -1,47 +1,49 @@
 <div class="content">
-  <div class="close-button" (click)="closeEnterScore()"></div>
+  <div class="close-button" data-test-id="close-button" (click)="closeEnterScore()"></div>
 
   <div class="round-container">
-    <h1>Ronda {{roundNumber}}</h1>
+    <h1 data-test-id="round-number">Ronda {{roundNumber}}</h1>
 
     <div class="players-animation-container" [@animatePlayer]="currentPlayerIndex">
-      <ng-container *ngFor="let player of players; let i = index" class="players-animation-container">
+      <ng-container *ngFor="let player of players; let i = index">
         <div *ngIf="i === currentPlayerIndex" class="player">
           <div>Puntuación para</div>
 
-          <div><strong class="player-name">{{player.name}}</strong></div>
+          <div><strong class="player-name" data-test-id="player-name">{{player.name}}</strong></div>
 
-          <span class="score-display">{{player.punctuation}}</span>
+          <span class="score-display" data-test-id="player-punctuation">{{player.punctuation}}</span>
         </div>
       </ng-container>
     </div>
   </div>
 
   <div class="keyboard" (click)="onClickKeyboard($event)">
-    <button class="previous-player" [disabled]="currentPlayerIndex === 0">←</button>
-    <button class="next-player">
+    <button class="previous-player" data-test-id="kb-btn-prev" [disabled]="currentPlayerIndex === 0">
+      ←
+    </button>
+    <button class="next-player" data-test-id="kb-btn-next">
       <ng-container *ngIf="currentPlayerIndex < players.length - 1">→</ng-container>
       <ng-container *ngIf="currentPlayerIndex === players.length - 1">✔️</ng-container>
     </button>
 
-    <button class="score--10">-10</button>
-    <button class="score-10">10</button>
-    <button class="score-20">20</button>
-    
-    <button class="score--20">-20</button>
-    <button class="score-30">30</button>
-    <button class="score-40">40</button>
-    
-    <button class="score--30">-30</button>
-    <button class="score-50">50</button>
-    <button class="score-60">60</button>
-    
-    <button class="subtract-10">
+    <button class="score--10" data-test-id="kb-btn--10">-10</button>
+    <button class="score-10" data-test-id="kb-btn-10">10</button>
+    <button class="score-20" data-test-id="kb-btn-20">20</button>
+
+    <button class="score--20" data-test-id="kb-btn--20">-20</button>
+    <button class="score-30" data-test-id="kb-btn-30">30</button>
+    <button class="score-40" data-test-id="kb-btn-40">40</button>
+
+    <button class="score--30" data-test-id="kb-btn--30">-30</button>
+    <button class="score-50" data-test-id="kb-btn-50">50</button>
+    <button class="score-60" data-test-id="kb-btn-60">60</button>
+
+    <button class="subtract-10" data-test-id="kb-btn-subtract-10">
       <span>restar</span>
       <span>10</span>
     </button>
-    <button class="score-5">5</button>
-    <button class="add-10">
+    <button class="score-5" data-test-id="kb-btn-5">5</button>
+    <button class="add-10" data-test-id="kb-btn-add-10">
       <span>sumar</span>
       <span>10</span>
     </button>

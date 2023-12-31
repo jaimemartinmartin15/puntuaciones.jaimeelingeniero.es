@@ -1,6 +1,7 @@
 import { Type } from '@angular/core';
 import { Data, Routes } from '@angular/router';
 import { appGuard } from './app.guard';
+import { ROUTING_PATHS } from './constants/routes';
 import { EnterScorePochaComponent } from './views/enter-score-pocha/enter-score-pocha.component';
 import { EnterScoreComponent } from './views/enter-score/enter-score.component';
 import { GameConfigComponent } from './views/game-config/game-config.component';
@@ -8,19 +9,6 @@ import { RankingComponent } from './views/ranking/ranking.component';
 import { ResumeGameComponent } from './views/resume-game/resume-game.component';
 import { ScoreboardComponent } from './views/scoreboard/scoreboard.component';
 import { StatisticsComponent } from './views/statistics/statistics.component';
-
-export const ROUTING_PATHS = {
-  RESUME_GAME: 'reanudar-juego',
-  GAME_CONFIG: 'configuracion',
-  CHANGE_CONFIG: 'editar-configuracion',
-  RANKING: 'ranking',
-  SCOREBOARD: 'tabla',
-  STATISTICS: 'estadisticas',
-  ENTER_SCORE: 'apuntar',
-  ENTER_SCORE_POCHA: 'apuntar-pocha',
-} as const;
-
-export type RoutingPath = (typeof ROUTING_PATHS)[keyof typeof ROUTING_PATHS];
 
 const pathWithoutChildrens = (component: Type<any>, data?: Data): Routes => {
   return [

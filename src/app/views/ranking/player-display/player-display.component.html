@@ -1,4 +1,4 @@
-<div class="position">
+<div class="position" data-test-id="position">
   <div class="number">{{playerPosition}}</div>
   <div *ngIf="playerPosition === 1">🥇</div>
   <div *ngIf="playerPosition === 2">🥈</div>
@@ -6,21 +6,21 @@
 </div>
 
 <div class="data">
-  <div class="name-score-container">
+  <div class="name-score-container" data-test-id="player-name-and-total-score">
     <span>{{gameHolderService.service.getPlayerName(playerId)}}</span>
     <span>{{gameHolderService.service.getTotalScore(playerId)}}</span>
   </div>
   <div class="player-rounds-info">
-    <div>
+    <div data-test-id="score-last-round">
       Última ronda:
       <strong (click)="navigateToSetNewScore()">{{gameHolderService.service.getScoreLastRound(playerId)}}</strong>
     </div>
 
-    <div *ngIf="gameHolderService.service.showMaximumReachedScorePlayerDisplay">
+    <div data-test-id="maximum-reached-score" *ngIf="gameHolderService.service.showMaximumReachedScorePlayerDisplay">
       Máximo alcanzado: {{gameHolderService.service.getMaximumReachedScore(playerId)}}
     </div>
 
-    <div *ngIf="gameHolderService.service.showNumberOfRejoinsPlayerDisplay">
+    <div data-test-id="number-of-rejoins" *ngIf="gameHolderService.service.showNumberOfRejoinsPlayerDisplay">
       Reenganches: {{gameHolderService.service.getNumberOfRejoins(playerId)}}
     </div>
   </div>
