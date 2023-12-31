@@ -1,4 +1,4 @@
-import { RoutingPath } from '../app.routes';
+import { RoutingPath } from '../constants/routes';
 import { Player } from '../interfaces/player';
 
 export interface GameService {

@@ -70,12 +70,12 @@ export class StatisticsComponent implements OnInit {
     const minutes = Math.trunc((elapsedSeconds / 60) % 60);
     const hours = Math.trunc(elapsedSeconds / 3600);
     if (hours > 0) {
-      this.playedTime = `${hours} ${hours == 1 ? ' hora' : ' horas'}`;
+      this.playedTime = `${hours} ${hours == 1 ? 'hora' : 'horas'}`;
     }
     if (minutes > 0 && hours > 0) {
-      this.playedTime = `${this.playedTime} y ${minutes} ${minutes == 1 ? ' minuto' : ' minutos'}`;
+      this.playedTime = `${this.playedTime} y ${minutes} ${minutes == 1 ? 'minuto' : 'minutos'}`;
     } else if (minutes > 0) {
-      this.playedTime = `${minutes} ${minutes == 1 ? ' minuto' : ' minutos'}`;
+      this.playedTime = `${minutes} ${minutes == 1 ? 'minuto' : 'minutos'}`;
     }
 
     if (hours == 0 && minutes == 0) {

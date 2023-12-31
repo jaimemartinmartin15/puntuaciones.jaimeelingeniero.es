@@ -1,4 +1,5 @@
-<svg class="graph" #graph (mousedown)="onClickToShowPlayersPanelInfo($event)" [attr.viewBox]="viewBox">
+<svg class="graph" #graph (mousedown)="onClickToShowPlayersPanelInfo($event)" [attr.viewBox]="viewBox"
+    data-test-id="graph">
     <!-- round markers -->
     <g class="round-markers">
         <ng-container *ngFor="let roundMark of svgRoundMarkers">
@@ -41,9 +42,9 @@
     </div>
 </div>
 
-<div class="round-panel-info" *ngIf="showRoundPanel">
+<div class="round-panel-info" *ngIf="showRoundPanel" data-test-id="round-panel-info">
     <div class="round-number">
-        <span [ngClass]="{'hidden-arrow': selectedRound <= 1}" (click)="showRoundInfo(selectedRound -1)">⬅️</span>
+        <span [ngClass]="{'hidden-arrow': selectedRound <= 1}" (click)="showRoundInfo(selectedRound - 1)">⬅️</span>
         <strong>Ronda {{ selectedRound }}</strong>
         <span [ngClass]="{'hidden-arrow': selectedRound >= gameHolderService.service.getNextRoundNumber()-1}"
             (click)="showRoundInfo(selectedRound + 1)">➡️</span>

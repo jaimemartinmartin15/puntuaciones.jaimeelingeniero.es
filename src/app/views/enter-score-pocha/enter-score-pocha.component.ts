@@ -48,7 +48,7 @@ export class EnterScorePochaComponent extends EnterScoreBase {
       return;
     }
 
-    if (buttonKey === '→' || buttonKey === '✔️') {
+    if (buttonKey.includes('→') || buttonKey.includes('✔️')) {
       this.currentPlayerIndex++;
       if (this.currentPlayerIndex === this.players.length) {
         this.finishEnterScore();
@@ -56,17 +56,17 @@ export class EnterScorePochaComponent extends EnterScoreBase {
       return;
     }
 
-    if (buttonKey === '←' && this.currentPlayerIndex > 0) {
+    if (buttonKey.includes('←') && this.currentPlayerIndex > 0) {
       this.currentPlayerIndex--;
       return;
     }
 
-    if (buttonKey === 'restar10') {
+    if (buttonKey.includes('restar10')) {
       this.puntuationCurrentPlayer -= 10;
       return;
     }
 
-    if (buttonKey === 'sumar10') {
+    if (buttonKey.includes('sumar10')) {
       this.puntuationCurrentPlayer += 10;
       return;
     }

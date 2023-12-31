@@ -1,13 +1,13 @@
 <app-round-info></app-round-info>
 
-<div class="empty-state" *ngIf="!gameHolderService.service.gameHasStarted()">
+<div class="empty-state" data-test-id="empty-state" *ngIf="!gameHolderService.service.gameHasStarted()">
   Introduce al menos una ronda para mostrar la tabla de puntuaciones
 </div>
 
 <div class="scoreboard" *ngIf="gameHolderService.service.gameHasStarted()">
   <table>
     <thead class="sticky-header">
-      <tr>
+      <tr data-test-id="top-row-header">
         <th class="highlight-cell sticky-round-number">Ronda</th>
         <th class="highlight-cell" *ngFor="let player of gameHolderService.service.players">{{player.name}}</th>
       </tr>
@@ -16,18 +16,21 @@
     <tbody>
       <ng-container *ngFor="let round of getRoundNumbersAsArray()">
         <tr>
-          <th class="highlight-cell sticky-round-number" (click)="changeScoresForRound(round)">
+          <th class="highlight-cell sticky-round-number" (click)="changeScoresForRound(round)"
+            [attr.data-test-id]="'round-number-'+round">
             {{round + 1}}
           </th>
           <td *ngFor="let score of getRoundScores(round); let playerId = index"
             (click)="changeScoreForPlayerAndRound(playerId, round)"
+            [attr.data-test-id]="'table-cell-player-'+playerId+'-round-'+round+''"
             [attr.style]="gameHolderService.service.getCellBackgroundColor(score)">
             <div class="score">
               <span style="visibility: hidden" class="accumulated-score">
                 ({{gameHolderService.service.getPlayerAccumulatedScoreAtRound(playerId, round)}})
               </span>
-              <span>{{score}}</span>
-              <span class="accumulated-score">
+              <span [attr.data-test-id]="'score-player-'+playerId+'-round-'+round">{{score}}</span>
+              <span class="accumulated-score"
+                [attr.data-test-id]="'accumulated-score-player-'+playerId+'-round-'+round">
                 ({{gameHolderService.service.getPlayerAccumulatedScoreAtRound(playerId, round)}})
               </span>
             </div>
@@ -42,8 +45,9 @@
               <span style="visibility: hidden" class="accumulated-score">
                 ({{gameHolderService.service.getPlayerAccumulatedScoreAtSpecialRound(playerId, round)}})
               </span>
-              <span>{{score || ''}}</span>
-              <span class="accumulated-score" *ngIf="score !== 0">
+              <span [attr.data-test-id]="'special-score-player-'+playerId+'-round-'+round">{{score || ''}}</span>
+              <span class="accumulated-score" *ngIf="score !== 0"
+                [attr.data-test-id]="'accumulated-special-score-player-'+playerId+'-round-'+round">
                 ({{gameHolderService.service.getPlayerAccumulatedScoreAtSpecialRound(playerId, round)}})
               </span>
             </div>
@@ -55,7 +59,8 @@
     <tfoot class="sticky-footer">
       <tr>
         <th class="highlight-cell sticky-round-number">Total</th>
-        <th class="highlight-cell" *ngFor="let player of gameHolderService.service.players">
+        <th class="highlight-cell" *ngFor="let player of gameHolderService.service.players"
+          [attr.data-test-id]="'total-score-player-'+player.id">
           {{gameHolderService.service.getTotalScore(player.id)}}</th>
       </tr>
     </tfoot>

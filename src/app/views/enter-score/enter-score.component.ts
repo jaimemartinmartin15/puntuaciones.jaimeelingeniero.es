@@ -38,7 +38,7 @@ export class EnterScoreComponent extends EnterScoreBase {
       return;
     }
 
-    if (buttonKey === '→' || buttonKey === '✔️') {
+    if (buttonKey.includes('→') || buttonKey.includes('✔️')) {
       this.currentPlayerIndex++;
       if (this.currentPlayerIndex === this.players.length) {
         this.finishEnterScore();
@@ -48,13 +48,13 @@ export class EnterScoreComponent extends EnterScoreBase {
       return;
     }
 
-    if (buttonKey === '←' && this.currentPlayerIndex > 0) {
+    if (buttonKey.includes('←') && this.currentPlayerIndex > 0) {
       this.currentPlayerIndex--;
       this.sign = this.puntuationCurrentPlayer >= 0 ? '+' : '-';
       return;
     }
 
-    if (buttonKey === '⌫') {
+    if (buttonKey.includes('⌫')) {
       this.puntuationCurrentPlayer = +`${this.puntuationCurrentPlayer}`.slice(0, -1);
       if (Number.isNaN(this.puntuationCurrentPlayer)) {
         // in case only the '-' is in the string, replace with 0
@@ -64,7 +64,7 @@ export class EnterScoreComponent extends EnterScoreBase {
       return;
     }
 
-    if (buttonKey === '±') {
+    if (buttonKey.includes('±')) {
       this.sign = this.sign === '-' ? '+' : '-';
       this.puntuationCurrentPlayer = -this.puntuationCurrentPlayer;
       return;

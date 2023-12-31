@@ -1,6 +1,6 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
-import { ROUTING_PATHS } from './app.routes';
+import { ROUTING_PATHS } from './constants/routes';
 import { LOCAL_STORE_KEYS } from './constants/local-storage-keys';
 
 const isGameInProgress = (): boolean => {
