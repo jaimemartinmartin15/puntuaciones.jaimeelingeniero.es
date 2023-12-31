@@ -41,11 +41,11 @@ describe('GameConfigComponent', () => {
         provideGameService(OtherGameService),
       ],
     });
+    localStorage.clear();
     gameHolderService = TestBed.inject(GameHolderService);
     fixture = TestBed.createComponent(GameConfigComponent);
     component = fixture.componentInstance;
     navigateSpy = spyOn(TestBed.inject(Router), 'navigate');
-    localStorage.clear();
   });
 
   it('should be possible to add, delete and enter player names', () => {
