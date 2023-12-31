@@ -32,7 +32,19 @@ Run the application in **private IP address**:
 npm run start:public
 ```
 
-<!-- TODO add testing steps -->
+## Testing
+
+To run the unit test in development mode (watch changes and open karma) run:
+
+```text
+npm run test
+```
+
+To just run the unit test once and exit:
+
+```text
+npm run test:ci
+```
 
 ## Deploy
 
