@@ -4,7 +4,7 @@
   Introduce al menos una ronda para mostrar las estadísticas
 </div>
 
-<div class="statistics" *ngIf="gameHolderService.service.gameHasStarted()">
+<div class="statistics" *ngIf="gameHolderService.service.gameHasStarted()" data-test-id="statistics">
   <app-progress-graph *ngIf="gameHolderService.service.showProgressGraph"></app-progress-graph>
 
   <div class="item">

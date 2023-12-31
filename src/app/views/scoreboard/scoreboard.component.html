@@ -5,7 +5,7 @@
 </div>
 
 <div class="scoreboard" *ngIf="gameHolderService.service.gameHasStarted()">
-  <table>
+  <table data-test-id="scoreboard">
     <thead class="sticky-header">
       <tr data-test-id="top-row-header">
         <th class="highlight-cell sticky-round-number">Ronda</th>
