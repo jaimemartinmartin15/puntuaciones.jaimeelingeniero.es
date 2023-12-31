@@ -7,7 +7,7 @@ describe('Pocha game', () => {
     cy.screenshot('pocha/game config');
 
     // game started
-    cy.get('[data-cy-test-id="start-button"]').click();
+    cy.get('[data-test-id="btn-start"]').click();
     cy.location('pathname').should('equals', '/ranking');
     cy.screenshot('pocha/game started');
 

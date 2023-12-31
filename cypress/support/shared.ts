@@ -49,7 +49,7 @@ declare namespace Cypress {
 }
 
 function enterPlayerNames(names: string[]): void {
-  cy.get('[data-cy-test-id="player-name-inputs"]').each(($input, index) => cy.wrap($input).type(names[index]).blur());
+  names.forEach((name, i) => cy.get(`[data-test-id="player-input-${i}"]`).type(name).blur());
 }
 
 Cypress.Commands.add('enterPlayerNames', enterPlayerNames);
