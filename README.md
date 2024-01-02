@@ -46,6 +46,12 @@ To just run the unit test once and exit:
 npm run test:ci
 ```
 
+To run the e2e test run:
+
+```text
+npm run test:e2e
+```
+
 ## Deploy
 
 After doing the changes in your branch, increase the [package.json](./package.json) version and then run `npm i` to update the package-lock.json
