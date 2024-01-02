@@ -1,4 +1,3 @@
-
 import * as puppeteer from 'puppeteer';
 
 const baseUrl = process.env['baseUrl'] ?? 'http://localhost:4200/';
@@ -6,16 +5,15 @@ let browser: puppeteer.Browser;
 let page: puppeteer.Page;
 
 export function setupBrowserHooks(path = ''): void {
-
   beforeAll(async () => {
     browser = await puppeteer.launch({
-      headless: 'new'
+      headless: 'new',
     });
   });
 
-
   beforeEach(async () => {
     page = await browser.newPage();
+    await page.setViewport({ width: 360, height: 657 });
     await page.goto(`${baseUrl}${path}`);
   });
 
@@ -23,11 +21,9 @@ export function setupBrowserHooks(path = ''): void {
     await page.close();
   });
 
-
   afterAll(async () => {
     await browser.close();
   });
-
 }
 
 export function getBrowserState(): {
@@ -36,13 +32,35 @@ export function getBrowserState(): {
   baseUrl: string;
 } {
   if (!browser) {
-    throw new Error(
-      'No browser state found! Ensure `setupBrowserHooks()` is called.'
-    );
+    throw new Error('No browser state found! Ensure `setupBrowserHooks()` is called.');
   }
   return {
     browser,
     page,
     baseUrl,
   };
+}
+
+export async function enterScorePocha(scores: number[]) {
+  await page.locator('[data-test-id="btn-new-round"]').click();
+
+  for (let score of scores) {
+    await page.locator(`[data-test-id="kb-btn-${score}"]`).click();
+    await page.locator('[data-test-id="kb-btn-next"]').click();
+  }
+}
+
+export async function enterPlayerNames(names: string[]) {
+  for (let i = 0; i < names.length; i++) {
+    await page.type(`[data-test-id="player-input-${i}"]`, names[i]);
+  }
+}
+
+export async function verifyUrl(pathname: string) {
+  let url = await page.url();
+  expect(new URL(url).pathname).toBe(pathname);
+}
+
+export async function takeScreenshot(path: string) {
+  await page.screenshot({ path });
 }
