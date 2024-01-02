@@ -18,6 +18,7 @@ export function setupBrowserHooks(path = ''): void {
   });
 
   afterEach(async () => {
+    await page.evaluate(() => localStorage.clear());
     await page.close();
   });
 
