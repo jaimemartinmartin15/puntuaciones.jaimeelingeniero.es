@@ -7,7 +7,8 @@
     "icons": "ng run puntuaciones:icons",
     "build": "ng build",
     "test": "ng test",
-    "test:ci": "ng test --no-watch --no-progress --browsers=ChromeHeadless"
+    "test:ci": "ng test --no-watch --no-progress --browsers=ChromeHeadless",
+    "e2e": "ng e2e"
   },
   "private": true,
   "dependencies": {
@@ -28,6 +29,7 @@
     "@angular/cli": "^17.0.7",
     "@angular/platform-browser-dynamic": "^17.0.7",
     "@jaimemartinmartin15/jei-devkit-angular-builders": "^1.0.0",
+    "@puppeteer/ng-schematics": "^0.5.5",
     "@types/jasmine": "~5.1.0",
     "jasmine-core": "~5.1.0",
     "karma": "~6.4.0",
@@ -35,6 +37,8 @@
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
-    "typescript": "~5.2.2"
+    "typescript": "~5.2.2",
+    "puppeteer": "21.6.1",
+    "jasmine": "5.1.0"
   }
 }

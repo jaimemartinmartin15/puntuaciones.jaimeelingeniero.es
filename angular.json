@@ -99,6 +99,18 @@
           "options": {
             "configFile": "src/app/svg/svg.json"
           }
+        },
+        "e2e": {
+          "builder": "@puppeteer/ng-schematics:puppeteer",
+          "options": {
+            "devServerTarget": "puntuaciones:serve",
+            "testRunner": "jasmine"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "puntuaciones:serve:production"
+            }
+          }
         }
       }
     }
