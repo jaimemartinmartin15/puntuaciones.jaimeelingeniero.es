@@ -1,0 +1,13 @@
+3e19c67ee4d13d2b47eceda7bbb946fc *configuration.png
+fe82659cef0e0bda8e27200f3c4ebfc6 *ranking round 0.png
+b32d1ae24069968760e03bfb45e12f4f *ranking round 1.png
+a735a93237579496edf2ac5e8fb3cd98 *ranking round 2.png
+a7d1a79eef28a740ec8ca1523e4cec50 *ranking round 3.png
+2ab82314701482cf6fda41459da3e124 *ranking round 4.png
+aa5b1db4967453b458968a4f345bb8ed *ranking round 5.png
+90f8f69a459b2b32e24153ff1ae0bb88 *ranking round 6.png
+884c94860c5b0b78eda77bd1a07245d5 *ranking round 7.png
+0af63754b9b421cd292809a1625f7497 *ranking round 8.png
+df0bb839c1d235cea3d294e8e8c3ff99 *ranking round 9.png
+cd0ad7bcdec9c2156d04180b93b12051 *scoreboard.png
+d94bc08db74923b9fcd672d79bc34064 *statistics.png

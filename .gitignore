@@ -46,3 +46,4 @@ src/app/svg/generated/
 
 # Compiled e2e tests output
 e2e/build/
+e2e/result-screenshots/

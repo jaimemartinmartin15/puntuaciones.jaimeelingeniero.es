@@ -50,6 +50,22 @@ export async function enterScorePocha(scores: number[]) {
   }
 }
 
+export async function enterScore(scores: number[]) {
+  await page.locator('[data-test-id="btn-new-round"]').click();
+
+  for (let score of scores) {
+    const digits = score.toString().split('');
+    for (let digit of digits) {
+      if (digit === '-') {
+        await page.locator(`[data-test-id="kb-btn-sign"]`).click();
+      } else {
+        await page.locator(`[data-test-id="kb-btn-${digit}"]`).click();
+      }
+    }
+    await page.locator('[data-test-id="kb-btn-next"]').click();
+  }
+}
+
 export async function enterPlayerNames(names: string[]) {
   for (let i = 0; i < names.length; i++) {
     await page.type(`[data-test-id="player-input-${i}"]`, names[i]);

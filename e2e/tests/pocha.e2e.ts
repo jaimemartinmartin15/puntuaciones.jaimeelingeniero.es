@@ -1,11 +1,11 @@
 import { enterPlayerNames, takeScreenshot, enterScorePocha, getBrowserState, setupBrowserHooks, verifyUrl } from './utils';
 
-const SCREENSHOTS_PATH = (fileName: string) => `./e2e/result-screenshots/pocha/four-player-game/${fileName}.png`;
+const SCREENSHOTS_PATH = (fileName: string) => `./e2e/result-screenshots/pocha/${fileName}.png`;
 
 describe('Pocha game', function () {
   setupBrowserHooks();
 
-  it('should allow to play a game (4 players)', async function () {
+  it('should allow to play a game', async function () {
     const { page } = getBrowserState();
 
     // game config
