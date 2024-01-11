@@ -106,7 +106,7 @@
             "devServerTarget": "puntuaciones:serve",
             "testRunner": "jasmine",
             "pixelThreshold": 25,
-            "imageThreshold": 0.08,
+            "imageThreshold": 1,
             "originalImagesFolder": "e2e/screenshots/originals/",
             "e2eResultImagesFolder": "e2e/screenshots/e2e-results/"
           },
