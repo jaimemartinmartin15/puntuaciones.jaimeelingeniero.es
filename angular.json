@@ -101,10 +101,14 @@
           }
         },
         "e2e": {
-          "builder": "@puppeteer/ng-schematics:puppeteer",
+          "builder": "@jaimemartinmartin15/jei-devkit-angular-builders:e2e-puppeteer",
           "options": {
             "devServerTarget": "puntuaciones:serve",
-            "testRunner": "jasmine"
+            "testRunner": "jasmine",
+            "pixelThreshold": 25,
+            "imageThreshold": 0.08,
+            "originalImagesFolder": "e2e/screenshots/originals/",
+            "e2eResultImagesFolder": "e2e/screenshots/e2e-results/"
           },
           "configurations": {
             "production": {

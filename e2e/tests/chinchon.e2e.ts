@@ -1,6 +1,6 @@
 import { enterPlayerNames, takeScreenshot, enterScore, getBrowserState, setupBrowserHooks, verifyUrl } from './utils';
 
-const SCREENSHOTS_PATH = (fileName: string) => `./e2e/result-screenshots/chinchon/${fileName}.png`;
+const SCREENSHOTS_PATH = (fileName: string) => `./e2e/screenshots/e2e-results/chinchon-${fileName}.png`;
 
 describe('Chinchón game', function () {
   setupBrowserHooks();
@@ -19,43 +19,43 @@ describe('Chinchón game', function () {
     // game started
     await page.locator('[data-test-id="btn-start"]').click();
     await verifyUrl('/ranking');
-    await takeScreenshot(SCREENSHOTS_PATH('ranking round 0'));
+    await takeScreenshot(SCREENSHOTS_PATH('ranking-round-0'));
 
     /******************************************* ROUND 1 *******************************************/
     await enterScore([2, 23, 12, 22]);
-    await takeScreenshot(SCREENSHOTS_PATH('ranking round 1'));
+    await takeScreenshot(SCREENSHOTS_PATH('ranking-round-1'));
 
     /******************************************* ROUND 2 *******************************************/
     await enterScore([26, 1, -10, 5]);
-    await takeScreenshot(SCREENSHOTS_PATH('ranking round 2'));
+    await takeScreenshot(SCREENSHOTS_PATH('ranking-round-2'));
 
     /******************************************* ROUND 3 *******************************************/
     await enterScore([26, 32, 1, 2]);
-    await takeScreenshot(SCREENSHOTS_PATH('ranking round 3'));
+    await takeScreenshot(SCREENSHOTS_PATH('ranking-round-3'));
 
     /******************************************* ROUND 4 *******************************************/
     await enterScore([50, 56, 20, 3]);
-    await takeScreenshot(SCREENSHOTS_PATH('ranking round 4'));
+    await takeScreenshot(SCREENSHOTS_PATH('ranking-round-4'));
 
     /******************************************* ROUND 5 *******************************************/
     await enterScore([15, 29, 2, 32]);
-    await takeScreenshot(SCREENSHOTS_PATH('ranking round 5'));
+    await takeScreenshot(SCREENSHOTS_PATH('ranking-round-5'));
 
     /******************************************* ROUND 6 *******************************************/
     await enterScore([53, 12, 3, 10]);
-    await takeScreenshot(SCREENSHOTS_PATH('ranking round 6'));
+    await takeScreenshot(SCREENSHOTS_PATH('ranking-round-6'));
 
     /******************************************* ROUND 7 *******************************************/
     await enterScore([16, 16, 24, 18]);
-    await takeScreenshot(SCREENSHOTS_PATH('ranking round 7'));
+    await takeScreenshot(SCREENSHOTS_PATH('ranking-round-7'));
 
     /******************************************* ROUND 8 *******************************************/
     await enterScore([3, -10, 34, 9]);
-    await takeScreenshot(SCREENSHOTS_PATH('ranking round 8'));
+    await takeScreenshot(SCREENSHOTS_PATH('ranking-round-8'));
 
     /******************************************* ROUND 9 *******************************************/
     await enterScore([15, 3, 15, 16]);
-    await takeScreenshot(SCREENSHOTS_PATH('ranking round 9'));
+    await takeScreenshot(SCREENSHOTS_PATH('ranking-round-9'));
 
     // change to scoreboard view
     await page.locator('[data-test-id="btn-change-view"]').click();

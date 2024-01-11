@@ -32,7 +32,7 @@ Run the application in **private IP address**:
 npm run start:public
 ```
 
-## Testing
+## Unit testing
 
 To run the unit test in development mode (watch changes and open karma) run:
 
@@ -46,11 +46,17 @@ To just run the unit test once and exit:
 npm run test:ci
 ```
 
-To run the e2e test run:
+## E2e tests
+
+To start the e2e test run:
 
 ```text
 npm run test:e2e
 ```
+
+The tests have some expect but they also generate [screenshots](./e2e/screenshots/e2e-results/) that are compared to [originals](./e2e/screenshots/originals/).
+
+If you make any changes that impact how the application looks, e2e tests might start failing. After reviewing and confirming that the new screenshots are correct, move them to originals folder and commit them.
 
 ## Deploy
 
