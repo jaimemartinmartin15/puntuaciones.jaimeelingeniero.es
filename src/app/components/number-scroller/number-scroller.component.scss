@@ -1,0 +1,57 @@
+:host {
+  display: inline-flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-self: self-start;
+  height: 90px;
+  position: relative;
+}
+
+.digitScroller {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  height: 100%;
+  overflow: auto;
+  cursor: grab;
+  scroll-snap-type: y mandatory;
+  user-select: none;
+
+  &::-webkit-scrollbar {
+    // hide scroll bar but still the container is scrollable
+    display: none;
+  }
+
+  span {
+    display: inline-block;
+    height: 20px;
+    scroll-snap-align: center;
+    color: #d3b18e;
+
+    &.selected {
+      font-weight: bold;
+      color: #d17515;
+    }
+  }
+
+  .gradient {
+    &-top {
+      pointer-events: none;
+      position: absolute;
+      top: 0;
+      height: 30px;
+      width: 50%;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 1) 20%, rgba(255, 255, 255, 0) 100%);
+    }
+
+    &-bottom {
+      pointer-events: none;
+      position: absolute;
+      bottom: 0;
+      height: 30px;
+      width: 50%;
+      background: rgb(255, 255, 255);
+      background: linear-gradient(0deg, rgba(255, 255, 255, 1) 20%, rgba(255, 255, 255, 0) 100%);
+    }
+  }
+}
