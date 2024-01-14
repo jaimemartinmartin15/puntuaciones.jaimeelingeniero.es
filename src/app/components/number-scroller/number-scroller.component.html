@@ -1,5 +1,4 @@
-<div *ngFor="let digit of digitsOfTheNumber; trackBy:trackByDigit; let i = index" class="digitScroller" #digitScroller
-  (scroll)="onScrollDigit(i)">
+<div *ngFor="let digit of digitsOfTheNumber; trackBy:trackByDigit; let i = index" class="digitScroller" #digitScroller>
   <div class="gradient-top"></div>
 
   <span>{{twoPositionsBefore(digit)}}</span>

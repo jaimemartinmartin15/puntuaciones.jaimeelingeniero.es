@@ -1,20 +1,23 @@
+$host-element-height: 109px;
+$gap-between-digits: 12px;
+$digit-element-height: 25px;
+
 :host {
   display: inline-flex;
   justify-content: space-between;
-  gap: 10px;
+  gap: 15px;
   align-self: self-start;
-  height: 90px;
+  height: $host-element-height;
   position: relative;
 }
 
 .digitScroller {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: $gap-between-digits;
   height: 100%;
   overflow: auto;
   cursor: grab;
-  scroll-snap-type: y mandatory;
   user-select: none;
 
   &::-webkit-scrollbar {
@@ -24,8 +27,8 @@
 
   span {
     display: inline-block;
-    height: 20px;
-    scroll-snap-align: center;
+    height: $digit-element-height;
+    font-size: 1.3rem;
     color: #d3b18e;
 
     &.selected {
