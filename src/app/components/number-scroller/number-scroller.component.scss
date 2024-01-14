@@ -36,25 +36,27 @@ $digit-element-height: 25px;
       color: #d17515;
     }
   }
+}
 
-  .gradient {
-    &-top {
-      pointer-events: none;
-      position: absolute;
-      top: 0;
-      height: 30px;
-      width: 50%;
-      background: linear-gradient(180deg, rgba(255, 255, 255, 1) 20%, rgba(255, 255, 255, 0) 100%);
-    }
+.gradient {
+  &-top {
+    pointer-events: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 30px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 1) 20%, rgba(255, 255, 255, 0) 100%);
+  }
 
-    &-bottom {
-      pointer-events: none;
-      position: absolute;
-      bottom: 0;
-      height: 30px;
-      width: 50%;
-      background: rgb(255, 255, 255);
-      background: linear-gradient(0deg, rgba(255, 255, 255, 1) 20%, rgba(255, 255, 255, 0) 100%);
-    }
+  &-bottom {
+    pointer-events: none;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 30px;
+    background: rgb(255, 255, 255);
+    background: linear-gradient(0deg, rgba(255, 255, 255, 1) 20%, rgba(255, 255, 255, 0) 100%);
   }
 }
