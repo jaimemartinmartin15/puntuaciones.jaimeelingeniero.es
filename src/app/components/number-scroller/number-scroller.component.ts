@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component, ElementRef, HostListener, Input, QueryList, ViewChildren } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, HostListener, Input, QueryList, ViewChildren, forwardRef } from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 // like in scss file
 const CONSTANTS = {
@@ -14,12 +15,15 @@ const CONSTANTS = {
   imports: [CommonModule],
   templateUrl: './number-scroller.component.html',
   styleUrls: ['./number-scroller.component.scss'],
+  providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => NumberScrollerComponent), multi: true }],
 })
-export class NumberScrollerComponent implements AfterViewInit {
+export class NumberScrollerComponent implements AfterViewInit, ControlValueAccessor {
   @ViewChildren('digitScroller')
   public digitScrollableElements: QueryList<ElementRef<HTMLDivElement>>;
 
   @Input()
+  public disabled: boolean = false;
+
   public digitsOfTheNumber = [0, 0];
 
   public mouseDragInfo: { isMouseDown: boolean; digitScrollerEl: HTMLDivElement | null; top: number; y: number } = {
@@ -41,11 +45,14 @@ export class NumberScrollerComponent implements AfterViewInit {
   @HostListener('mousedown', ['$event'])
   @HostListener('touchstart', ['$event'])
   public onMouseDown(event: MouseEvent | TouchEvent) {
-    const digitScroller = (event.target as Element).closest('.digitScroller') as HTMLDivElement;
-    this.mouseDragInfo.digitScrollerEl = digitScroller;
-    this.mouseDragInfo.isMouseDown = true;
-    this.mouseDragInfo.top = digitScroller?.scrollTop ?? 0;
-    this.mouseDragInfo.y = this.getPositionEventY(event);
+    if (!this.disabled) {
+      this._onTouch();
+      const digitScroller = (event.target as Element).closest('.digitScroller') as HTMLDivElement;
+      this.mouseDragInfo.digitScrollerEl = digitScroller;
+      this.mouseDragInfo.isMouseDown = true;
+      this.mouseDragInfo.top = digitScroller?.scrollTop ?? 0;
+      this.mouseDragInfo.y = this.getPositionEventY(event);
+    }
   }
 
   @HostListener('document:mousemove', ['$event'])
@@ -65,6 +72,7 @@ export class NumberScrollerComponent implements AfterViewInit {
         if (this.digitsOfTheNumber[digitIndex] < 0) {
           this.digitsOfTheNumber[digitIndex] = 9;
         }
+        this._onChange(parseInt(this.digitsOfTheNumber.join('')));
         this.mouseDragInfo.digitScrollerEl.scrollTo({ top: CONSTANTS.DIGIT_ELEMENT_HEIGHT * 1.5 + CONSTANTS.GAP_BETWEEN_DIGITS / 2 });
         this.mouseDragInfo.top = CONSTANTS.DIGIT_ELEMENT_HEIGHT * 1.5 + CONSTANTS.GAP_BETWEEN_DIGITS / 2;
         this.mouseDragInfo.y = this.getPositionEventY(event);
@@ -74,6 +82,7 @@ export class NumberScrollerComponent implements AfterViewInit {
         if (this.digitsOfTheNumber[digitIndex] > 9) {
           this.digitsOfTheNumber[digitIndex] = 0;
         }
+        this._onChange(parseInt(this.digitsOfTheNumber.join('')));
         this.mouseDragInfo.digitScrollerEl.scrollTo({ top: CONSTANTS.DIGIT_ELEMENT_HEIGHT / 2 + CONSTANTS.GAP_BETWEEN_DIGITS / 2 });
         this.mouseDragInfo.top = CONSTANTS.DIGIT_ELEMENT_HEIGHT / 2 + CONSTANTS.GAP_BETWEEN_DIGITS / 2;
         this.mouseDragInfo.y = this.getPositionEventY(event);
@@ -95,6 +104,8 @@ export class NumberScrollerComponent implements AfterViewInit {
     this.mouseDragInfo.isMouseDown = false;
     this.mouseDragInfo.digitScrollerEl = null;
   }
+
+  /********************* View *********************/
 
   public trackByDigit(i: number) {
     return i;
@@ -120,5 +131,26 @@ export class NumberScrollerComponent implements AfterViewInit {
     if (n == 8) return 0;
     if (n == 9) return 1;
     return n + 2;
+  }
+
+  /********************* ControlValueAccesor *********************/
+
+  private _onChange: any = () => {};
+  private _onTouch: any = () => {};
+
+  public writeValue(digits: number[]): void {
+    this.digitsOfTheNumber = digits ?? this.digitsOfTheNumber;
+  }
+
+  public registerOnChange(fn: any): void {
+    this._onChange = fn;
+  }
+
+  public registerOnTouched(fn: any): void {
+    this._onTouch = fn;
+  }
+
+  public setDisabledState?(isDisabled: boolean): void {
+    this.disabled = isDisabled;
   }
 }
