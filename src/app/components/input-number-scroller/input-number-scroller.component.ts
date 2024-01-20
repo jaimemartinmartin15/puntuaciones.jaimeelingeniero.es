@@ -28,7 +28,7 @@ const CONSTANTS = {
 };
 
 @Component({
-  selector: 'app-number-scroller',
+  selector: 'app-input-number-scroller',
   standalone: true,
   imports: [CommonModule],
   templateUrl: './input-number-scroller.component.html',
