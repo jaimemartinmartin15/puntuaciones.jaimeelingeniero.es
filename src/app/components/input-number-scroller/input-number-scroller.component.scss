@@ -1,0 +1,70 @@
+$host-element-height: 109px;
+$gap-between-digits: 12px;
+$digit-element-height: 25px;
+
+:host {
+  display: inline-flex;
+  justify-content: space-between;
+  gap: 15px;
+  align-self: self-start;
+  height: $host-element-height;
+  position: relative;
+}
+
+.digitScroller {
+  display: flex;
+  flex-direction: column;
+  gap: $gap-between-digits;
+  height: 100%;
+  overflow: auto;
+  cursor: grab;
+  user-select: none;
+
+  &::-webkit-scrollbar {
+    // hide scroll bar but still the container is scrollable
+    display: none;
+  }
+
+  &.disabled {
+    cursor: default;
+  }
+
+  span {
+    display: inline-block;
+    height: $digit-element-height;
+    font-size: 1.3rem;
+    color: #d3b18e;
+
+    &.selected {
+      font-weight: bold;
+      color: #d17515;
+    }
+
+    &.disabled {
+      color: #d3b18e; 
+    }
+  }
+}
+
+.gradient {
+  &-top {
+    pointer-events: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 30px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 1) 20%, rgba(255, 255, 255, 0) 100%);
+  }
+
+  &-bottom {
+    pointer-events: none;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 30px;
+    background: rgb(255, 255, 255);
+    background: linear-gradient(0deg, rgba(255, 255, 255, 1) 20%, rgba(255, 255, 255, 0) 100%);
+  }
+}
