@@ -25,6 +25,10 @@ $digit-element-height: 25px;
     display: none;
   }
 
+  &.disabled {
+    cursor: default;
+  }
+
   span {
     display: inline-block;
     height: $digit-element-height;
@@ -34,6 +38,10 @@ $digit-element-height: 25px;
     &.selected {
       font-weight: bold;
       color: #d17515;
+    }
+
+    &.disabled {
+      color: #d3b18e; 
     }
   }
 }

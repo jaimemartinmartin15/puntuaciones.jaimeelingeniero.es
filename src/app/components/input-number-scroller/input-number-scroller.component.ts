@@ -1,6 +1,24 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component, ElementRef, HostListener, Input, QueryList, ViewChildren, forwardRef } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  HostListener,
+  Input,
+  OnChanges,
+  QueryList,
+  SimpleChanges,
+  ViewChildren,
+  forwardRef,
+} from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+
+interface MouseDragInfo {
+  isMouseDown: boolean;
+  digitScrollerEl: HTMLDivElement | null;
+  top: number; // scroll position when dragging starts
+  y: number; // initial mouse position when dragging starts
+}
 
 // like in scss file
 const CONSTANTS = {
@@ -13,27 +31,42 @@ const CONSTANTS = {
   selector: 'app-number-scroller',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './number-scroller.component.html',
-  styleUrls: ['./number-scroller.component.scss'],
-  providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => NumberScrollerComponent), multi: true }],
+  templateUrl: './input-number-scroller.component.html',
+  styleUrls: ['./input-number-scroller.component.scss'],
+  providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => InputNumberScrollerComponent), multi: true }],
 })
-export class NumberScrollerComponent implements AfterViewInit, ControlValueAccessor {
+export class InputNumberScrollerComponent implements OnChanges, AfterViewInit, ControlValueAccessor {
   @ViewChildren('digitScroller')
   public digitScrollableElements: QueryList<ElementRef<HTMLDivElement>>;
 
   @Input()
   public disabled: boolean = false;
 
-  public digitsOfTheNumber = [0, 0];
+  @Input()
+  public numberOfScrollers: number = 2;
+  public digits: number[] = [0, 0];
 
-  public mouseDragInfo: { isMouseDown: boolean; digitScrollerEl: HTMLDivElement | null; top: number; y: number } = {
-    isMouseDown: false,
-    digitScrollerEl: null,
-    top: CONSTANTS.DIGIT_ELEMENT_HEIGHT + CONSTANTS.GAP_BETWEEN_DIGITS / 2, // current scroll
-    y: 0, // current mouse position
-  };
+  private mouseDragInfo: MouseDragInfo = { isMouseDown: false, digitScrollerEl: null, top: 0, y: 0 };
+
+  public ngOnChanges(changes: SimpleChanges): void {
+    if ('numberOfScrollers' in changes) {
+      this.digits.reverse();
+      this.digits.length = changes['numberOfScrollers'].currentValue;
+      this.digits.reverse();
+      for (let i = 0; i < this.numberOfScrollers; i++) {
+        this.digits[i] = this.digits[i] ?? 0;
+      }
+
+      // wait to show all digit scrollers and center them
+      setTimeout(() => this.centerDigitScrollers());
+    }
+  }
 
   public ngAfterViewInit(): void {
+    this.centerDigitScrollers();
+  }
+
+  private centerDigitScrollers() {
     // center the scroll
     this.digitScrollableElements.map((d) => d.nativeElement.scroll({ top: CONSTANTS.DIGIT_ELEMENT_HEIGHT + CONSTANTS.GAP_BETWEEN_DIGITS / 2 }));
   }
@@ -68,21 +101,21 @@ export class NumberScrollerComponent implements AfterViewInit, ControlValueAcces
         .indexOf(this.mouseDragInfo.digitScrollerEl);
 
       if (this.mouseDragInfo.digitScrollerEl.scrollTop < CONSTANTS.DIGIT_ELEMENT_HEIGHT / 2) {
-        this.digitsOfTheNumber[digitIndex]--;
-        if (this.digitsOfTheNumber[digitIndex] < 0) {
-          this.digitsOfTheNumber[digitIndex] = 9;
+        this.digits[digitIndex]--;
+        if (this.digits[digitIndex] < 0) {
+          this.digits[digitIndex] = 9;
         }
-        this._onChange(parseInt(this.digitsOfTheNumber.join('')));
+        this._onChange(parseInt(this.digits.join('')));
         this.mouseDragInfo.digitScrollerEl.scrollTo({ top: CONSTANTS.DIGIT_ELEMENT_HEIGHT * 1.5 + CONSTANTS.GAP_BETWEEN_DIGITS / 2 });
         this.mouseDragInfo.top = CONSTANTS.DIGIT_ELEMENT_HEIGHT * 1.5 + CONSTANTS.GAP_BETWEEN_DIGITS / 2;
         this.mouseDragInfo.y = this.getPositionEventY(event);
         return;
       } else if (this.mouseDragInfo.digitScrollerEl.scrollTop > CONSTANTS.DIGIT_ELEMENT_HEIGHT * 1.5 + CONSTANTS.GAP_BETWEEN_DIGITS) {
-        this.digitsOfTheNumber[digitIndex]++;
-        if (this.digitsOfTheNumber[digitIndex] > 9) {
-          this.digitsOfTheNumber[digitIndex] = 0;
+        this.digits[digitIndex]++;
+        if (this.digits[digitIndex] > 9) {
+          this.digits[digitIndex] = 0;
         }
-        this._onChange(parseInt(this.digitsOfTheNumber.join('')));
+        this._onChange(parseInt(this.digits.join('')));
         this.mouseDragInfo.digitScrollerEl.scrollTo({ top: CONSTANTS.DIGIT_ELEMENT_HEIGHT / 2 + CONSTANTS.GAP_BETWEEN_DIGITS / 2 });
         this.mouseDragInfo.top = CONSTANTS.DIGIT_ELEMENT_HEIGHT / 2 + CONSTANTS.GAP_BETWEEN_DIGITS / 2;
         this.mouseDragInfo.y = this.getPositionEventY(event);
@@ -138,8 +171,17 @@ export class NumberScrollerComponent implements AfterViewInit, ControlValueAcces
   private _onChange: any = () => {};
   private _onTouch: any = () => {};
 
-  public writeValue(digits: number[]): void {
-    this.digitsOfTheNumber = digits ?? this.digitsOfTheNumber;
+  public writeValue(value: number): void {
+    // ngModel writes first null
+    if (value !== null) {
+      const splitNumber = value
+        .toString()
+        .split('')
+        .map((d) => parseInt(d));
+      for (let i = 0; i < this.numberOfScrollers; i++) {
+        this.digits[this.numberOfScrollers - 1 - i] = splitNumber[splitNumber.length - 1 - i] ?? 0;
+      }
+    }
   }
 
   public registerOnChange(fn: any): void {
