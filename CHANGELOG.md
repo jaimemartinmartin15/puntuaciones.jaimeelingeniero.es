@@ -1,5 +1,7 @@
 # CHANGELOG
 
+Created select component
+
 Created input-number-scroller component
 
 Added e2e tests with puppeteer and update workflow
