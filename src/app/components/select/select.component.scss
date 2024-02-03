@@ -1,0 +1,50 @@
+@import "../../styles/colors";
+
+:host {
+  display: block;
+}
+
+.preview {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 2px solid $color-orange;
+  border-radius: 5px;
+  padding: 10px;
+  font-size: 1.2rem;
+
+  &:not(.disabled) {
+    cursor: pointer;
+  }
+
+  &.disabled {
+    color: $color-text-disabled;
+    background-color: $color-background-disabled;
+  }
+
+  .arrow {
+    width: 15px;
+    height: 15px;
+    background-color: black;
+    transform-origin: 50% 50%;
+    clip-path: polygon(0% 40%, 20% 20%, 50% 50%, 80% 20%, 100% 40%, 50% 90%);
+    transition: transform 0.5s;
+
+    &.open {
+      transform: rotate(180deg);
+    }
+
+    &.disabled {
+      background-color: $color-text-disabled;
+    }
+  }
+}
+
+.options {
+  display: flex;
+  flex-direction: column;
+  margin-top: 5px;
+  background-color: $color-background-panel;
+  border: 2px solid black;
+  border-radius: 5px;
+}

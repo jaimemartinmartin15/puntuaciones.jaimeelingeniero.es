@@ -1,0 +1,10 @@
+<div class="preview" [ngClass]="{disabled}">
+  <div>
+    <ng-content></ng-content>
+  </div>
+  <div [ngClass]="{arrow: true, open: isDropdownOpen, disabled }"></div>
+</div>
+
+<div class="options" *ngIf="isDropdownOpen">
+  <ng-content select="app-select-option"></ng-content>
+</div>
