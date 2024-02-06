@@ -1,5 +1,7 @@
 # CHANGELOG
 
+Created radio buttons component
+
 Created select component
 
 Created input-number-scroller component
