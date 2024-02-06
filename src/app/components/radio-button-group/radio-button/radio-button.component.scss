@@ -1,0 +1,41 @@
+@import "../../../styles/colors";
+
+:host {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+
+  &.disabled {
+    color: $color-text-disabled;
+  }
+
+  span {
+    display: inline-block;
+    position: relative;
+    width: 20px;
+    height: 20px;
+    border: 2px solid $color-orange;
+    border-radius: 50%;
+    margin-right: 10px;
+
+    &.disabled {
+      border-color: $color-background-disabled;
+    }
+  }
+
+  span.selected:after {
+    content: "";
+    display: block;
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    top: 5px;
+    left: 5px;
+    border-radius: 50%;
+    background-color: $color-orange;
+  }
+
+  span.selected.disabled:after {
+    background-color: $color-background-disabled;
+  }
+}
