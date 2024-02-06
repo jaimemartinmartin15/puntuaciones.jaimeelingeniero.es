@@ -5,6 +5,10 @@
   align-items: center;
   cursor: pointer;
 
+  &.disabled {
+    color: $color-text-disabled;
+  }
+
   span {
     display: inline-block;
     position: relative;
@@ -13,6 +17,10 @@
     border: 2px solid $color-orange;
     border-radius: 50%;
     margin-right: 10px;
+
+    &.disabled {
+      border-color: $color-background-disabled;
+    }
   }
 
   span.selected:after {
@@ -25,5 +33,9 @@
     left: 5px;
     border-radius: 50%;
     background-color: $color-orange;
+  }
+
+  span.selected.disabled:after {
+    background-color: $color-background-disabled;
   }
 }

@@ -42,13 +42,16 @@ export class RadioButtonGroupComponent {
   private _onTouch: any = () => {};
 
   public writeValue(value: any): void {
-    if (this.optionsComponents) {
-      this.optionsComponents.forEach((o) => (o.selected = false));
-      const selectedOption = this.optionsComponents.find((o) => o.value === value);
-      if (selectedOption) {
-        selectedOption.selected = true;
+    // because for reactive forms, it is called before view init
+    setTimeout(() => {
+      if (this.optionsComponents) {
+        this.optionsComponents.forEach((o) => (o.selected = false));
+        const selectedOption = this.optionsComponents.find((o) => o.value === value);
+        if (selectedOption) {
+          selectedOption.selected = true;
+        }
       }
-    }
+    });
   }
 
   public registerOnChange(fn: any): void {
@@ -60,6 +63,12 @@ export class RadioButtonGroupComponent {
   }
 
   public setDisabledState?(isDisabled: boolean): void {
-    this.disabled = isDisabled;
+    // because for reactive forms, it is called before view init
+    setTimeout(() => {
+      this.disabled = isDisabled;
+      if (this.optionsComponents) {
+        this.optionsComponents.forEach((o) => (o.disabled = this.disabled));
+      }
+    });
   }
 }
