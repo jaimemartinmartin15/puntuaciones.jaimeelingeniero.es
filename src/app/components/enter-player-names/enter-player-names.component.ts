@@ -1,6 +1,6 @@
 import { CdkDragDrop, DragDropModule, moveItemInArray } from '@angular/cdk/drag-drop';
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, ElementRef, Input, QueryList, ViewChild, ViewChildren, forwardRef } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, Input, QueryList, ViewChild, ViewChildren, forwardRef } from '@angular/core';
 import { FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { GamesSvgModule } from '../../svg/generated/games-svg.module';
 
@@ -18,7 +18,7 @@ export interface EnterPlayerNamesModel {
   styleUrls: ['./enter-player-names.component.scss'],
   providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => EnterPlayerNamesComponent), multi: true }],
 })
-export class EnterPlayerNamesComponent {
+export class EnterPlayerNamesComponent implements AfterViewInit {
   @ViewChildren('playerInput')
   private playerInputs: QueryList<ElementRef<HTMLInputElement>>;
   public playerNames: string[] = ['', '', '', ''];
@@ -34,18 +34,16 @@ export class EnterPlayerNamesComponent {
 
   public constructor(private readonly changeDetectorRef: ChangeDetectorRef) {}
 
+  public ngAfterViewInit() {
+    this.adaptWidthOfTeamInputToWidthOfText();
+  }
+
   public trackByPlayerIndex(index: number) {
     return index;
   }
 
   public onChangeTeamName() {
-    // adapt length of the input to with of text
-    const el = document.createElement('span');
-    el.style.fontSize = '1.2rem'; // like in scss file
-    el.textContent = this.teamName;
-    document.body.append(el);
-    this.teamInput.nativeElement.style.width = el.offsetWidth + 10 + 'px';
-    el.remove();
+    this.adaptWidthOfTeamInputToWidthOfText();
 
     this.emitChanges();
   }
@@ -67,6 +65,17 @@ export class EnterPlayerNamesComponent {
     };
     this._onChange(emitValue);
     this._onTouch();
+  }
+
+  private adaptWidthOfTeamInputToWidthOfText() {
+    if (this.teamInput !== undefined) {
+      const el = document.createElement('span');
+      el.style.fontSize = '1.2rem'; // like in scss file
+      el.textContent = this.teamName;
+      document.body.append(el);
+      this.teamInput.nativeElement.style.width = el.offsetWidth + 10 + 'px';
+      el.remove();
+    }
   }
 
   public addPlayer() {
@@ -104,6 +113,8 @@ export class EnterPlayerNamesComponent {
       this.playerNames = value.playerNames;
       this.dealingPlayerIndex = value.dealingPlayerIndex;
     }
+
+    this.adaptWidthOfTeamInputToWidthOfText();
   }
 
   public registerOnChange(fn: any): void {
