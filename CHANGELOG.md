@@ -1,5 +1,7 @@
 # CHANGELOG
 
+Created enter player names component
+
 Created radio buttons component
 
 Created select component
