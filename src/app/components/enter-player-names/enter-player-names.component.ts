@@ -82,6 +82,7 @@ export class EnterPlayerNamesComponent implements AfterViewInit {
     this.playerNames.push('');
     this.changeDetectorRef.detectChanges();
     this.playerInputs.last.nativeElement.focus();
+    this.emitChanges();
   }
 
   public deletePlayer(index: number) {
@@ -90,12 +91,14 @@ export class EnterPlayerNamesComponent implements AfterViewInit {
     const playerNameDealingIndex = this.playerNames.indexOf(playerNameDealing);
     const playerBefore = this.dealingPlayerIndex - 1;
     this.dealingPlayerIndex = playerNameDealingIndex !== -1 ? playerNameDealingIndex : playerBefore !== -1 ? playerBefore : 0;
+    this.emitChanges();
   }
 
   public onReorderingPlayer(event: CdkDragDrop<string[]>) {
     const dealingPlayerName = this.playerNames[this.dealingPlayerIndex];
     moveItemInArray(this.playerNames, event.previousIndex, event.currentIndex);
     this.dealingPlayerIndex = this.playerNames.indexOf(dealingPlayerName);
+    this.emitChanges();
   }
 
   /********************* ControlValueAccesor *********************/
