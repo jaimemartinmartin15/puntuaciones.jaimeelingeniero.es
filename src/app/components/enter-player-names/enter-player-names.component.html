@@ -1,0 +1,25 @@
+<label>
+  <input type="text" class="input-team-name" #teamInput [(ngModel)]="teamName"
+    (ngModelChange)="onChangeTeamName()" [disabled]="!allowEditTeamName">
+  <span class="add-player-button" data-test-id="btn-add-player" (click)="addPlayer()"></span>
+</label>
+
+<ul cdkDropList (cdkDropListDropped)="onReorderingPlayer($event)" class="players-list">
+  <li cdkDrag cdkDragPreviewContainer="parent" class="player-item"
+    *ngFor="let player of playerNames; let i = index; trackBy: trackByPlayerIndex">
+
+    <div *cdkDragPlaceholder></div>
+
+    <span class="player-id" cdkDragHandle>{{i + 1}}. </span>
+
+    <input class="input" #playerInput type="text" [(ngModel)]="playerNames[i]"
+      (ngModelChange)="onChangePlayerName()" [attr.data-test-id]="'player-input-'+i">
+
+    <svg appDealCardsSvg viewBox="0 0 1000 1000" (click)="onChangeDealingPlayer(i)" class="deal-cards-icon"
+      [attr.data-test-id]="'dealing-player-icon-'+i"
+      [ngClass]="{'deal-cards-icon--active': dealingPlayerIndex === i}"></svg>
+
+    <span class="delete-icon" (click)="deletePlayer(i)" [attr.data-test-id]="'btn-delete-player-'+i"
+      *ngIf="this.playerNames.length > 1"></span>
+  </li>
+</ul>
