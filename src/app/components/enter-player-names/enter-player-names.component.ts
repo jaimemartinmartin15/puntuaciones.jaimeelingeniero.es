@@ -1,6 +1,6 @@
 import { CdkDragDrop, DragDropModule, moveItemInArray } from '@angular/cdk/drag-drop';
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, Input, QueryList, ViewChild, ViewChildren, forwardRef } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, QueryList, ViewChild, ViewChildren, forwardRef } from '@angular/core';
 import { FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { GamesSvgModule } from '../../svg/generated/games-svg.module';
 
@@ -31,8 +31,6 @@ export class EnterPlayerNamesComponent implements AfterViewInit {
 
   @Input()
   public allowEditTeamName: boolean = false;
-
-  public constructor(private readonly changeDetectorRef: ChangeDetectorRef) {}
 
   public ngAfterViewInit() {
     this.adaptWidthOfTeamInputToWidthOfText();
@@ -80,9 +78,9 @@ export class EnterPlayerNamesComponent implements AfterViewInit {
 
   public addPlayer() {
     this.playerNames.push('');
-    this.changeDetectorRef.detectChanges();
-    this.playerInputs.last.nativeElement.focus();
     this.emitChanges();
+    // wait for the view to appear and put the focus on it
+    setTimeout(() => this.playerInputs.last.nativeElement.focus());
   }
 
   public deletePlayer(index: number) {
