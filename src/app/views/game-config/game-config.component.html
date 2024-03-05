@@ -22,9 +22,8 @@
 <ng-container *ngIf="selectedGameService.hasFlagActive('gameConfig:limitScore')">
   <label>Límite</label>
 
-  <!-- TODO make numberOfScrollers part of flag limitScore -->
-  <app-input-number-scroller [formControl]="selectedGameService.limitScoreFormControl" [numberOfScrollers]="3"
-    data-test-id="selected-limit-score">
+  <app-input-number-scroller [formControl]="selectedGameService.limitScoreFormControl"
+    [numberOfScrollers]="selectedGameService.numberOfScrollers" data-test-id="selected-limit-score">
   </app-input-number-scroller>
 </ng-container>
 

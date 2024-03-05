@@ -10,7 +10,7 @@ export type FlagMapping = {
 
   // game config
   'gameConfig:numberOfCards': { numberOfCards: number; numberOfCardsFormControl: FormControl<number> };
-  'gameConfig:limitScore': { limitScore: number; limitScoreFormControl: FormControl<number> };
+  'gameConfig:limitScore': { limitScore: number; limitScoreFormControl: FormControl<number>; numberOfScrollers: number };
   'gameConfig:winner': { winner: 'highestScore' | 'lowestScore'; winnerFormControl: FormControl<'highestScore' | 'lowestScore'> };
   'gameConfig:modality': { modality: 'individual' | 'teams'; modalityFormControl: FormControl<'individual' | 'teams'> };
 

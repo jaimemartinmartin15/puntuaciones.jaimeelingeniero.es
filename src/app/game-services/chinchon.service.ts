@@ -159,6 +159,8 @@ export class ChinchonService implements GameServiceWithFlags<ChinchonFlags> {
 
   public limitScoreFormControl = this.fb.control(this.limitScore);
 
+  public numberOfScrollers = 3;
+
   // * flag -> roundInfo:gameName
   // gameName is already part of the GameService interface
 
