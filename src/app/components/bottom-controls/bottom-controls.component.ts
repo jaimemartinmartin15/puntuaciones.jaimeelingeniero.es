@@ -26,7 +26,6 @@ export class BottomControlsComponent {
   }
 
   public enterNewRound() {
-    // TODO the service should provide the state to navigate to its corresponding enter score page
     const state = {
       players: this.gameHolderService.service.players.map((p) => ({ ...p, punctuation: 0 })),
       roundNumber: this.gameHolderService.service.getNextRoundNumber(),

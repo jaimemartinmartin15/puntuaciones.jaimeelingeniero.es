@@ -34,7 +34,6 @@ export class ScoreboardComponent implements OnInit {
   }
 
   public changeScoresForRound(round: number) {
-    // TODO the service should provide the state to navigate to its corresponding enter score page
     const state = {
       players: this.gameService.players.map((p) => ({ ...p, punctuation: p.scores[round] })),
       roundNumber: round + 1,
@@ -43,7 +42,6 @@ export class ScoreboardComponent implements OnInit {
   }
 
   public changeScoreForPlayerAndRound(playerId: number, round: number) {
-    // TODO the service should provide the state to navigate to its corresponding enter score page
     const player = this.gameService.players[playerId];
     const state = {
       players: [{ ...player, punctuation: player.scores[round] }],
