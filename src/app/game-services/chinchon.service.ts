@@ -12,6 +12,7 @@ const chinchonFlags = [
   'gameConfig:limitScore',
   'roundInfo:gameName',
   'roundInfo:limitScore',
+  'bottomControls:changeViews',
   'ranking',
   'ranking:playerDisplay:numberOfRejoins',
   'scoreboard',
@@ -163,6 +164,13 @@ export class ChinchonService implements GameServiceWithFlags<ChinchonFlags> {
 
   // * flag -> roundInfo:limitScore
   // limitScore is already part of gameConfig:limitScore flag
+
+  // * flag -> bottomControls:changeViews
+  changeViews = [
+    { path: ROUTING_PATHS.RANKING, display: '🥇 Ranking' },
+    { path: ROUTING_PATHS.SCOREBOARD, display: '📋 Tabla' },
+    { path: ROUTING_PATHS.STATISTICS, display: '📊 Estadísticas' },
+  ];
 
   // * flag -> ranking
   public getRankingPlayers(round: number = this.getNextRoundNumber() - 1): Player[] {

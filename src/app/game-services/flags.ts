@@ -1,4 +1,5 @@
 import { FormControl } from '@angular/forms';
+import { RoutingPath } from '../constants/routes';
 import { Player } from '../interfaces/player';
 
 // Note: some flags might have duplicated fields, but because it is required for both
@@ -17,6 +18,9 @@ export type FlagMapping = {
   'roundInfo:gameName': { gameName: string };
   'roundInfo:numberOfCards': { getNumberOfCardsToDealNextRound: () => string };
   'roundInfo:limitScore': { limitScore: number };
+
+  // bottom controls
+  'bottomControls:changeViews': { changeViews: { path: RoutingPath; display: string }[] };
 
   // raking view
   ranking: {

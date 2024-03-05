@@ -2,7 +2,8 @@
   Juego nuevo
 </button>
 
-<button class="app-button" data-test-id="btn-change-view" (click)="showViewNavigation = !showViewNavigation">
+<button class="app-button" data-test-id="btn-change-view" (click)="showViewNavigation = !showViewNavigation"
+  *ngIf="gameHolderService.service.hasFlagActive('bottomControls:changeViews')">
   Cambiar vista
 </button>
 
@@ -10,11 +11,10 @@
   Nueva ronda
 </button>
 
-<!-- TODO depending on the game, show the views that is possible to navigate, or hide the button or if there is only one view, navigate to that one directly -->
-
-<div class="view-list" data-test-id="change-view-pop-up" *ngIf="showViewNavigation"
+<div class="view-list" data-test-id="change-view-pop-up"
+  *ngIf="showViewNavigation && gameHolderService.service.hasFlagActive('bottomControls:changeViews')"
   (click)="showViewNavigation = false">
-  <a [routerLink]="['../', ROUTING_PATHS.RANKING]">🥇 Ranking</a>
-  <a [routerLink]="['../', ROUTING_PATHS.SCOREBOARD]">📋 Tabla</a>
-  <a [routerLink]="['../', ROUTING_PATHS.STATISTICS]">📊 Estadísticas</a>
+  <a *ngFor="let view of gameHolderService.service.changeViews" [routerLink]="['../', view.path]">
+    {{view.display}}
+  </a>
 </div>

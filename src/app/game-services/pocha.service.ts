@@ -12,6 +12,7 @@ const pochaFlags = [
   'gameConfig:numberOfCards',
   'roundInfo:gameName',
   'roundInfo:numberOfCards',
+  'bottomControls:changeViews',
   'ranking',
   'ranking:playerDisplay:maximumReachedScore',
   'scoreboard',
@@ -155,6 +156,13 @@ export class PochaService implements GameServiceWithFlags<PochaFlags> {
     const cardsToDeal = Math.floor(cardsBetweenPlayers - (this.getNextRoundNumber() - cardsBetweenPlayers - this.players.length) - 1);
     return cardsToDeal === 0 ? '1 (frente)' : `${cardsToDeal}`;
   }
+
+  // * flag -> bottomControls:changeViews
+  changeViews = [
+    { path: ROUTING_PATHS.RANKING, display: '🥇 Ranking' },
+    { path: ROUTING_PATHS.SCOREBOARD, display: '📋 Tabla' },
+    { path: ROUTING_PATHS.STATISTICS, display: '📊 Estadísticas' },
+  ];
 
   // * flag -> ranking
   public getRankingPlayers(round: number = this.getNextRoundNumber() - 1): Player[] {

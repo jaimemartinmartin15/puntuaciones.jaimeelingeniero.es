@@ -7,7 +7,14 @@ import { Player } from '../interfaces/player';
 import { Flag } from './flags';
 import { GameServiceWithFlags } from './game.service';
 
-const otherGameFlags = ['gameConfig:winner', 'ranking', 'scoreboard', 'statistics', 'statistics:progressGraph'] as const;
+const otherGameFlags = [
+  'gameConfig:winner',
+  'bottomControls:changeViews',
+  'ranking',
+  'scoreboard',
+  'statistics',
+  'statistics:progressGraph',
+] as const;
 
 type OtherGameFlags = (typeof otherGameFlags)[number];
 
@@ -123,6 +130,13 @@ export class OtherGameService implements GameServiceWithFlags<OtherGameFlags> {
   public winner: 'highestScore' | 'lowestScore' = 'highestScore' as const;
 
   public winnerFormControl = this.fb.control(this.winner);
+
+  // * flag -> bottomControls:changeViews
+  changeViews = [
+    { path: ROUTING_PATHS.RANKING, display: '🥇 Ranking' },
+    { path: ROUTING_PATHS.SCOREBOARD, display: '📋 Tabla' },
+    { path: ROUTING_PATHS.STATISTICS, display: '📊 Estadísticas' },
+  ];
 
   // * flag -> ranking
   public getRankingPlayers(round: number = this.getNextRoundNumber() - 1): Player[] {

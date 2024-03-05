@@ -18,7 +18,7 @@ export class BottomControlsComponent {
   public constructor(
     private readonly router: Router,
     private readonly activatedRoute: ActivatedRoute,
-    private readonly gameHolderService: GameHolderService
+    public readonly gameHolderService: GameHolderService
   ) {}
 
   public goToGameConfigView() {
