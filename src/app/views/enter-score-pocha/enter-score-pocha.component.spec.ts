@@ -110,7 +110,7 @@ describe('EnterScorePochaComponent', () => {
       nextButton.click();
       expect(locationBackSpy).toHaveBeenCalled();
       expect(dealingPlayerIndex + 1).toBe(gameHolderService.service.dealingPlayerIndex);
-      expect(localStorage.getItem(LOCAL_STORE_KEYS.PLAYERS)).not.toBeNull();
+      expect(localStorage.getItem(LOCAL_STORE_KEYS.SETTINGS('Pocha'))).not.toBeNull();
     });
   });
 
@@ -186,7 +186,7 @@ describe('EnterScorePochaComponent', () => {
 
       expect(gameHolderService.service.players[2].scores[1]).toBe(5);
       expect(dealingPlayerIndex).toBe(gameHolderService.service.dealingPlayerIndex);
-      expect(localStorage.getItem(LOCAL_STORE_KEYS.PLAYERS)).not.toBeNull();
+      expect(localStorage.getItem(LOCAL_STORE_KEYS.SETTINGS('Pocha'))).not.toBeNull();
     });
   });
 
@@ -242,14 +242,14 @@ describe('EnterScorePochaComponent', () => {
       expect(locationBackSpy).toHaveBeenCalled();
 
       expect(gameHolderService.service.players[1].scores[1]).toBe(5);
-      expect(localStorage.getItem(LOCAL_STORE_KEYS.PLAYERS)).not.toBeNull();
+      expect(localStorage.getItem(LOCAL_STORE_KEYS.SETTINGS('Pocha'))).not.toBeNull();
       expect(dealingPlayerIndex).toBe(gameHolderService.service.dealingPlayerIndex);
     });
 
     it('should allow to cancel without saving changes', () => {
       fixture.debugElement.query(By.css(SELECTORS.CLOSE_BUTTON)).nativeElement.click();
       expect(locationBackSpy).toHaveBeenCalled();
-      expect(localStorage.getItem(LOCAL_STORE_KEYS.PLAYERS)).toBeNull();
+      expect(localStorage.getItem(LOCAL_STORE_KEYS.SETTINGS('Pocha'))).toBeNull();
     });
   });
 });

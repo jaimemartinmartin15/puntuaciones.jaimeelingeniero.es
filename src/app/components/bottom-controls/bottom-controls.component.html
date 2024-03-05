@@ -10,6 +10,8 @@
   Nueva ronda
 </button>
 
+<!-- TODO depending on the game, show the views that is possible to navigate, or hide the button or if there is only one view, navigate to that one directly -->
+
 <div class="view-list" data-test-id="change-view-pop-up" *ngIf="showViewNavigation"
   (click)="showViewNavigation = false">
   <a [routerLink]="['../', ROUTING_PATHS.RANKING]">🥇 Ranking</a>

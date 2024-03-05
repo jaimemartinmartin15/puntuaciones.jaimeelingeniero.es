@@ -39,6 +39,8 @@ describe('ResumeGameComponent', () => {
   });
 
   describe('Pocha game', () => {
+    let service: PochaService;
+
     const players = [
       { id: 0, name: 'Player 1', scores: [5, -10], punctuation: 0 },
       { id: 1, name: 'Player 2', scores: [-10, 5], punctuation: 0 },
@@ -46,10 +48,15 @@ describe('ResumeGameComponent', () => {
     ];
 
     beforeEach(() => {
-      localStorage.setItem(LOCAL_STORE_KEYS.GAME_NAME, 'Pocha');
-      localStorage.setItem(LOCAL_STORE_KEYS.PLAYERS, JSON.stringify(players));
-      localStorage.setItem(LOCAL_STORE_KEYS.DEALING_PLAYER_INDEX, '1');
-      localStorage.setItem(LOCAL_STORE_KEYS.CONFIG, JSON.stringify({ numberOfCards: 36 }));
+      localStorage.setItem(LOCAL_STORE_KEYS.SAVED_GAME_NAME, 'Pocha');
+      localStorage.setItem(
+        LOCAL_STORE_KEYS.SETTINGS('Pocha'),
+        JSON.stringify({
+          dealingPlayerIndex: 1,
+          numberOfCards: 36,
+          players,
+        })
+      );
 
       fixture = TestBed.createComponent(ResumeGameComponent);
       component = fixture.componentInstance;
@@ -70,16 +77,19 @@ describe('ResumeGameComponent', () => {
     it('should allow to resume the game', () => {
       fixture.debugElement.query(By.css(SELECTORS.BTN_RESUME_GAME)).nativeElement.click();
 
-      expect(gameHolderService.service.gameName).toBe('Pocha');
-      expect(gameHolderService.service.players).toEqual(players);
-      expect(gameHolderService.service.dealingPlayerIndex).toEqual(1);
-      expect(gameHolderService.service.numberOfCards).toEqual(36);
+      service = gameHolderService.service as PochaService;
+      expect(service.gameName).toBe('Pocha');
+      expect(service.players).toEqual(players);
+      expect(service.dealingPlayerIndex).toEqual(1);
+      expect(service.numberOfCards).toEqual(36);
 
       expect(navigateSpy).toHaveBeenCalledWith(['../', ROUTING_PATHS.RANKING], jasmine.objectContaining({}));
     });
   });
 
   describe('Chinchón game', () => {
+    let service: ChinchonService;
+
     const players = [
       { id: 0, name: 'Player 1', scores: [4, 23], punctuation: 0 },
       { id: 1, name: 'Player 2', scores: [12, 23], punctuation: 0 },
@@ -87,10 +97,15 @@ describe('ResumeGameComponent', () => {
     ];
 
     beforeEach(() => {
-      localStorage.setItem(LOCAL_STORE_KEYS.GAME_NAME, 'Chinchón');
-      localStorage.setItem(LOCAL_STORE_KEYS.PLAYERS, JSON.stringify(players));
-      localStorage.setItem(LOCAL_STORE_KEYS.DEALING_PLAYER_INDEX, '2');
-      localStorage.setItem(LOCAL_STORE_KEYS.CONFIG, JSON.stringify({ limitScore: 102 }));
+      localStorage.setItem(LOCAL_STORE_KEYS.SAVED_GAME_NAME, 'Chinchón');
+      localStorage.setItem(
+        LOCAL_STORE_KEYS.SETTINGS('Chinchón'),
+        JSON.stringify({
+          dealingPlayerIndex: 2,
+          limitScore: 102,
+          players,
+        })
+      );
 
       fixture = TestBed.createComponent(ResumeGameComponent);
       component = fixture.componentInstance;
@@ -111,16 +126,19 @@ describe('ResumeGameComponent', () => {
     it('should allow to resume the game', () => {
       fixture.debugElement.query(By.css(SELECTORS.BTN_RESUME_GAME)).nativeElement.click();
 
-      expect(gameHolderService.service.gameName).toBe('Chinchón');
-      expect(gameHolderService.service.players).toEqual(players);
-      expect(gameHolderService.service.dealingPlayerIndex).toEqual(2);
-      expect(gameHolderService.service.limitScore).toEqual(102);
+      service = gameHolderService.service as ChinchonService;
+      expect(service.gameName).toBe('Chinchón');
+      expect(service.players).toEqual(players);
+      expect(service.dealingPlayerIndex).toEqual(2);
+      expect(service.limitScore).toEqual(102);
 
       expect(navigateSpy).toHaveBeenCalledWith(['../', ROUTING_PATHS.RANKING], jasmine.objectContaining({}));
     });
   });
 
   describe('Other game', () => {
+    let service: OtherGameService;
+
     const players = [
       { id: 0, name: 'Player 1', scores: [4, 23], punctuation: 0 },
       { id: 1, name: 'Player 2', scores: [12, 23], punctuation: 0 },
@@ -128,10 +146,15 @@ describe('ResumeGameComponent', () => {
     ];
 
     beforeEach(() => {
-      localStorage.setItem(LOCAL_STORE_KEYS.GAME_NAME, 'Otro juego');
-      localStorage.setItem(LOCAL_STORE_KEYS.PLAYERS, JSON.stringify(players));
-      localStorage.setItem(LOCAL_STORE_KEYS.DEALING_PLAYER_INDEX, '0');
-      localStorage.setItem(LOCAL_STORE_KEYS.CONFIG, JSON.stringify({ winner: 'lowestScore' }));
+      localStorage.setItem(LOCAL_STORE_KEYS.SAVED_GAME_NAME, 'Otro juego');
+      localStorage.setItem(
+        LOCAL_STORE_KEYS.SETTINGS('Otro juego'),
+        JSON.stringify({
+          dealingPlayerIndex: 0,
+          winner: 'lowestScore',
+          players,
+        })
+      );
 
       fixture = TestBed.createComponent(ResumeGameComponent);
       component = fixture.componentInstance;
@@ -150,10 +173,11 @@ describe('ResumeGameComponent', () => {
     it('should allow to resume the game', () => {
       fixture.debugElement.query(By.css(SELECTORS.BTN_RESUME_GAME)).nativeElement.click();
 
-      expect(gameHolderService.service.gameName).toBe('Otro juego');
-      expect(gameHolderService.service.players).toEqual(players);
-      expect(gameHolderService.service.dealingPlayerIndex).toEqual(0);
-      expect(gameHolderService.service.winner).toEqual('lowestScore');
+      service = gameHolderService.service as OtherGameService;
+      expect(service.gameName).toBe('Otro juego');
+      expect(service.players).toEqual(players);
+      expect(service.dealingPlayerIndex).toEqual(0);
+      expect(service.winner).toEqual('lowestScore');
 
       expect(navigateSpy).toHaveBeenCalledWith(['../', ROUTING_PATHS.RANKING], jasmine.objectContaining({}));
     });

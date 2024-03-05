@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { GameHolderService } from '../../../game-services/game-holder.service';
+import { GameService, GameServiceWithFlags } from '../../../game-services/game.service';
 import { Player } from '../../../interfaces/player';
 import { intervalArray } from '../../../utils/arrays';
 import { SvgRoundMarker } from './svg-round-marker';
@@ -14,6 +15,8 @@ import { ToEmojiPipe } from './to-emoji.pipe';
   styleUrls: ['./progress-graph.component.scss'],
 })
 export class ProgressGraphComponent implements OnInit {
+  public gameService: GameService & GameServiceWithFlags<'statistics:progressGraph'>;
+
   @ViewChild('graph')
   private readonly graph: ElementRef;
 
@@ -31,14 +34,21 @@ export class ProgressGraphComponent implements OnInit {
   public constructor(public readonly gameHolderService: GameHolderService) {}
 
   public ngOnInit(): void {
-    this.viewBox = `0 0 ${this.gameHolderService.service.svgWidth + 1} ${this.gameHolderService.service.svgHeight}`;
-    this.showPlayerGraphLines = new Array(this.gameHolderService.service.players.length).fill(true);
+    if (!this.gameHolderService.service.hasFlagActive('statistics:progressGraph')) {
+      throw new Error(
+        `It is not possible to load progress graph in statistics page for game service ${this.gameHolderService.service.gameName}. It does not implement flag 'statistics:progressGraph'`
+      );
+    }
+    this.gameService = this.gameHolderService.service;
+
+    this.viewBox = `0 0 ${this.gameService.svgWidth + 1} ${this.gameService.svgHeight}`;
+    this.showPlayerGraphLines = new Array(this.gameService.players.length).fill(true);
     this.createColorsForPlayers();
-    this.playerLines = this.gameHolderService.service.players.map((p) => this.gameHolderService.service.getSvgPlayerLine(p));
+    this.playerLines = this.gameService.players.map((p) => this.gameService.getSvgPlayerLine(p));
   }
 
   private createColorsForPlayers() {
-    const numberOfPlayersToCreateColors = this.gameHolderService.service.players.length - this.colors.length;
+    const numberOfPlayersToCreateColors = this.gameService.players.length - this.colors.length;
     if (numberOfPlayersToCreateColors > 0) {
       const chars = '0123456789ABCDEF';
       for (let i = 0; i < numberOfPlayersToCreateColors; i++) {
@@ -56,17 +66,17 @@ export class ProgressGraphComponent implements OnInit {
 
   public get svgRoundMarkers(): SvgRoundMarker[] {
     const showEvery = 5;
-    const numberOfMarkersToShow = (this.gameHolderService.service.getNextRoundNumber() - 1) / showEvery;
-    const svgRoundWidth = this.gameHolderService.service.svgWidth / (this.gameHolderService.service.getNextRoundNumber() - 1);
+    const numberOfMarkersToShow = (this.gameService.getNextRoundNumber() - 1) / showEvery;
+    const svgRoundWidth = this.gameService.svgWidth / (this.gameService.getNextRoundNumber() - 1);
 
     return intervalArray(numberOfMarkersToShow).map((m) => ({
       value: m * showEvery,
-      text: { x: svgRoundWidth * m * showEvery - 5, y: -this.gameHolderService.service.svgXAxisHeight - 4 },
+      text: { x: svgRoundWidth * m * showEvery - 5, y: -this.gameService.svgXAxisHeight - 4 },
       line: {
         x1: svgRoundWidth * m * showEvery,
         y1: 0,
         x2: svgRoundWidth * m * showEvery,
-        y2: this.gameHolderService.service.svgHeight,
+        y2: this.gameService.svgHeight,
       },
     }));
   }
@@ -84,34 +94,30 @@ export class ProgressGraphComponent implements OnInit {
     }
 
     this.selectedRound = round;
-    this.roundPanelPlayers = this.gameHolderService.service.getRankingPlayers(this.selectedRound);
+    this.roundPanelPlayers = this.gameService.getRankingPlayers(this.selectedRound);
 
     this.calculateSelectedRoundSvg(this.selectedRound);
 
     // calculate only player movements after round two
     if (this.selectedRound > 1) {
-      const positionsBefore = this.gameHolderService.service.players.map((p) =>
-        this.gameHolderService.service.getPlayerPosition(p.id, this.selectedRound - 1)
-      );
-      const positionsNow = this.gameHolderService.service.players.map((p) =>
-        this.gameHolderService.service.getPlayerPosition(p.id, this.selectedRound)
-      );
-      this.playerMovements = this.gameHolderService.service.players.map((p) => positionsBefore[p.id] - positionsNow[p.id]);
+      const positionsBefore = this.gameService.players.map((p) => this.gameService.getPlayerPosition(p.id, this.selectedRound - 1));
+      const positionsNow = this.gameService.players.map((p) => this.gameService.getPlayerPosition(p.id, this.selectedRound));
+      this.playerMovements = this.gameService.players.map((p) => positionsBefore[p.id] - positionsNow[p.id]);
     }
 
     this.showRoundPanel = true;
   }
 
   private calculateSelectedRoundSvg(round: number) {
-    const numberOfRounds = this.gameHolderService.service.getNextRoundNumber() - 1;
-    const roundWidth = this.gameHolderService.service.svgWidth / numberOfRounds;
+    const numberOfRounds = this.gameService.getNextRoundNumber() - 1;
+    const roundWidth = this.gameService.svgWidth / numberOfRounds;
     const roundsPositions = intervalArray(numberOfRounds).map((r) => r * roundWidth);
 
     this.svgSelectedRound = {
       x1: roundsPositions[round - 1],
       y1: 0,
       x2: roundsPositions[round - 1],
-      y2: this.gameHolderService.service.svgHeight,
+      y2: this.gameService.svgHeight,
     };
   }
 
@@ -123,8 +129,8 @@ export class ProgressGraphComponent implements OnInit {
     const svgXCoord = point.matrixTransform(this.graph.nativeElement.getCTM().inverse()).x;
 
     // calculate the round
-    const numberOfRounds = this.gameHolderService.service.getNextRoundNumber() - 1;
-    const roundWidth = this.gameHolderService.service.svgWidth / numberOfRounds;
+    const numberOfRounds = this.gameService.getNextRoundNumber() - 1;
+    const roundWidth = this.gameService.svgWidth / numberOfRounds;
     const roundsPositions = intervalArray(numberOfRounds).map((r) => r * roundWidth);
 
     return roundsPositions.findIndex((svgRoundPosition) => svgRoundPosition > svgXCoord) + 1;
