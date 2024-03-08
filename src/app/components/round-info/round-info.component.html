@@ -1,4 +1,4 @@
-<ng-container *ngIf="gameHolderService.service.showGameNameInfo">
+<ng-container *ngIf="gameHolderService.service.hasFlagActive('roundInfo:gameName')">
   <span><strong data-test-id="game-name">{{gameHolderService.service.gameName}}</strong></span>
   <br>
 </ng-container>
@@ -9,15 +9,16 @@
   </span>
 
   <span data-test-id="player-name-that-deals">
+    <!-- TODO create flag? -->
     Reparte: <strong>{{gameHolderService.service.getPlayerNameThatDeals()}}</strong>
   </span>
 
   <span data-test-id="number-of-cards-to-deal-next-round"
-    *ngIf="gameHolderService.service.showNumberOfCardsToDealNextRound">
+    *ngIf="gameHolderService.service.hasFlagActive('roundInfo:numberOfCards')">
     Cartas: <strong>{{gameHolderService.service.getNumberOfCardsToDealNextRound()}}</strong>
   </span>
 
-  <span data-test-id="limit-score" *ngIf="gameHolderService.service.showLimitScoreInfo">
+  <span data-test-id="limit-score" *ngIf="gameHolderService.service.hasFlagActive('roundInfo:limitScore')">
     Límite: <strong>{{gameHolderService.service.limitScore}}</strong>
   </span>
 </ng-container>

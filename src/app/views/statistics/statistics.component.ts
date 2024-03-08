@@ -5,6 +5,7 @@ import { RoundInfoComponent } from '../../components/round-info/round-info.compo
 import { LOCAL_STORE_KEYS } from '../../constants/local-storage-keys';
 import { GameHolderService } from '../../game-services/game-holder.service';
 import { ProgressGraphComponent } from './progress-graph/progress-graph.component';
+import { GameService, GameServiceWithFlags } from '../../game-services/game.service';
 
 @Component({
   selector: 'app-statistics',
@@ -14,54 +15,19 @@ import { ProgressGraphComponent } from './progress-graph/progress-graph.componen
   styleUrls: ['./statistics.component.scss'],
 })
 export class StatisticsComponent implements OnInit {
+  public gameService: GameService & GameServiceWithFlags<'statistics'>;
   public playedTime: string;
-  private formatter = new Intl.ListFormat('es', { style: 'long', type: 'conjunction' });
 
   public constructor(public readonly gameHolderService: GameHolderService) {}
 
   public ngOnInit(): void {
+    if (!this.gameHolderService.service.hasFlagActive('statistics')) {
+      throw new Error(
+        `It is not possible to load statistics page for game service ${this.gameHolderService.service.gameName}. It does not implement flag 'statistics'`
+      );
+    }
+    this.gameService = this.gameHolderService.service;
     this.setPlayedTime();
-  }
-
-  public getPlayersInFirstPosition(): string {
-    const players = this.gameHolderService.service.players;
-    const positions = players.map((p) => this.gameHolderService.service.getPlayerPosition(p.id));
-    const winners = positions
-      .reduce((winners, position, playerId) => [...winners, { position, name: players[playerId].name }], [] as { position: number; name: string }[])
-      .filter((v) => v.position === 1)
-      .map((v) => v.name);
-    return this.formatter.format(winners);
-  }
-
-  public getPlayersInLastPosition(): string {
-    const players = this.gameHolderService.service.players;
-    const positions = players.map((p) => this.gameHolderService.service.getPlayerPosition(p.id));
-    const lastPosition = Math.max(...positions);
-    const losers = positions
-      .reduce((winners, position, playerId) => [...winners, { position, name: players[playerId].name }], [] as { position: number; name: string }[])
-      .filter((v) => v.position === lastPosition)
-      .map((v) => v.name);
-    return this.formatter.format(losers);
-  }
-
-  public getMaximumScoreInOneRound(): number {
-    return Math.max(...this.gameHolderService.service.players.flatMap((p) => p.scores));
-  }
-
-  public getPlayerNamesWithMaximumScoreInOneRound(): string {
-    const maxScore = this.getMaximumScoreInOneRound();
-    const players = this.gameHolderService.service.players.filter((p) => p.scores.includes(maxScore)).map((p) => p.name);
-    return this.formatter.format(players);
-  }
-
-  public getMinimumScoreInOneRound(): number {
-    return Math.min(...this.gameHolderService.service.players.flatMap((p) => p.scores));
-  }
-
-  public getPlayerNamesWithMinimumScoreInOneRound(): string {
-    const minScore = this.getMinimumScoreInOneRound();
-    const players = this.gameHolderService.service.players.filter((p) => p.scores.includes(minScore)).map((p) => p.name);
-    return this.formatter.format(players);
   }
 
   private setPlayedTime() {

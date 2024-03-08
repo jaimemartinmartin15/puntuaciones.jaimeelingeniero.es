@@ -1,7 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component, HostBinding, Input } from '@angular/core';
+import { Component, HostBinding, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GameHolderService } from '../../../game-services/game-holder.service';
+import { GameService, GameServiceWithFlags } from '../../../game-services/game.service';
 
 @Component({
   selector: 'app-player-display',
@@ -10,7 +11,9 @@ import { GameHolderService } from '../../../game-services/game-holder.service';
   templateUrl: './player-display.component.html',
   styleUrls: ['./player-display.component.scss'],
 })
-export class PlayerDisplayComponent {
+export class PlayerDisplayComponent implements OnInit {
+  public gameService: GameService & GameServiceWithFlags<'ranking'>;
+
   @Input()
   public playerId: number;
 
@@ -25,17 +28,27 @@ export class PlayerDisplayComponent {
     private readonly activatedRoute: ActivatedRoute
   ) {}
 
+  public ngOnInit(): void {
+    if (!this.gameHolderService.service.hasFlagActive('ranking')) {
+      throw new Error(
+        `It is not possible to show player display in ranking view for game service ${this.gameHolderService.service.gameName}. It does not implement flag 'ranking'`
+      );
+    }
+
+    this.gameService = this.gameHolderService.service;
+  }
+
   public get playerPosition() {
-    return this.gameHolderService.service.getPlayerPosition(this.playerId);
+    return this.gameService.getPlayerPosition(this.playerId);
   }
 
   public navigateToSetNewScore() {
-    const player = this.gameHolderService.service.players[this.playerId];
-    const punctuation = this.gameHolderService.service.getScoreLastRound(this.playerId);
+    const player = this.gameService.players[this.playerId];
+    const punctuation = this.gameService.getScoreLastRound(this.playerId);
     const state = {
       players: [{ ...player, punctuation }],
-      roundNumber: this.gameHolderService.service.getNextRoundNumber() - 1,
+      roundNumber: this.gameService.getNextRoundNumber() - 1,
     };
-    this.router.navigate(['../', this.gameHolderService.service.enterScoreRoute], { relativeTo: this.activatedRoute, state });
+    this.router.navigate(['../', this.gameService.enterScoreRoute], { relativeTo: this.activatedRoute, state });
   }
 }

@@ -4,7 +4,7 @@ import { ROUTING_PATHS } from './constants/routes';
 import { LOCAL_STORE_KEYS } from './constants/local-storage-keys';
 
 const isGameInProgress = (): boolean => {
-  const lastSavedGameDate = localStorage.getItem(LOCAL_STORE_KEYS.TIME_LAST_GAME);
+  const lastSavedGameDate = localStorage.getItem(LOCAL_STORE_KEYS.TIME_LAST_INTERACTION);
   const twoHoursAgo = Date.now() - 2 * 60 * 60 * 1000;
   return lastSavedGameDate != null && +lastSavedGameDate > twoHoursAgo;
 };

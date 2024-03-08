@@ -50,17 +50,8 @@ export abstract class EnterScoreBase {
   }
 
   protected saveGameLocalStorage() {
-    localStorage.setItem(LOCAL_STORE_KEYS.PLAYERS, JSON.stringify(this.gameHolderService.service.players));
-    localStorage.setItem(
-      LOCAL_STORE_KEYS.CONFIG,
-      JSON.stringify({
-        numberOfCards: this.gameHolderService.service.numberOfCards,
-        limitScore: this.gameHolderService.service.limitScore,
-        winner: this.gameHolderService.service.winner,
-      })
-    );
-    localStorage.setItem(LOCAL_STORE_KEYS.DEALING_PLAYER_INDEX, JSON.stringify(this.gameHolderService.service.dealingPlayerIndex));
-    localStorage.setItem(LOCAL_STORE_KEYS.GAME_NAME, this.gameHolderService.service.gameName);
-    localStorage.setItem(LOCAL_STORE_KEYS.TIME_LAST_GAME, JSON.stringify(Date.now()));
+    localStorage.setItem(LOCAL_STORE_KEYS.TIME_LAST_INTERACTION, JSON.stringify(Date.now()));
+
+    this.gameHolderService.service.saveStateToLocalStorage();
   }
 }

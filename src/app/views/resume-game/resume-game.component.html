@@ -1,7 +1,7 @@
 <div class="content">
   <span data-test-id="game-name">
     Parece que hay una partida
-    <span *ngIf="showGameName">de <strong>{{gameName}}</strong></span>
+    <span *ngIf="gameService.hasFlagActive('resumeGame:gameName')">de <strong>{{gameName}}</strong></span>
     en marcha.
   </span>
 

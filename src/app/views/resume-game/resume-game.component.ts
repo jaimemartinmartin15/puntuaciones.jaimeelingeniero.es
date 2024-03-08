@@ -16,7 +16,7 @@ import { GAME_SERVICES } from '../../game-services/utils';
 })
 export class ResumeGameComponent implements OnInit {
   public gameName: string;
-  public showGameName = true;
+  public gameService: GameService;
 
   public constructor(
     private readonly router: Router,
@@ -27,8 +27,8 @@ export class ResumeGameComponent implements OnInit {
 
   public ngOnInit() {
     // Note: gameName should not be undefined if this page was loaded
-    this.gameName = localStorage.getItem(LOCAL_STORE_KEYS.GAME_NAME)!.toLowerCase();
-    this.showGameName = this.gameName != undefined && this.gameName != 'otro juego';
+    this.gameName = localStorage.getItem(LOCAL_STORE_KEYS.SAVED_GAME_NAME)!.toLowerCase();
+    this.gameService = this.gameServices.find((gs) => gs.gameName.toLowerCase() === this.gameName)!;
   }
 
   public doNotResumeGame() {
@@ -36,19 +36,9 @@ export class ResumeGameComponent implements OnInit {
   }
 
   public resumeGame() {
-    const gameService = this.gameServices.find((gs) => gs.gameName.toLowerCase() === this.gameName) as GameService;
-    this.gameHolderService.service = gameService as GameService; // should not be undefined if this page was loaded
+    this.gameService.loadStateFromLocalStorage();
+    this.gameHolderService.service = this.gameService;
 
-    // load players and scores
-    gameService.players = JSON.parse(localStorage.getItem(LOCAL_STORE_KEYS.PLAYERS)!);
-    gameService.dealingPlayerIndex = JSON.parse(localStorage.getItem(LOCAL_STORE_KEYS.DEALING_PLAYER_INDEX)!);
-
-    // override configuration from local storage
-    const config = JSON.parse(localStorage.getItem(LOCAL_STORE_KEYS.CONFIG)!);
-    gameService.numberOfCards = config.numberOfCards;
-    gameService.limitScore = config.limitScore;
-    gameService.winner = config.winner;
-
-    this.router.navigate(['../', ROUTING_PATHS.RANKING], { relativeTo: this.activatedRoute });
+    this.router.navigate(['../', this.gameService.startGameRoute], { relativeTo: this.activatedRoute });
   }
 }

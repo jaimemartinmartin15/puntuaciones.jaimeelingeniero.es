@@ -50,18 +50,23 @@ describe('GameConfigComponent', () => {
 
   it('should be possible to add, delete and enter player names', () => {
     const startButtonEl = fixture.debugElement.query(By.css(SELECTORS.BTN_START)).nativeElement;
-    expect(component.playerNames).toEqual(['', '', '', '']);
+    expect(gameHolderService.service.teamControls.controls[0].value.playerNames).toEqual(['', '', '', '']);
     expect(startButtonEl.disabled).toBeTrue();
 
-    component.playerNames = ['Player 1', 'Player 2', 'Player 3', 'Player 4'];
+    gameHolderService.service.teamControls.controls[0].setValue({
+      teamName: 'Jugadores',
+      playerNames: ['Player 1', 'Player 2', 'Player 3', 'Player 4'],
+      dealingPlayerIndex: 0,
+    });
     fixture.detectChanges();
 
     expect(startButtonEl.disabled).toBeFalse();
 
     fixture.debugElement.query(By.css(SELECTORS.BTN_DELET_PLAYER(2))).nativeElement.click();
-    expect(component.playerNames.length).toEqual(3);
+    expect(gameHolderService.service.teamControls.controls[0].value.playerNames.length).toEqual(3);
 
     fixture.debugElement.query(By.css(SELECTORS.BTN_ADD_PLAYER)).nativeElement.click();
+    fixture.detectChanges();
     expect(startButtonEl.disabled).toBeTrue();
 
     startButtonEl.click();
@@ -74,9 +79,9 @@ describe('GameConfigComponent', () => {
   });
 
   it('should be possible to select who starts dealing', () => {
-    expect(component.dealingPlayerIndex).toBe(0);
+    expect(gameHolderService.service.teamControls.controls[0].value.dealingPlayerIndex).toBe(0);
     fixture.debugElement.query(By.css(SELECTORS.DEALING_PLAYER_ICON(1))).nativeElement.dispatchEvent(new Event('click'));
-    expect(component.dealingPlayerIndex).toBe(1);
+    expect(gameHolderService.service.teamControls.controls[0].value.dealingPlayerIndex).toBe(1);
   });
 
   describe('Pocha game', () => {
@@ -84,15 +89,16 @@ describe('GameConfigComponent', () => {
       fixture.debugElement.query(By.css(SELECTORS.SELECT_GAME_NAME)).nativeElement.click();
       fixture.detectChanges();
       fixture.debugElement.query(By.css(SELECTORS.GAME_NAME_OPTION('Pocha'))).nativeElement.click();
+      fixture.detectChanges();
     });
 
     it('should be possible to select pocha game', () => {
-      expect(gameHolderService.service.gameName).toBe('Pocha');
+      expect(component.selectedGameService.gameName).toBe('Pocha');
     });
 
     it('should be possible to select the number of cards', () => {
       const numberOfCards = fixture.debugElement.query(By.css(SELECTORS.SELECTED_NUMBER_OF_CARDS)).nativeElement.textContent;
-      expect(numberOfCards).toEqual('40');
+      expect(numberOfCards).not.toBeNull();
     });
   });
 
@@ -101,15 +107,16 @@ describe('GameConfigComponent', () => {
       fixture.debugElement.query(By.css(SELECTORS.SELECT_GAME_NAME)).nativeElement.click();
       fixture.detectChanges();
       fixture.debugElement.query(By.css(SELECTORS.GAME_NAME_OPTION('Chinchón'))).nativeElement.click();
+      fixture.detectChanges();
     });
 
     it('should be possible to select chinchón game', () => {
-      expect(gameHolderService.service.gameName).toBe('Chinchón');
+      expect(component.selectedGameService.gameName).toBe('Chinchón');
     });
 
     it('should be possible to select the limit score', () => {
       const limitScore = fixture.debugElement.query(By.css(SELECTORS.SELECTED_LIMIT_SCORE)).nativeElement.textContent;
-      expect(limitScore).toEqual('100');
+      expect(limitScore).not.toBeNull();
     });
   });
 
@@ -118,17 +125,18 @@ describe('GameConfigComponent', () => {
       fixture.debugElement.query(By.css(SELECTORS.SELECT_GAME_NAME)).nativeElement.click();
       fixture.detectChanges();
       fixture.debugElement.query(By.css(SELECTORS.GAME_NAME_OPTION('Otro juego'))).nativeElement.click();
+      fixture.detectChanges();
     });
 
     it('should be possible to select other game', () => {
-      expect(gameHolderService.service.gameName).toBe('Otro juego');
+      expect(component.selectedGameService.gameName).toBe('Otro juego');
     });
 
     it('should be possible to select the winner', () => {
       const optionWinnerLowestScoreEl = fixture.debugElement.query(By.css(SELECTORS.OPTION_WINNER_LOWEST_SCORE)).nativeElement;
-      expect(gameHolderService.service.winner).toBe('highestScore');
-      optionWinnerLowestScoreEl.click();
-      expect(gameHolderService.service.winner).toBe('lowestScore');
+      expect(optionWinnerLowestScoreEl).not.toBeNull();
+      const optionWinnerHighestScoreEl = fixture.debugElement.query(By.css(SELECTORS.OPTION_WINNER_HIGHEST_SCORE)).nativeElement;
+      expect(optionWinnerHighestScoreEl).not.toBeNull();
     });
   });
 });

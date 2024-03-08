@@ -1,33 +1,33 @@
 <app-round-info></app-round-info>
 
-<div class="empty-state" *ngIf="!gameHolderService.service.gameHasStarted()">
+<div class="empty-state" *ngIf="!gameService.gameHasStarted()">
   Introduce al menos una ronda para mostrar las estadísticas
 </div>
 
-<div class="statistics" *ngIf="gameHolderService.service.gameHasStarted()">
-  <app-progress-graph *ngIf="gameHolderService.service.showProgressGraph"></app-progress-graph>
+<div class="statistics" *ngIf="gameService.gameHasStarted()">
+  <app-progress-graph *ngIf="gameService.showProgressGraph"></app-progress-graph>
 
   <div class="item">
     <label>Jugadores en primera posición:</label>
-    <strong data-test-id="players-in-first-position">{{getPlayersInFirstPosition()}}</strong>
+    <strong data-test-id="players-in-first-position">{{gameService.getPlayersInFirstPosition()}}</strong>
   </div>
 
   <div class="item">
     <label>Jugadores en última posición:</label>
-    <strong data-test-id="players-in-last-position">{{getPlayersInLastPosition()}}</strong>
+    <strong data-test-id="players-in-last-position">{{gameService.getPlayersInLastPosition()}}</strong>
   </div>
 
   <div class="item">
     <label>Máximo conseguido en una ronda:</label>
     <strong data-test-id="players-maximum-score-in-one-round">
-      {{getMaximumScoreInOneRound()}} por {{getPlayerNamesWithMaximumScoreInOneRound()}}
+      {{gameService.getMaximumScoreInOneRound()}} por {{gameService.getPlayerNamesWithMaximumScoreInOneRound()}}
     </strong>
   </div>
 
   <div class="item">
     <label>Mínimo conseguido en una ronda:</label>
     <strong data-test-id="players-minimum-score-in-one-round">
-      {{getMinimumScoreInOneRound()}} por {{getPlayerNamesWithMinimumScoreInOneRound()}}
+      {{gameService.getMinimumScoreInOneRound()}} por {{gameService.getPlayerNamesWithMinimumScoreInOneRound()}}
     </strong>
   </div>
 
