@@ -1,5 +1,7 @@
 # CHANGELOG
 
+Refactor game services and use flags system
+
 Created enter player names component
 
 Created radio buttons component
