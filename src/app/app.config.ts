@@ -3,6 +3,7 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { provideRouter } from '@angular/router';
 import { provideServiceWorker } from '@angular/service-worker';
 import { routes } from './app.routes';
+import { BriscaService } from './game-services/brisca.service';
 import { ChinchonService } from './game-services/chinchon.service';
 import { GameHolderService } from './game-services/game-holder.service';
 import { OtherGameService } from './game-services/other-game.service';
@@ -20,6 +21,7 @@ export const appConfig: ApplicationConfig = {
     GameHolderService,
     provideGameService(PochaService),
     provideGameService(ChinchonService),
+    provideGameService(BriscaService),
     provideGameService(OtherGameService),
   ],
 };

@@ -2,6 +2,7 @@ import { Type } from '@angular/core';
 import { Data, Routes } from '@angular/router';
 import { appGuard } from './app.guard';
 import { ROUTING_PATHS } from './constants/routes';
+import { BriscaComponent } from './views/brisca/brisca.component';
 import { EnterScorePochaComponent } from './views/enter-score-pocha/enter-score-pocha.component';
 import { EnterScoreComponent } from './views/enter-score/enter-score.component';
 import { GameConfigComponent } from './views/game-config/game-config.component';
@@ -60,6 +61,10 @@ export const routes: Routes = [
       {
         path: ROUTING_PATHS.STATISTICS,
         children: pathWithoutChildrens(StatisticsComponent),
+      },
+      {
+        path: ROUTING_PATHS.BRISCA,
+        children: pathWithoutChildrens(BriscaComponent),
       },
       {
         path: '**',

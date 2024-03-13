@@ -5,6 +5,7 @@ export const ROUTING_PATHS = {
   RANKING: 'ranking',
   SCOREBOARD: 'tabla',
   STATISTICS: 'estadisticas',
+  BRISCA: 'brisca',
   ENTER_SCORE: 'apuntar',
   ENTER_SCORE_POCHA: 'apuntar-pocha',
 } as const;
