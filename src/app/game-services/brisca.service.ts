@@ -17,9 +17,9 @@ export class BriscaService implements GameServiceWithFlags<BriscaFlags> {
   private readonly modalityTeamsTeam1Control = this.fb.control({ teamName: 'Ellos', playerNames: ['', '', ''], dealingPlayerIndex: 0 });
   private readonly modalityTeamsTeam2Control = this.fb.control({ teamName: 'Nosotros', playerNames: ['', '', ''], dealingPlayerIndex: -1 });
 
-  private playerNames: string[] = [];
-  private scores: number[] = [0, 0];
-  private teamNames: string[] = [];
+  public playerNames: string[] = [];
+  public scores: number[] = [0, 0];
+  public teamNames: string[] = [];
 
   public constructor(private readonly fb: NonNullableFormBuilder) {
     this.modalityFormControl = this.fb.control(this.modality);

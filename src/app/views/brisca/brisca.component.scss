@@ -1,8 +1,44 @@
 :host {
-  display: block;
   height: 100dvh;
   box-sizing: border-box;
   max-width: 500px;
   margin: 0 auto;
   padding: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 15px;
+}
+
+.content {
+  flex-grow: 1;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+
+  .row {
+    width: 100%;
+    overflow: visible;
+
+    .name-score {
+      font-size: 0.4rem;
+    }
+
+    .separator {
+      stroke-width: 0.5;
+      stroke: black;
+    }
+    
+    .stripe {
+      stroke-width: 0.75;
+      stroke: darkgray;
+    }
+
+    .bullet-score {
+      font-size: 0.2rem;
+      stroke: none;
+      fill: white;
+    }
+  }
 }

@@ -1,3 +1,40 @@
 <app-round-info></app-round-info>
 
-TODO
+<div class="content">
+  <svg *ngFor="let row of rows" class="row" [attr.viewBox]="getViewBoxForRow(row)">
+    <!-- left player name and score -->
+    <text x="25" y="8" text-anchor="middle" class="name-score">{{row[0].name}} ({{row[0].score}})</text>
+
+    <!-- right player name and score -->
+    <text *ngIf="row[1]" x="75" y="8" text-anchor="middle" class="name-score">({{row[1].score}})
+      {{row[1].name}}</text>
+
+    <!-- left stripe scores -->
+    <ng-container *ngFor="let stripe of arrayOf(row[0].score)">
+      <line [attr.x1]="stripe % 3 === 0 ? 17 : 20" x2="50" [attr.y1]="12 + stripe * GAP_STRIPE"
+        [attr.y2]="12 + stripe * GAP_STRIPE" class="stripe"></line>
+      <ng-container *ngIf="stripe % 3 === 0">
+        <circle cx="17" [attr.cy]="12 + stripe * GAP_STRIPE" r="2.3" fill="blue"></circle>
+        <text x="17" [attr.y]="13 + stripe * GAP_STRIPE" text-anchor="middle" class="bullet-score">{{stripe}}</text>
+      </ng-container>
+    </ng-container>
+
+    <!-- right stripe scores -->
+    <ng-container *ngIf="row[1]">
+      <ng-container *ngFor="let stripe of arrayOf(row[1].score)">
+        <line x1="50" [attr.x2]="stripe % 3 === 0 ? 83 : 80 + random()" [attr.y1]="13 + stripe * GAP_STRIPE"
+          [attr.y2]="13 + stripe * GAP_STRIPE" class="stripe"></line>
+        <ng-container *ngIf="stripe % 3 === 0">
+          <circle cx="83" [attr.cy]="13 + stripe * GAP_STRIPE" r="2.3" fill="blue" *ngIf="stripe % 3 === 0"></circle>
+          <text x="83" [attr.y]="14 + stripe * GAP_STRIPE" text-anchor="middle" class="bullet-score">{{stripe}}</text>
+        </ng-container>
+      </ng-container>
+    </ng-container>
+
+    <!-- separator header and stripes score -->
+    <line x1="0" y1="12" [attr.x2]="row[1] ? 100 : 50" y2="12" class="separator"></line>
+    <line x1="50" y1="0" x2="50" [attr.y2]="svgHeight" class="separator"></line>
+  </svg>
+</div>
+
+<app-bottom-controls></app-bottom-controls>
