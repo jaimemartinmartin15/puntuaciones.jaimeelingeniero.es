@@ -42,7 +42,7 @@ export class BriscaComponent implements OnInit {
     }
 
     for (let i = 0; i < names.length; i += 2) {
-      this.rows.push(names.slice(i, i + 2).map((name) => ({ name, score: this.briscaService.scores[i] })));
+      this.rows.push(names.slice(i, i + 2).map((name, i2) => ({ name, score: this.briscaService.scores[i + i2] })));
     }
   }
 

@@ -150,7 +150,7 @@ export class BriscaService implements GameServiceWithFlags<BriscaFlags> {
 
   public readonly startGameRoute: RoutingPath = ROUTING_PATHS.BRISCA;
 
-  public readonly enterScoreRoute: RoutingPath;
+  public readonly enterScoreRoute: RoutingPath = ROUTING_PATHS.ENTER_SCORE_BRISCA;
 
   public gameHasStarted(): boolean {
     throw new Error('Method not implemented.');
