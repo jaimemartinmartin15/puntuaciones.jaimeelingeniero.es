@@ -24,7 +24,7 @@ export class BriscaComponent implements OnInit {
   public pairScores: number[][] = [];
   // pair - left or right - stripe index
   public svgPairStripes: string[][][] = [];
-  // pair - left or right - bullet index - x y of circle and text
+  // pair - left or right - bullet index - x,y of circle and text
   public svgBulletPairs: number[][][][] = [];
 
   public briscaService: BriscaService;
