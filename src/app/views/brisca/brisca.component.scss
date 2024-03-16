@@ -17,28 +17,32 @@
   flex-direction: column;
   gap: 40px;
 
-  .row {
+  .svg-pair {
     width: 100%;
-    overflow: visible;
+    overflow: visible; // prevents the svg from getting smaller when there are many points
 
     .name-score {
       font-size: 0.4rem;
     }
 
-    .separator {
-      stroke-width: 0.5;
-      stroke: black;
-    }
-    
     .stripe {
       stroke-width: 0.75;
       stroke: darkgray;
+    }
+
+    .bullet {
+      fill: darkgray;
     }
 
     .bullet-score {
       font-size: 0.2rem;
       stroke: none;
       fill: white;
+    }
+
+    .separator {
+      stroke-width: 0.5;
+      stroke: black;
     }
   }
 }
