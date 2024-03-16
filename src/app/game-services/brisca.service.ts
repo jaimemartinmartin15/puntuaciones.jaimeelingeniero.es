@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { FormArray, FormControl, NonNullableFormBuilder } from '@angular/forms';
+import { Router } from '@angular/router';
 import { EnterPlayerNamesModel } from '../components/enter-player-names/enter-player-names.component';
 import { LOCAL_STORE_KEYS } from '../constants/local-storage-keys';
 import { ROUTING_PATHS, RoutingPath } from '../constants/routes';
@@ -14,14 +15,14 @@ type BriscaFlags = (typeof briscaFlags)[number];
 @Injectable()
 export class BriscaService implements GameServiceWithFlags<BriscaFlags> {
   private readonly modalityIndividualTeamControl = this.fb.control({ teamName: 'Jugadores', playerNames: ['', ''], dealingPlayerIndex: 0 });
-  private readonly modalityTeamsTeam1Control = this.fb.control({ teamName: 'Ellos', playerNames: ['', '', ''], dealingPlayerIndex: 0 });
-  private readonly modalityTeamsTeam2Control = this.fb.control({ teamName: 'Nosotros', playerNames: ['', '', ''], dealingPlayerIndex: -1 });
+  private readonly modalityTeamsTeam1Control = this.fb.control({ teamName: 'Nosotros', playerNames: ['', '', ''], dealingPlayerIndex: 0 });
+  private readonly modalityTeamsTeam2Control = this.fb.control({ teamName: 'Ellos', playerNames: ['', '', ''], dealingPlayerIndex: -1 });
 
   public playerNames: string[] = [];
   public scores: number[] = [0, 0];
   public teamNames: string[] = [];
 
-  public constructor(private readonly fb: NonNullableFormBuilder) {
+  public constructor(private readonly fb: NonNullableFormBuilder, private readonly router: Router) {
     this.modalityFormControl = this.fb.control(this.modality);
     this.teamControls = this.fb.array([this.modalityTeamsTeam1Control, this.modalityTeamsTeam2Control]);
 
@@ -61,6 +62,9 @@ export class BriscaService implements GameServiceWithFlags<BriscaFlags> {
 
   public readonly flags: Flag[] = briscaFlags as any as BriscaFlags[];
   public hasFlagActive<K extends keyof FlagMapping>(flag: K): this is GameServiceWithFlags<K> {
+    // do not allow to change the modality once the game has started (edition mode)
+    if (this.router.url === `/${ROUTING_PATHS.CHANGE_CONFIG}` && flag === 'gameConfig:modality') return false;
+
     return this.flags.includes(flag);
   }
 
@@ -182,6 +186,19 @@ export class BriscaService implements GameServiceWithFlags<BriscaFlags> {
     this.dealingPlayerIndex++;
     if (this.dealingPlayerIndex >= this.playerNames.length) {
       this.dealingPlayerIndex = 0;
+    }
+    if (this.modality === 'individual') {
+      const tempValue = this.modalityIndividualTeamControl.value;
+      tempValue.dealingPlayerIndex = this.dealingPlayerIndex;
+      this.modalityIndividualTeamControl.setValue(tempValue);
+    } else if (this.modality === 'teams') {
+      const tempValue1 = this.modalityTeamsTeam1Control.value;
+      tempValue1.dealingPlayerIndex = this.dealingPlayerIndex % 2 === 0 ? Math.floor(this.dealingPlayerIndex / 2) : -1;
+      this.modalityTeamsTeam1Control.setValue(tempValue1);
+
+      const tempValue2 = this.modalityTeamsTeam2Control.value;
+      tempValue2.dealingPlayerIndex = this.dealingPlayerIndex % 2 !== 0 ? Math.floor(this.dealingPlayerIndex / 2) : -1;
+      this.modalityTeamsTeam2Control.setValue(tempValue2);
     }
   }
 
