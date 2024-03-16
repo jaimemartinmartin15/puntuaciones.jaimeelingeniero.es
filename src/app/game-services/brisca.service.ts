@@ -180,7 +180,7 @@ export class BriscaService implements GameServiceWithFlags<BriscaFlags> {
   public dealingPlayerIndex: number = 0;
   public setNextDealingPlayer(): void {
     this.dealingPlayerIndex++;
-    if (this.dealingPlayerIndex > this.players.length) {
+    if (this.dealingPlayerIndex >= this.playerNames.length) {
       this.dealingPlayerIndex = 0;
     }
   }

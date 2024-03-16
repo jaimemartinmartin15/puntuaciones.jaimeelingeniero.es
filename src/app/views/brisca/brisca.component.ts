@@ -20,6 +20,7 @@ interface Row {
 })
 export class BriscaComponent implements OnInit {
   public readonly GAP_STRIPE = 7;
+  public readonly BULLET_INTERVAL = 5;
   public svgHeight: number;
   public rows: Row[][] = [];
 

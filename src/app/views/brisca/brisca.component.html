@@ -11,9 +11,9 @@
 
     <!-- left stripe scores -->
     <ng-container *ngFor="let stripe of arrayOf(row[0].score)">
-      <line [attr.x1]="stripe % 3 === 0 ? 17 : 20" x2="50" [attr.y1]="12 + stripe * GAP_STRIPE"
+      <line [attr.x1]="stripe % BULLET_INTERVAL === 0 ? 17 : 20" x2="50" [attr.y1]="12 + stripe * GAP_STRIPE"
         [attr.y2]="12 + stripe * GAP_STRIPE" class="stripe"></line>
-      <ng-container *ngIf="stripe % 3 === 0">
+      <ng-container *ngIf="stripe % BULLET_INTERVAL === 0">
         <circle cx="17" [attr.cy]="12 + stripe * GAP_STRIPE" r="2.3" fill="blue"></circle>
         <text x="17" [attr.y]="13 + stripe * GAP_STRIPE" text-anchor="middle" class="bullet-score">{{stripe}}</text>
       </ng-container>
@@ -22,10 +22,11 @@
     <!-- right stripe scores -->
     <ng-container *ngIf="row[1]">
       <ng-container *ngFor="let stripe of arrayOf(row[1].score)">
-        <line x1="50" [attr.x2]="stripe % 3 === 0 ? 83 : 80 + random()" [attr.y1]="13 + stripe * GAP_STRIPE"
-          [attr.y2]="13 + stripe * GAP_STRIPE" class="stripe"></line>
-        <ng-container *ngIf="stripe % 3 === 0">
-          <circle cx="83" [attr.cy]="13 + stripe * GAP_STRIPE" r="2.3" fill="blue" *ngIf="stripe % 3 === 0"></circle>
+        <line x1="50" [attr.x2]="stripe % BULLET_INTERVAL === 0 ? 83 : 80 + random()"
+          [attr.y1]="13 + stripe * GAP_STRIPE" [attr.y2]="13 + stripe * GAP_STRIPE" class="stripe"></line>
+        <ng-container *ngIf="stripe % BULLET_INTERVAL === 0">
+          <circle cx="83" [attr.cy]="13 + stripe * GAP_STRIPE" r="2.3" fill="blue"
+            *ngIf="stripe % BULLET_INTERVAL === 0"></circle>
           <text x="83" [attr.y]="14 + stripe * GAP_STRIPE" text-anchor="middle" class="bullet-score">{{stripe}}</text>
         </ng-container>
       </ng-container>
