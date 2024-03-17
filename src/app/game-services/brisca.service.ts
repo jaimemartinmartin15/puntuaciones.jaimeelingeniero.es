@@ -49,6 +49,12 @@ export class BriscaService implements GameServiceWithFlags<BriscaFlags> {
       this.numberOfPlayersInTeamsModality = value.playerNames.length;
       const tempValue = editControl.value;
       tempValue.playerNames.length = this.numberOfPlayersInTeamsModality;
+
+      // if delete a player, check it is not last dealing player index in other team
+      if (value.dealingPlayerIndex < 0 && tempValue.dealingPlayerIndex === this.numberOfPlayersInTeamsModality) {
+        tempValue.dealingPlayerIndex--;
+      }
+
       editControl.setValue(tempValue);
     }
 
@@ -149,13 +155,32 @@ export class BriscaService implements GameServiceWithFlags<BriscaFlags> {
   }
 
   public onEditConfigCurrentGame(): void {
-    throw new Error('Method not implemented.');
+    if (this.modality === 'individual') {
+      this.dealingPlayerIndex = this.modalityIndividualTeamControl.value.dealingPlayerIndex;
+      this.playerNames = this.modalityIndividualTeamControl.value.playerNames;
+      this.scores.length = this.playerNames.length;
+      for (let i = 0; i < this.scores.length; i++) {
+        if (!this.scores[i]) this.scores[i] = 0;
+      }
+      return;
+    }
+
+    // modality -> teams
+    const playerNamesTeam1 = this.modalityTeamsTeam1Control.value.playerNames;
+    const playerNamesTeam2 = this.modalityTeamsTeam2Control.value.playerNames;
+    this.playerNames = playerNamesTeam1.map((_: string, i: number) => [playerNamesTeam1[i], playerNamesTeam2[i]]).flatMap((e) => e);
+    this.teamNames = [this.modalityTeamsTeam1Control.value.teamName, this.modalityTeamsTeam2Control.value.teamName];
+    this.dealingPlayerIndex =
+      this.modalityTeamsTeam1Control.value.dealingPlayerIndex !== -1
+        ? this.modalityTeamsTeam1Control.value.dealingPlayerIndex * 2
+        : this.modalityTeamsTeam2Control.value.dealingPlayerIndex * 2 + 1;
   }
 
   public readonly startGameRoute: RoutingPath = ROUTING_PATHS.BRISCA;
 
   public readonly enterScoreRoute: RoutingPath = ROUTING_PATHS.ENTER_SCORE_BRISCA;
 
+  // TODO check if started and finsied interface is ncessary and remove the dependency creating a new flag
   public gameHasStarted(): boolean {
     throw new Error('Method not implemented.');
   }
@@ -171,6 +196,7 @@ export class BriscaService implements GameServiceWithFlags<BriscaFlags> {
     return this.playerNames[this.dealingPlayerIndex];
   }
 
+  // TODO check if players interface is used or the dependency with bottom control can be removed
   private _players: Player[] = [];
 
   public get players(): Player[] {
