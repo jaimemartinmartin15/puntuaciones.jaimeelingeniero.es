@@ -33,6 +33,7 @@ export class EnterScoreBriscaComponent implements OnInit {
   public addPointToIndex(i: number) {
     this.briscaService.scores[i]++;
     this.briscaService.setNextDealingPlayer();
+    this.briscaService.saveStateToLocalStorage();
     this.closeEnterScore();
   }
 

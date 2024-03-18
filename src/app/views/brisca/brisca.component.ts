@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { BottomControlsComponent } from '../../components/bottom-controls/bottom-controls.component';
 import { RoundInfoComponent } from '../../components/round-info/round-info.component';
+import { LOCAL_STORE_KEYS } from '../../constants/local-storage-keys';
 import { BriscaService } from '../../game-services/brisca.service';
 import { GameHolderService } from '../../game-services/game-holder.service';
 import { intervalArray } from '../../utils/arrays';
@@ -27,6 +28,8 @@ export class BriscaComponent implements OnInit {
   // pair - left or right - bullet index - x,y of circle and text
   public svgBulletPairs: number[][][][] = [];
 
+  public showDeleteBanner = true;
+
   public briscaService: BriscaService;
 
   public constructor(gameHolderService: GameHolderService) {
@@ -38,6 +41,11 @@ export class BriscaComponent implements OnInit {
   }
 
   public ngOnInit(): void {
+    // calculate if the delete banner has to be shown
+    const lastTimeDeleteBanner = localStorage.getItem(LOCAL_STORE_KEYS.BRISCA_LAST_TIME_DELETE_BANNER);
+    const oneDayAgo = Date.now() - 24 * 60 * 60 * 1000;
+    this.showDeleteBanner = lastTimeDeleteBanner === null || oneDayAgo > +lastTimeDeleteBanner;
+
     let names: string[] = [];
     if (this.briscaService.modality === 'individual') {
       names = this.briscaService.playerNames;
@@ -83,5 +91,10 @@ export class BriscaComponent implements OnInit {
     const minimumVerticalSeparatorHeight = this.HORIZONTAL_SEPARATOR_HEIGHT + 20;
     this.svgHeight = minimumVerticalSeparatorHeight + Math.max(this.pairScores[i][0], this.pairScores[i][1] ?? 0) * this.GAP_STRIPE;
     return `0 0 100 ${this.svgHeight}`;
+  }
+
+  public closeDeleteBanner() {
+    this.showDeleteBanner = false;
+    localStorage.setItem(LOCAL_STORE_KEYS.BRISCA_LAST_TIME_DELETE_BANNER, JSON.stringify(Date.now()));
   }
 }

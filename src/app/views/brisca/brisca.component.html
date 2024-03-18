@@ -61,4 +61,9 @@
   </svg>
 </div>
 
+<div *ngIf="showDeleteBanner" class="delete-banner">
+  <span class="text">Pulsa una línea múltiples veces para eliminarla.</span>
+  <span class="close-button" (click)="closeDeleteBanner()"></span>
+</div>
+
 <app-bottom-controls></app-bottom-controls>
