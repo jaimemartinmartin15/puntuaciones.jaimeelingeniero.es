@@ -5,12 +5,12 @@
     [attr.viewBox]="getViewBoxForSvgPair(pair)">
 
     <!-- left player name and score -->
-    <text x="25" y="8" text-anchor="middle" class="name-score">
+    <text x="25" y="8" text-anchor="middle" class="name-score" (click)="changeScoreOf(pair*2)">
       {{pairName[0]}} ({{pairScores[pair][0]}})
     </text>
 
     <!-- right score and player name -->
-    <text *ngIf="pairName[1]" x="75" y="8" text-anchor="middle" class="name-score">
+    <text *ngIf="pairName[1]" x="75" y="8" text-anchor="middle" class="name-score" (click)="changeScoreOf(pair*2+1)">
       ({{pairScores[pair][1]}}) {{pairName[1]}}
     </text>
 
@@ -62,7 +62,12 @@
 </div>
 
 <div *ngIf="showDeleteBanner" class="delete-banner">
-  <span class="text">Pulsa una línea múltiples veces para eliminarla.</span>
+  <span class="text">
+    Pulsa el nombre de un
+    <ng-container *ngIf="briscaService.modality === 'individual'">jugador</ng-container>
+    <ng-container *ngIf="briscaService.modality === 'teams'">equipo</ng-container>
+    tres veces para restarle un punto.
+  </span>
   <span class="close-button" (click)="closeDeleteBanner()"></span>
 </div>
 

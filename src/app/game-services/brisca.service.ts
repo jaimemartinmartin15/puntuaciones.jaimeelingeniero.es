@@ -152,6 +152,10 @@ export class BriscaService implements GameServiceWithFlags<BriscaFlags> {
           ? this.modalityTeamsTeam1Control.value.dealingPlayerIndex * 2
           : this.modalityTeamsTeam2Control.value.dealingPlayerIndex * 2 + 1;
     }
+
+    // show always the delete banner after starting a new game
+    const oneDayAgo = Date.now() - 24 * 60 * 60 * 1000;
+    localStorage.setItem(LOCAL_STORE_KEYS.BRISCA_LAST_TIME_DELETE_BANNER, JSON.stringify(Date.now() - oneDayAgo));
   }
 
   public onEditConfigCurrentGame(): void {
@@ -212,6 +216,26 @@ export class BriscaService implements GameServiceWithFlags<BriscaFlags> {
     this.dealingPlayerIndex++;
     if (this.dealingPlayerIndex >= this.playerNames.length) {
       this.dealingPlayerIndex = 0;
+    }
+    if (this.modality === 'individual') {
+      const tempValue = this.modalityIndividualTeamControl.value;
+      tempValue.dealingPlayerIndex = this.dealingPlayerIndex;
+      this.modalityIndividualTeamControl.setValue(tempValue);
+    } else if (this.modality === 'teams') {
+      const tempValue1 = this.modalityTeamsTeam1Control.value;
+      tempValue1.dealingPlayerIndex = this.dealingPlayerIndex % 2 === 0 ? Math.floor(this.dealingPlayerIndex / 2) : -1;
+      this.modalityTeamsTeam1Control.setValue(tempValue1);
+
+      const tempValue2 = this.modalityTeamsTeam2Control.value;
+      tempValue2.dealingPlayerIndex = this.dealingPlayerIndex % 2 !== 0 ? Math.floor(this.dealingPlayerIndex / 2) : -1;
+      this.modalityTeamsTeam2Control.setValue(tempValue2);
+    }
+  }
+  // this method is not part of any interface
+  public setPreviousDealingPlayerIndex(): void {
+    this.dealingPlayerIndex--;
+    if (this.dealingPlayerIndex < 0) {
+      this.dealingPlayerIndex = this.playerNames.length - 1;
     }
     if (this.modality === 'individual') {
       const tempValue = this.modalityIndividualTeamControl.value;

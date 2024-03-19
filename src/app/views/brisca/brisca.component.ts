@@ -15,6 +15,9 @@ import { intervalArray } from '../../utils/arrays';
   styleUrls: ['./brisca.component.scss'],
 })
 export class BriscaComponent implements OnInit {
+  private scoreClicks: number[] = [];
+  private CLICKS_TO_DELETE_POINT = 3;
+
   public readonly HORIZONTAL_SEPARATOR_HEIGHT = 12;
   public readonly GAP_STRIPE = 7;
   public readonly BULLET_INTERVAL = 5;
@@ -96,5 +99,18 @@ export class BriscaComponent implements OnInit {
   public closeDeleteBanner() {
     this.showDeleteBanner = false;
     localStorage.setItem(LOCAL_STORE_KEYS.BRISCA_LAST_TIME_DELETE_BANNER, JSON.stringify(Date.now()));
+  }
+
+  public changeScoreOf(scoreIndex: number) {
+    this.scoreClicks[scoreIndex] = this.scoreClicks[scoreIndex] === undefined ? 1 : this.scoreClicks[scoreIndex] + 1;
+
+    if (this.scoreClicks[scoreIndex] === this.CLICKS_TO_DELETE_POINT && this.briscaService.scores[scoreIndex] > 0) {
+      this.scoreClicks[scoreIndex] = 0;
+      this.briscaService.scores[scoreIndex]--;
+      this.pairScores[Math.floor(scoreIndex / 2)][scoreIndex % 2]--;
+      this.svgPairStripes[Math.floor(scoreIndex / 2)][scoreIndex % 2].pop();
+      this.briscaService.setPreviousDealingPlayerIndex();
+      this.briscaService.saveStateToLocalStorage();
+    }
   }
 }
