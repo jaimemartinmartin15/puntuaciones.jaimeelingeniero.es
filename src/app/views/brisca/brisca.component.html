@@ -1,72 +1,30 @@
 <app-round-info></app-round-info>
 
 <div class="content">
-  <svg *ngFor="let pairName of pairNames; let pair = index" class="svg-pair"
-    [attr.viewBox]="getViewBoxForSvgPair(pair)">
+  <div class="player-container" *ngFor="let playerInfo of playersInfo; let i = index" (click)="changeScoreOf(i)">
+    <div class="header">
+      <span *ngIf="i % 2 !== 0">({{playerInfo.score}})</span>
 
-    <!-- left player name and score -->
-    <text x="25" y="8" text-anchor="middle" class="name-score" (click)="changeScoreOf(pair*2)">
-      {{pairName[0]}} ({{pairScores[pair][0]}})
-    </text>
+      <span class="name">{{playerInfo.name}}</span>
 
-    <!-- right score and player name -->
-    <text *ngIf="pairName[1]" x="75" y="8" text-anchor="middle" class="name-score" (click)="changeScoreOf(pair*2+1)">
-      ({{pairScores[pair][1]}}) {{pairName[1]}}
-    </text>
+      <span *ngIf="i % 2 === 0">({{playerInfo.score}})</span>
+    </div>
 
-    <!-- left stripe scores -->
-    <ng-container *ngFor="let stripePath of svgPairStripes[pair][0]; let stripeIndex = index;">
-      <path class="stripe" [attr.d]="stripePath" />
-
-      <!-- bullet -->
-      <ng-container *ngIf="(stripeIndex + 1) % BULLET_INTERVAL === 0">
-        <circle [attr.cx]="svgBulletPairs[pair][0][((stripeIndex+1) / BULLET_INTERVAL) - 1][0]"
-          [attr.cy]="svgBulletPairs[pair][0][((stripeIndex+1) / BULLET_INTERVAL) - 1][1]" r="2.3" class="bullet">
-        </circle>
-
-        <text [attr.x]="svgBulletPairs[pair][0][((stripeIndex+1) / BULLET_INTERVAL) - 1][0]"
-          [attr.y]="svgBulletPairs[pair][0][((stripeIndex+1) / BULLET_INTERVAL) - 1][1] + 1" text-anchor="middle"
-          class="bullet-score">
-          {{stripeIndex + 1}}
-        </text>
-      </ng-container>
-    </ng-container>
-
-    <!-- right stripe scores -->
-    <ng-container *ngIf="pairName[1]">
-      <ng-container *ngFor="let stripePath of svgPairStripes[pair][1]; let stripeIndex = index;">
-        <path class="stripe" [attr.d]="stripePath" />
-
-        <!-- bullet -->
-        <ng-container *ngIf="(stripeIndex + 1) % BULLET_INTERVAL === 0">
-          <circle [attr.cx]="svgBulletPairs[pair][1][((stripeIndex+1) / BULLET_INTERVAL) - 1][0]"
-            [attr.cy]="svgBulletPairs[pair][1][((stripeIndex+1) / BULLET_INTERVAL) - 1][1]" r="2.3" class="bullet">
-          </circle>
-
-          <text [attr.x]="svgBulletPairs[pair][1][((stripeIndex+1) / BULLET_INTERVAL) - 1][0]"
-            [attr.y]="svgBulletPairs[pair][1][((stripeIndex+1) / BULLET_INTERVAL) - 1][1] + 1" text-anchor="middle"
-            class="bullet-score">
-            {{stripeIndex + 1}}
-          </text>
-        </ng-container>
-      </ng-container>
-    </ng-container>
-
-    <!-- horizontal separator header -->
-    <line x1="0" [attr.y1]="HORIZONTAL_SEPARATOR_HEIGHT" [attr.x2]="pairName[1] ? 100 : 50"
-      [attr.y2]="HORIZONTAL_SEPARATOR_HEIGHT" class="separator"></line>
-
-    <!-- vertical separator stripes -->
-    <line x1="50" y1="0" x2="50" [attr.y2]="svgHeight" class="separator"></line>
-  </svg>
+    <div *ngFor="let stripeNumber of arrayOf(playerInfo.score);" [ngClass]="{
+        stripe: true,
+         'stripe--delete-1': playerInfo.deletePointProgress === 1,
+          'stripe--delete-2': playerInfo.deletePointProgress === 2,
+           'stripe--delete-3': playerInfo.deletePointProgress === 3,
+           'stripe--delete-4': playerInfo.deletePointProgress === 4,
+           }">
+      <div *ngIf="stripeNumber % BULLET_INTERVAL === 0" class="bullet">{{stripeNumber}}</div>
+    </div>
+  </div>
 </div>
 
 <div *ngIf="showDeleteBanner" class="delete-banner">
   <span class="text">
-    Pulsa el nombre de un
-    <ng-container *ngIf="briscaService.modality === 'individual'">jugador</ng-container>
-    <ng-container *ngIf="briscaService.modality === 'teams'">equipo</ng-container>
-    múltiples veces para restarle un punto.
+    Pulsa un cuadrante múltiples veces para eliminar un punto
   </span>
   <span class="close-button" (click)="closeDeleteBanner()"></span>
 </div>

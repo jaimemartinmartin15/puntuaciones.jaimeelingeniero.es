@@ -12,39 +12,74 @@
 
 .content {
   flex-grow: 1;
-  overflow: auto;
   display: flex;
-  flex-direction: column;
-  gap: 40px;
+  flex-wrap: wrap;
+  row-gap: 50px;
+  overflow: auto;
 
-  .svg-pair {
-    width: 100%;
-    overflow: visible; // prevents the svg from getting smaller when there are many points
+  .player-container {
+    box-sizing: border-box;
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 30px;
 
-    .name-score {
-      font-size: 0.4rem;
-      cursor: pointer;
-      user-select: none;
+    .header {
+      box-sizing: border-box;
+      width: 100%;
+      text-align: center;
+      padding: 10px;
+      border-bottom: 2px solid black;
+
+      .name {
+        padding: 0 10px;
+      }
     }
 
     .stripe {
-      stroke-width: 0.75;
-      stroke: darkgray;
+      width: 60%;
+      border-bottom: 2px solid darkgray;
+      padding-top: 20px;
+      position: relative;
+
+      .bullet {
+        border-radius: 50%;
+        background-color: darkgray;
+        width: 18px;
+        height: 18px;
+        font-size: 0.85rem;
+        color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: absolute;
+        right: -9px;
+        transform: translateY(-50%);
+      }
+
+      &--delete-1:last-child {
+        opacity: 0.8;
+      }
+      &--delete-2:last-child {
+        opacity: 0.6;
+      }
+      &--delete-3:last-child {
+        opacity: 0.4;
+      }
+      &--delete-4:last-child {
+        opacity: 0.2;
+      }
     }
 
-    .bullet {
-      fill: darkgray;
-    }
+    &:nth-child(odd) {
+      border-right: 2px solid black;
+      align-items: flex-end;
 
-    .bullet-score {
-      font-size: 0.2rem;
-      stroke: none;
-      fill: white;
-    }
-
-    .separator {
-      stroke-width: 0.5;
-      stroke: black;
+      .stripe {
+        .bullet {
+          left: -9px;
+        }
+      }
     }
   }
 }
