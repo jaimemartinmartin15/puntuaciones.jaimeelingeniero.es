@@ -23,6 +23,8 @@
 
     .name-score {
       font-size: 0.4rem;
+      cursor: pointer;
+      user-select: none;
     }
 
     .stripe {

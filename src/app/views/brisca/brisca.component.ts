@@ -56,6 +56,8 @@ export class BriscaComponent implements OnInit {
       names = this.briscaService.teamNames;
     }
 
+    this.scoreClicks = names.map(() => 0);
+
     // generate pairs for names (header)
     for (let i = 0; i < names.length; i += 2) {
       this.pairNames.push([names[i], names[i + 1]]);
@@ -102,8 +104,7 @@ export class BriscaComponent implements OnInit {
   }
 
   public changeScoreOf(scoreIndex: number) {
-    this.scoreClicks[scoreIndex] = this.scoreClicks[scoreIndex] === undefined ? 1 : this.scoreClicks[scoreIndex] + 1;
-
+    this.scoreClicks[scoreIndex]++;
     if (this.scoreClicks[scoreIndex] === this.CLICKS_TO_DELETE_POINT && this.briscaService.scores[scoreIndex] > 0) {
       this.scoreClicks[scoreIndex] = 0;
       this.briscaService.scores[scoreIndex]--;
