@@ -105,6 +105,24 @@ export class BriscaComponent implements OnInit {
 
   public changeScoreOf(scoreIndex: number) {
     this.scoreClicks[scoreIndex]++;
+    const stripe = this.svgPairStripes[Math.floor(scoreIndex / 2)][scoreIndex % 2].at(-1); // pick last stripe
+    if (stripe) {
+      // divide by white space and comma
+      const length: number = +stripe.split(/ |,/).at(-2)!.trim();
+
+      // calculate new length
+      let newLength;
+      if (scoreIndex % 2 === 0) {
+        newLength = 20 + (this.scoreClicks[scoreIndex] * 30) / this.CLICKS_TO_DELETE_POINT;
+      } else {
+        newLength = 80 - (this.scoreClicks[scoreIndex] * 30) / this.CLICKS_TO_DELETE_POINT;
+      }
+
+      // build new stripe and replace it
+      const newStripe = stripe.replaceAll(`${length}`, `${newLength}`);
+      this.svgPairStripes[Math.floor(scoreIndex / 2)][scoreIndex % 2].pop();
+      this.svgPairStripes[Math.floor(scoreIndex / 2)][scoreIndex % 2].push(newStripe);
+    }
     if (this.scoreClicks[scoreIndex] === this.CLICKS_TO_DELETE_POINT && this.briscaService.scores[scoreIndex] > 0) {
       this.scoreClicks[scoreIndex] = 0;
       this.briscaService.scores[scoreIndex]--;
