@@ -2,6 +2,7 @@ import { ComponentFixture, ComponentFixtureAutoDetect, TestBed } from '@angular/
 import { By } from '@angular/platform-browser';
 import { Router, provideRouter } from '@angular/router';
 import { ROUTING_PATHS } from '../../constants/routes';
+import { BriscaService } from '../../game-services/brisca.service';
 import { ChinchonService } from '../../game-services/chinchon.service';
 import { GameHolderService } from '../../game-services/game-holder.service';
 import { OtherGameService } from '../../game-services/other-game.service';
@@ -230,6 +231,47 @@ describe('BottomControlsComponent', () => {
           },
         })
       );
+    });
+  });
+
+  describe('Brisca game', () => {
+    beforeEach(() => {
+      TestBed.configureTestingModule({
+        imports: [BottomControlsComponent],
+        providers: [
+          provideRouter([]),
+          { provide: ComponentFixtureAutoDetect, useValue: true },
+          { provide: GameHolderService, useClass: GameHolderService },
+          provideGameService(BriscaService),
+        ],
+      });
+      gameHolderService = TestBed.inject(GameHolderService);
+      fixture = TestBed.createComponent(BottomControlsComponent);
+
+      btnNewGame = fixture.debugElement.query(By.css(SELECTORS.BTN_NEW_GAME)).nativeElement;
+      btnChangeView = fixture.debugElement.query(By.css(SELECTORS.BTN_CHANGE_VIEW))?.nativeElement;
+      btnNewRound = fixture.debugElement.query(By.css(SELECTORS.BTN_NEW_ROUND)).nativeElement;
+    });
+
+    it('should show buttons: new game, new round', () => {
+      expect(btnNewGame).toBeDefined();
+      expect(btnChangeView).not.toBeDefined();
+      expect(btnNewRound).toBeDefined();
+    });
+
+    it('should navigate to game config when clicking on new game', () => {
+      const navigateSpy = spyOn(TestBed.inject(Router), 'navigate');
+      btnNewGame.click();
+
+      expect(navigateSpy).toHaveBeenCalledWith(['../', ROUTING_PATHS.GAME_CONFIG], jasmine.any(Object));
+    });
+
+    it('should navigate to enter score brisca when clicking on new round button', () => {
+      const navigateSpy = spyOn(TestBed.inject(Router), 'navigate');
+
+      btnNewRound.click();
+
+      expect(navigateSpy).toHaveBeenCalled();
     });
   });
 });

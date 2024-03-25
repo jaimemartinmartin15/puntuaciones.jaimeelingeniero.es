@@ -44,8 +44,12 @@
   <label>Modalidad</label>
 
   <app-radio-button-group [formControl]="selectedGameService.modalityFormControl">
-    <app-radio-button [value]="'individual'">Juego individual</app-radio-button>
-    <app-radio-button [value]="'teams'">Juego por equipos</app-radio-button>
+    <app-radio-button [value]="'individual'" data-test-id="option-modality-individual">
+      Juego individual
+    </app-radio-button>
+    <app-radio-button [value]="'teams'" data-test-id="option-modality-teams">
+      Juego por equipos
+    </app-radio-button>
   </app-radio-button-group>
 </ng-container>
 
