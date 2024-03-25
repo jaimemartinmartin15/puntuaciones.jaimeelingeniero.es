@@ -28,7 +28,7 @@
     "@angular-devkit/build-angular": "^17.0.7",
     "@angular/cli": "^17.0.7",
     "@angular/platform-browser-dynamic": "^17.0.7",
-    "@jaimemartinmartin15/jei-devkit-angular-builders": "^2.0.0",
+    "@jaimemartinmartin15/jei-devkit-angular-builders": "^2.1.0",
     "@types/jasmine": "~5.1.0",
     "jasmine": "~5.1.0",
     "jasmine-core": "~5.1.0",

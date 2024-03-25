@@ -20,9 +20,7 @@
             "outputPath": "dist/puntuaciones",
             "index": "src/index.html",
             "browser": "src/main.ts",
-            "polyfills": [
-              "zone.js"
-            ],
+            "polyfills": ["zone.js"],
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
@@ -33,9 +31,7 @@
                 "output": "/favicons/"
               }
             ],
-            "styles": [
-              "src/styles.scss"
-            ],
+            "styles": ["src/styles.scss"],
             "scripts": []
           },
           "configurations": {
@@ -78,19 +74,11 @@
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "polyfills": [
-              "zone.js",
-              "zone.js/testing"
-            ],
+            "polyfills": ["zone.js", "zone.js/testing"],
             "tsConfig": "tsconfig.spec.json",
             "inlineStyleLanguage": "scss",
-            "assets": [
-              "src/favicon.ico",
-              "src/assets"
-            ],
-            "styles": [
-              "src/styles.scss"
-            ],
+            "assets": ["src/favicon.ico", "src/assets"],
+            "styles": ["src/styles.scss"],
             "scripts": []
           }
         },
@@ -108,7 +96,9 @@
             "pixelThreshold": 0,
             "imageThreshold": 0,
             "originalImagesFolder": "e2e/screenshots/originals/",
-            "e2eResultImagesFolder": "e2e/screenshots/e2e-results/"
+            "e2eResultImagesFolder": "e2e/screenshots/e2e-results/",
+            "commitResults": true,
+            "gitUserEmail": "jaimemartinmartin15@users.noreply.github.com"
           },
           "configurations": {
             "production": {
