@@ -23,11 +23,11 @@
   </div>
 </div>
 
-<div *ngIf="showDeleteBanner" class="delete-banner">
+<div *ngIf="showDeleteBanner" class="delete-banner" data-test-id="delete-banner">
   <span class="text">
     Pulsa un cuadrante múltiples veces para eliminar un punto
   </span>
-  <span class="close-button" (click)="closeDeleteBanner()"></span>
+  <span class="close-button" (click)="closeDeleteBanner()" data-test-id="close-button"></span>
 </div>
 
 <app-bottom-controls></app-bottom-controls>

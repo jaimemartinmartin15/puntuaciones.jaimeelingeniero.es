@@ -33,7 +33,7 @@ describe('BriscaComponent', () => {
     fixture = TestBed.createComponent(BriscaComponent);
     component = fixture.componentInstance;
 
-    let deleteBanner = fixture.debugElement.query(By.css('.delete-banner'));
+    let deleteBanner = fixture.debugElement.query(By.css('[data-test-id="delete-banner"]'));
     expect(deleteBanner).toBeFalsy();
   });
 
@@ -41,13 +41,13 @@ describe('BriscaComponent', () => {
     fixture = TestBed.createComponent(BriscaComponent);
     component = fixture.componentInstance;
 
-    let deleteBanner = fixture.debugElement.query(By.css('.delete-banner')).nativeElement;
+    let deleteBanner = fixture.debugElement.query(By.css('[data-test-id="delete-banner"]')).nativeElement;
     expect(deleteBanner).toBeTruthy();
 
-    const closeButtonDeleteBanner = fixture.debugElement.query(By.css('.delete-banner .close-button')).nativeElement;
+    const closeButtonDeleteBanner = fixture.debugElement.query(By.css('[data-test-id="delete-banner"] .close-button')).nativeElement;
     closeButtonDeleteBanner.click();
 
-    deleteBanner = fixture.debugElement.query(By.css('.delete-banner'));
+    deleteBanner = fixture.debugElement.query(By.css('[data-test-id="delete-banner"]'));
     expect(deleteBanner).toBeFalsy();
   });
 

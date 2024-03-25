@@ -1,6 +1,6 @@
 <label>
-  <input type="text" class="input-team-name" #teamInput [(ngModel)]="teamName"
-    (ngModelChange)="onChangeTeamName()" [disabled]="!allowEditTeamName">
+  <input type="text" class="input-team-name" #teamInput [(ngModel)]="teamName" (ngModelChange)="onChangeTeamName()"
+    [disabled]="!allowEditTeamName" data-test-id="input-team-name">
   <span class="add-player-button" data-test-id="btn-add-player" (click)="addPlayer()"></span>
 </label>
 
@@ -12,8 +12,8 @@
 
     <span class="player-id" cdkDragHandle>{{i + 1}}. </span>
 
-    <input class="input" #playerInput type="text" [(ngModel)]="playerNames[i]"
-      (ngModelChange)="onChangePlayerName()" [attr.data-test-id]="'player-input-'+i">
+    <input class="input" #playerInput type="text" [(ngModel)]="playerNames[i]" (ngModelChange)="onChangePlayerName()"
+      [attr.data-test-id]="'player-input-'+i">
 
     <svg appDealCardsSvg viewBox="0 0 1000 1000" (click)="onChangeDealingPlayer(i)" class="deal-cards-icon"
       [attr.data-test-id]="'dealing-player-icon-'+i"

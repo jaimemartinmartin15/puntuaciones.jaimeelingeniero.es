@@ -54,7 +54,8 @@
 </ng-container>
 
 <app-enter-player-names *ngFor="let teamControl of selectedGameService.teamControls.controls; let i = index"
-  [allowEditTeamName]="selectedGameService.allowEditTeamName[i]" [formControl]="teamControl">
+  [allowEditTeamName]="selectedGameService.allowEditTeamName[i]" [formControl]="teamControl"
+  [attr.data-test-id]="'team-'+i">
 </app-enter-player-names>
 
 <div class="button-group">
