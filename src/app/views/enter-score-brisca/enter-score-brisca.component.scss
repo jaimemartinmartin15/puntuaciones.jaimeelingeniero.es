@@ -1,0 +1,44 @@
+@import "../../shared/enter-score/enter-score-base";
+@import "../../styles/colors";
+
+.content {
+  text-align: center;
+
+  .question {
+    margin-top: 80px;
+  }
+  .players-container {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    height: 100%;
+    overflow: auto;
+
+    .name-card {
+      border: 2px solid #d17515;
+      border-radius: 5px;
+      padding: 10px;
+      cursor: pointer;
+    }
+  }
+}
+
+@media (min-width: 576px) and (max-width: 767px) {
+  .content {
+    .question {
+      margin: auto;
+    }
+  }
+}
+
+@media (min-width: 767px) {
+  .content {
+    .players-container {
+      .name-card {
+        width: 500px;
+        margin: 0 auto;
+      }
+    }
+  }
+}

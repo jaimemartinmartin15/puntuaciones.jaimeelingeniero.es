@@ -1,6 +1,7 @@
 import { ComponentFixture, ComponentFixtureAutoDetect, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { provideRouter } from '@angular/router';
+import { BriscaService } from '../../game-services/brisca.service';
 import { ChinchonService } from '../../game-services/chinchon.service';
 import { GameHolderService } from '../../game-services/game-holder.service';
 import { OtherGameService } from '../../game-services/other-game.service';
@@ -13,7 +14,7 @@ const SELECTORS = {
   NEXT_ROUND_NUMBER: '[data-test-id="next-round-number"]',
   PLAYER_NAME_THAT_DEALS: '[data-test-id="player-name-that-deals"]',
   NUMBER_OF_CARDS_TO_DEAL_NEXT_ROUND: '[data-test-id="number-of-cards-to-deal-next-round"]',
-  LIMINT_SCORE: '[data-test-id="limit-score"]',
+  LIMIT_SCORE: '[data-test-id="limit-score"]',
   GAME_HAS_FINISHED: '[data-test-id="game-has-finished"]',
 } as const;
 
@@ -86,7 +87,7 @@ describe('RoundInfoComponent', () => {
     });
 
     it('should not show the limit score', () => {
-      const limitScore = fixture.debugElement.query(By.css(SELECTORS.LIMINT_SCORE));
+      const limitScore = fixture.debugElement.query(By.css(SELECTORS.LIMIT_SCORE));
       expect(limitScore).toBeNull();
     });
 
@@ -157,7 +158,7 @@ describe('RoundInfoComponent', () => {
     });
 
     it('should show the limit score', () => {
-      const limitScore = fixture.debugElement.query(By.css(SELECTORS.LIMINT_SCORE)).nativeElement;
+      const limitScore = fixture.debugElement.query(By.css(SELECTORS.LIMIT_SCORE)).nativeElement;
       expect(limitScore.textContent).toContain('Límite: 100');
 
       service.limitScore = 60;
@@ -231,7 +232,65 @@ describe('RoundInfoComponent', () => {
     });
 
     it('should not show the limit score', () => {
-      const limitScore = fixture.debugElement.query(By.css(SELECTORS.LIMINT_SCORE));
+      const limitScore = fixture.debugElement.query(By.css(SELECTORS.LIMIT_SCORE));
+      expect(limitScore).toBeNull();
+    });
+
+    it('should not show if the game has finished', () => {
+      const gameHasFinished = fixture.debugElement.query(By.css(SELECTORS.GAME_HAS_FINISHED));
+      expect(gameHasFinished).toBeNull();
+    });
+  });
+
+  describe('Brisca game', () => {
+    let service: BriscaService;
+
+    beforeEach(() => {
+      TestBed.configureTestingModule({
+        imports: [RoundInfoComponent],
+        providers: [
+          provideRouter([]),
+          { provide: ComponentFixtureAutoDetect, useValue: true },
+          { provide: GameHolderService, useClass: GameHolderService },
+          provideGameService(BriscaService),
+        ],
+      });
+      const gameHolderService = TestBed.inject(GameHolderService);
+      service = gameHolderService.service as BriscaService;
+      service.playerNames = ['Player 1', 'Player 2'];
+      fixture = TestBed.createComponent(RoundInfoComponent);
+    });
+
+    it('should show the game name', () => {
+      const gameName = fixture.debugElement.query(By.css(SELECTORS.GAME_NAME)).nativeElement;
+      expect(gameName.textContent).toEqual('Brisca');
+    });
+
+    it('should show the next round number', () => {
+      const nextRoundNumber = fixture.debugElement.query(By.css(SELECTORS.NEXT_ROUND_NUMBER)).nativeElement;
+      expect(nextRoundNumber.textContent).toContain('Ronda: 1');
+
+      service.scores = [0, 1];
+      fixture.detectChanges();
+      expect(nextRoundNumber.textContent).toContain('Ronda: 2');
+    });
+
+    it('should show the player name that deals', () => {
+      const playerNameThatDeals = fixture.debugElement.query(By.css(SELECTORS.PLAYER_NAME_THAT_DEALS)).nativeElement;
+      expect(playerNameThatDeals.textContent).toContain('Reparte: Player 1');
+
+      service.setNextDealingPlayer();
+      fixture.detectChanges();
+      expect(playerNameThatDeals.textContent).toContain('Reparte: Player 2');
+    });
+
+    it('should not show the number of cards', () => {
+      const numberOfCards = fixture.debugElement.query(By.css(SELECTORS.NUMBER_OF_CARDS_TO_DEAL_NEXT_ROUND));
+      expect(numberOfCards).toBeNull();
+    });
+
+    it('should not show the limit score', () => {
+      const limitScore = fixture.debugElement.query(By.css(SELECTORS.LIMIT_SCORE));
       expect(limitScore).toBeNull();
     });
 

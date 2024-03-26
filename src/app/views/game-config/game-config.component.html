@@ -44,13 +44,18 @@
   <label>Modalidad</label>
 
   <app-radio-button-group [formControl]="selectedGameService.modalityFormControl">
-    <app-radio-button [value]="'individual'">Juego individual</app-radio-button>
-    <app-radio-button [value]="'teams'">Juego por equipos</app-radio-button>
+    <app-radio-button [value]="'individual'" data-test-id="option-modality-individual">
+      Juego individual
+    </app-radio-button>
+    <app-radio-button [value]="'teams'" data-test-id="option-modality-teams">
+      Juego por equipos
+    </app-radio-button>
   </app-radio-button-group>
 </ng-container>
 
 <app-enter-player-names *ngFor="let teamControl of selectedGameService.teamControls.controls; let i = index"
-  [allowEditTeamName]="selectedGameService.allowEditTeamName[i]" [formControl]="teamControl">
+  [allowEditTeamName]="selectedGameService.allowEditTeamName[i]" [formControl]="teamControl"
+  [attr.data-test-id]="'team-'+i">
 </app-enter-player-names>
 
 <div class="button-group">

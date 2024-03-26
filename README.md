@@ -56,7 +56,9 @@ npm run test:e2e
 
 The tests have some expect but they also generate [screenshots](./e2e/screenshots/e2e-results/) that are compared to [originals](./e2e/screenshots/originals/).
 
-If you make any changes that impact how the application looks, e2e tests might start failing. To solve this, commit the new screenshots generated during the run and download them (adapting the [workflow](./.github/workflows/build-and-publish.yml) and the [gitignore](.gitignore) files). Review the changes and commit the new screenshots. Then revert the changes you did in the workflow and gitignore files.
+If you make any changes that impact how the application looks, e2e tests might start failing.
+
+To solve this, you can activate the flag _commitResults_ of `e2e-puppeteer` builder in [angular.json](angular.json). Run the workflow manually in the branch you are working on. Pull the changes and compare yourself the results. Deactivate the flag again in [angular.json](angular.json). Commit the new screenshots and remove the results added in the workflow.
 
 ## Deploy
 

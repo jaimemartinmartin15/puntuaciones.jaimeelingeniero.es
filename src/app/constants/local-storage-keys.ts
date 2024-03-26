@@ -22,4 +22,10 @@ export const LOCAL_STORE_KEYS = {
    * @param gameName The name of the game
    */
   SETTINGS: (gameName: string) => `settings-${gameName}`,
+
+  /**
+   * Last time the delete banner was shown in brisca component, just after closing it
+   * This is also set after starting a brisca game, simulating more than one day ago
+   */
+  BRISCA_LAST_TIME_DELETE_BANNER: 'briscaLastTimeDeleteBanner',
 };

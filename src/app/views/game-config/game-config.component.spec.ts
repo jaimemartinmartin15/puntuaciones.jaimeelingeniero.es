@@ -1,6 +1,7 @@
 import { ComponentFixture, ComponentFixtureAutoDetect, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { Router, provideRouter } from '@angular/router';
+import { BriscaService } from '../../game-services/brisca.service';
 import { ChinchonService } from '../../game-services/chinchon.service';
 import { GameHolderService } from '../../game-services/game-holder.service';
 import { OtherGameService } from '../../game-services/other-game.service';
@@ -15,6 +16,8 @@ const SELECTORS = {
   SELECTED_LIMIT_SCORE: '[data-test-id="selected-limit-score"]',
   OPTION_WINNER_HIGHEST_SCORE: '[data-test-id="option-winner-highest-score"]',
   OPTION_WINNER_LOWEST_SCORE: '[data-test-id="option-winner-lowest-score"]',
+  OPTION_MODALITY_INDIVIDUAL: '[data-test-id="option-modality-individual"]',
+  OPTION_MODALITY_TEAMS: '[data-test-id="option-modality-teams"]',
   BTN_ADD_PLAYER: '[data-test-id="btn-add-player"]',
   PLAYER_INPUT: (playerId: number) => `[data-test-id="player-input-${playerId}"]`,
   DEALING_PLAYER_ICON: (playerId: number) => `[data-test-id="dealing-player-icon-${playerId}"]`,
@@ -38,6 +41,7 @@ describe('GameConfigComponent', () => {
         { provide: GameHolderService, useClass: GameHolderService },
         provideGameService(PochaService),
         provideGameService(ChinchonService),
+        provideGameService(BriscaService),
         provideGameService(OtherGameService),
       ],
     });
@@ -137,6 +141,26 @@ describe('GameConfigComponent', () => {
       expect(optionWinnerLowestScoreEl).not.toBeNull();
       const optionWinnerHighestScoreEl = fixture.debugElement.query(By.css(SELECTORS.OPTION_WINNER_HIGHEST_SCORE)).nativeElement;
       expect(optionWinnerHighestScoreEl).not.toBeNull();
+    });
+  });
+
+  describe('Brisca game', () => {
+    beforeEach(() => {
+      fixture.debugElement.query(By.css(SELECTORS.SELECT_GAME_NAME)).nativeElement.click();
+      fixture.detectChanges();
+      fixture.debugElement.query(By.css(SELECTORS.GAME_NAME_OPTION('Brisca'))).nativeElement.click();
+      fixture.detectChanges();
+    });
+
+    it('should be possible to select brisca game', () => {
+      expect(component.selectedGameService.gameName).toBe('Brisca');
+    });
+
+    it('should be possible to select modality', () => {
+      const optionIndividualEl = fixture.debugElement.query(By.css(SELECTORS.OPTION_MODALITY_INDIVIDUAL)).nativeElement;
+      expect(optionIndividualEl).not.toBeNull();
+      const optionTeamEl = fixture.debugElement.query(By.css(SELECTORS.OPTION_MODALITY_TEAMS)).nativeElement;
+      expect(optionTeamEl).not.toBeNull();
     });
   });
 });
