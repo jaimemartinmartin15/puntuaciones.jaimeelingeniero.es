@@ -1,5 +1,7 @@
 # CHANGELOG
 
+New brisca game available
+
 Refactor game services and use flags system
 
 Created enter player names component
