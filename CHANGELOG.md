@@ -1,20 +1,14 @@
 # CHANGELOG
 
+## 2.0.0
+
 New brisca game available
 
 Refactor game services and use flags system
 
-Created enter player names component
+Created multiple components for game-config: select, input-number-scroller, radio buttons, enter player names
 
-Created radio buttons component
-
-Created select component
-
-Created input-number-scroller component
-
-Added e2e tests with puppeteer and update workflow
-
-Added unit tests and updated workflow
+Added unit tests, e2e tests with puppeteer and updated workflow to run these steps
 
 ## 1.4.0
 
