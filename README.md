@@ -58,7 +58,7 @@ The tests have some expect but they also generate [screenshots](./e2e/screenshot
 
 If you make any changes that impact how the application looks, e2e tests might start failing.
 
-To solve this, you can activate the flag _commitResults_ of `e2e-puppeteer` builder in [angular.json](angular.json). Run the workflow manually in the branch you are working on. Pull the changes and compare yourself the results. Commit the new screenshots and remove the results added in the workflow.
+To solve this, you can activate the flag _commitResults_ of `e2e-puppeteer` builder in [angular.json](angular.json). Run the workflow manually in the branch you are working on. Pull the changes and compare yourself the results. Deactivate the flag again in [angular.json](angular.json). Commit the new screenshots and remove the results added in the workflow.
 
 ## Deploy
 
