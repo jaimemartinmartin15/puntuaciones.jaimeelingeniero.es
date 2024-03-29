@@ -10,7 +10,7 @@ Shows the button that opens a pop up that allows to change to different views fo
 
 **Properties**:
 
-- changeViews: { path: RoutingPath; display: string }[] }
+- changeViews: { path: RoutingPath; display: string }[]
 
 ## In GameService interface
 
