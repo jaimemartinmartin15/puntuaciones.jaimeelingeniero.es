@@ -42,3 +42,4 @@ Allows to show the number of times the player rejoined the game.
 - gameHasStarted(): boolean
 - get players(): Player[]
 - enterScoreRoute: RoutingPath
+- getNextRoundNumber(): number
