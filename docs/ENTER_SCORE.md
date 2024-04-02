@@ -1,6 +1,6 @@
 # Enter score view
 
-![enter score](./images/enter_escore.png)
+![enter score](./images/enter_score.png)
 
 ## Input
 
