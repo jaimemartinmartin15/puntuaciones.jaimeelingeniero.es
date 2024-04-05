@@ -1,24 +1,28 @@
 # Bottom controls component
 
-![bottom controls](./images/bottom_controls_1.png)
+This component shows at the bottom of game views. Allows to start a new game, show different views of the game or enter a new round.
+
+![bottom controls](./images/bottom_controls.png)
+
+**(\*1)** Navigates to [game config view](./GAME_CONFIG.md) to allow start a new game (no edition config mode).
+
+**(\*2)** Shows or hides a pop up with links **(\*4)** that allows to navigate to other views of the game.
+
+**(\*3)** Navigates to the view that allows to enter score for all players for a new round.
 
 ## Flags
 
 ### (*2) bottomControls:changeViews
 
-Shows the button that opens a pop up that allows to change to different views for the game.
+If active, shows the button that opens a pop up with links that allow to change to different views of the game. Forces to have a property describing the allowed views.
 
 **Properties**:
 
 - changeViews: { path: RoutingPath; display: string }[]
 
-## In GameService interface
+## Required methods and properties
 
 ### (*3) New round
-
-Navigates to the view that allows to enter the score of a new round.
-
-**Properties**:
 
 - enterScoreRoute: RoutingPath
 

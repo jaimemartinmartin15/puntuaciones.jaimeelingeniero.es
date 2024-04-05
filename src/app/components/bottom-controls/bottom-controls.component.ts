@@ -12,7 +12,6 @@ import { GameHolderService } from '../../game-services/game-holder.service';
   styleUrls: ['./bottom-controls.component.scss'],
 })
 export class BottomControlsComponent {
-  public readonly ROUTING_PATHS = ROUTING_PATHS;
   public showViewNavigation: boolean = false;
 
   public constructor(
