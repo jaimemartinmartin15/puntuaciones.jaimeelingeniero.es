@@ -7,7 +7,8 @@
   Cambiar vista
 </button>
 
-<button class="app-button" data-test-id="btn-new-round" (click)="enterNewRound()">
+<button class="app-button" data-test-id="btn-new-round" (click)="enterNewRound()"
+  *ngIf="gameHolderService.service.hasFlagActive('bottomControls:newRound')">
   Nueva ronda
 </button>
 

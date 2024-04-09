@@ -21,6 +21,8 @@ export type FlagMapping = {
 
   // bottom controls
   'bottomControls:changeViews': { changeViews: { path: RoutingPath; display: string }[] };
+  'bottomControls:newRound': { enterScoreRoute: RoutingPath };
+  'bottomControls:newRound:state': { getStateEnterNewRound(): { [key: string]: any } };
 
   // raking view
   ranking: {

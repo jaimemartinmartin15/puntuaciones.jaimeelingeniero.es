@@ -14,18 +14,24 @@ This component shows at the bottom of game views. Allows to start a new game, sh
 
 ### (*2) bottomControls:changeViews
 
-If active, shows the button that opens a pop up with links that allow to change to different views of the game. Forces to have a property describing the allowed views.
+If active, shows the button that opens a pop up with links that allow to change to different views of the game. Forces to have a property describing the allowed views **(\*4)**.
 
 **Properties**:
 
 - changeViews: { path: RoutingPath; display: string }[]
 
-## Required methods and properties
+### (*3) bottomControls:newRound
 
-### (*3) New round
+If active, shows the button that navigates to the view that allows to enter scores for all players for a new round.
+
+**Properties**:
 
 - enterScoreRoute: RoutingPath
 
-- get players(): Player[]
+### (*3) bottomControls:newRound:state
 
-- getNextRoundNumber(): number
+If active, the service provides state to navigate to enter score view when entering scores for all players for a new round.
+
+**Properties**:
+
+- getStateEnterNewRound(): { [key: string]: any }

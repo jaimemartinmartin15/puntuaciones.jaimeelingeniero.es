@@ -8,7 +8,7 @@ import { Player } from '../interfaces/player';
 import { Flag, FlagMapping } from './flags';
 import { GameServiceWithFlags } from './game.service';
 
-const briscaFlags = ['resumeGame:gameName', 'gameConfig:modality', 'roundInfo:gameName'] as const;
+const briscaFlags = ['resumeGame:gameName', 'gameConfig:modality', 'roundInfo:gameName', 'bottomControls:newRound'] as const;
 
 type BriscaFlags = (typeof briscaFlags)[number];
 

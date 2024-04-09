@@ -25,10 +25,10 @@ export class BottomControlsComponent {
   }
 
   public enterNewRound() {
-    const state = {
-      players: this.gameHolderService.service.players.map((p) => ({ ...p, punctuation: 0 })),
-      roundNumber: this.gameHolderService.service.getNextRoundNumber(),
-    };
+    let state: { [k: string]: any } = {};
+    if (this.gameHolderService.service.hasFlagActive('bottomControls:newRound:state')) {
+      state = this.gameHolderService.service.getStateEnterNewRound();
+    }
     this.router.navigate(['../', this.gameHolderService.service.enterScoreRoute], { relativeTo: this.activatedRoute, state });
   }
 }

@@ -4,6 +4,7 @@ import { EnterPlayerNamesModel } from '../components/enter-player-names/enter-pl
 import { LOCAL_STORE_KEYS } from '../constants/local-storage-keys';
 import { ROUTING_PATHS, RoutingPath } from '../constants/routes';
 import { Player } from '../interfaces/player';
+import { EnterScoreInput } from '../shared/enter-score/EnterScoreInput';
 import { Flag } from './flags';
 import { GameServiceWithFlags } from './game.service';
 
@@ -13,6 +14,8 @@ const chinchonFlags = [
   'roundInfo:gameName',
   'roundInfo:limitScore',
   'bottomControls:changeViews',
+  'bottomControls:newRound',
+  'bottomControls:newRound:state',
   'ranking',
   'ranking:playerDisplay:numberOfRejoins',
   'scoreboard',
@@ -173,6 +176,14 @@ export class ChinchonService implements GameServiceWithFlags<ChinchonFlags> {
     { path: ROUTING_PATHS.SCOREBOARD, display: '📋 Tabla' },
     { path: ROUTING_PATHS.STATISTICS, display: '📊 Estadísticas' },
   ];
+
+  // * flag -> bottomControls:newRound:state
+  public getStateEnterNewRound(): EnterScoreInput {
+    return {
+      players: this.players.map((p) => ({ ...p, punctuation: 0 })),
+      roundNumber: this.getNextRoundNumber(),
+    };
+  }
 
   // * flag -> ranking
   public getRankingPlayers(round: number = this.getNextRoundNumber() - 1): Player[] {
