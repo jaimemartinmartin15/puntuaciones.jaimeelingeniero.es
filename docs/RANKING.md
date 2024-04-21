@@ -1,35 +1,53 @@
 # Ranking view
 
+This component shows the list of players **(\*1)** from first position to last position, with some aditional information.
+
+The player display component, allows to change the score entered **(\*5)** in the last round by clicking on it.
+
 ![ranking view](./images/ranking.png)
 
 ## Flags
 
-### ranking
+### **(\*1)** ranking
 
 Allows to show the players in the correct order.
 
 **Properties**:
 
-- getRankingPlayers(round?: number): Player[]
+- getRankingPlayers(round?: number): number[]
 
-These are to display a single player:
+### gameStartEnd
 
-- getPlayerPosition: (playerId: number) => number
-- getScoreLastRound: (playerId: number) => number
-- getPlayerName: (playerId: number) => string
-- getTotalScore: (playerId: number) => number
+Allows to show a message before the ranking of players can be listed.
 
-### (*1) ranking:playerDisplay:maximumReachedScore
+**Properties**:
 
-Allows to show the highest score that the player has reached during the game.
+- gameHasStarted: () => boolean
+- gameHasFinished: () => boolean
+
+### ranking:playerDisplay
+
+Allows to show information about the players.
+
+**Properties**:
+
+- **(\*2)** getPlayerPosition: (playerId: number) => number
+- **(\*3)** getPlayerName: (playerId: number) => string
+- **(\*4)** getTotalScore: (playerId: number) => number
+- **(\*5)** getScoreLastRound: (playerId: number) => number
+- **(\*5)** enterScoreRoute: RoutingPath
+
+### (*6) ranking:playerDisplay:maximumReachedScore
+
+If active, showa the highest score that the player has reached during the game.
 
 **Properties**:
 
 - getMaximumReachedScore: (playerId: number) => number
 
-### (*2) ranking:playerDisplay:numberOfRejoins
+### (*7) ranking:playerDisplay:numberOfRejoins
 
-Allows to show the number of times the player rejoined the game.
+If active shows the number of times the player rejoined the game.
 
 **Properties**:
 
@@ -39,7 +57,4 @@ Allows to show the number of times the player rejoined the game.
 
 **Properties**:
 
-- gameHasStarted(): boolean
-- get players(): Player[]
-- enterScoreRoute: RoutingPath
 - getNextRoundNumber(): number

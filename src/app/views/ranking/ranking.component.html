@@ -5,7 +5,7 @@
 </div>
 
 <div class="players-list" *ngIf="gameService.gameHasStarted()">
-    <app-player-display *ngFor="let player of gameService.getRankingPlayers()" [playerId]="player.id">
+    <app-player-display *ngFor="let playerId of gameService.getRankingPlayers()" [playerId]="playerId">
     </app-player-display>
 </div>
 
