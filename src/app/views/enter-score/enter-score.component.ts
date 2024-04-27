@@ -1,9 +1,14 @@
 import { CommonModule, Location } from '@angular/common';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { LOCAL_STORE_KEYS } from '../../constants/local-storage-keys';
+import { Flag } from '../../game-services/flags';
 import { GameHolderService } from '../../game-services/game-holder.service';
-import { EnterScoreBase } from '../../shared/enter-score/EnterScoreBase';
+import { GameService, GameServiceWithFlags } from '../../game-services/game.service';
 import { enterScoreBaseAnimation } from '../../shared/enter-score/enter-score-base.animation';
+
+// const ENTER_SCORE_FLAGS = ['game:scores', 'game:players', 'game:dealingPlayer', 'game:rounds'] as const; //as Flag[]
+const ENTER_SCORE_FLAGS = ['enterScore'] as const; //as Flag[]
 
 @Component({
   selector: 'app-enter-score',
@@ -13,21 +18,40 @@ import { enterScoreBaseAnimation } from '../../shared/enter-score/enter-score-ba
   styleUrls: ['./enter-score.component.scss'],
   animations: [enterScoreBaseAnimation],
 })
-export class EnterScoreComponent extends EnterScoreBase {
+export class EnterScoreComponent {
+  public gameService: GameService & GameServiceWithFlags<(typeof ENTER_SCORE_FLAGS)[number]>;
+
   private sign: '+' | '-' = '+';
 
-  public constructor(location: Location, router: Router, gameHolderService: GameHolderService) {
-    super(location, router, gameHolderService);
+  public roundNumber: number;
+  public playerNames: string[];
+  public punctuations: number[];
+
+  public currentPlayerIndex = 0;
+
+  public get puntuationCurrentPlayer() {
+    return this.punctuations[this.currentPlayerIndex];
+  }
+
+  public set puntuationCurrentPlayer(punctuation: number) {
+    this.punctuations[this.currentPlayerIndex] = punctuation;
+  }
+
+  public constructor(private readonly location: Location, private readonly router: Router, readonly gameHolderService: GameHolderService) {
+    if (!gameHolderService.service.isGameServiceWithFlags(ENTER_SCORE_FLAGS as unknown as Flag[])) {
+      throw new Error(
+        `Error EnterScoreComponent: service '${gameHolderService.service.gameName}' does not implement flags [${ENTER_SCORE_FLAGS.join(', ')}]`
+      );
+    }
+
+    this.gameService = gameHolderService.service;
+
+    // read EnterScoreInput
+    this.roundNumber = this.router.getCurrentNavigation()?.extras?.state?.['roundNumber'];
+    this.playerNames = this.router.getCurrentNavigation()?.extras?.state?.['playerNames'];
+    this.punctuations = this.router.getCurrentNavigation()?.extras?.state?.['punctuations'];
+
     this.sign = this.puntuationCurrentPlayer >= 0 ? '+' : '-';
-  }
-
-  protected override passValidation(): boolean {
-    return true;
-  }
-
-  protected override getPlayerIndexWithWrongScore(): number {
-    // Note: this method is not called because passValidation returns always true
-    return -1;
   }
 
   public onClickKeyBoard(event: Event) {
@@ -40,7 +64,7 @@ export class EnterScoreComponent extends EnterScoreBase {
 
     if (buttonKey.includes('→') || buttonKey.includes('✔️')) {
       this.currentPlayerIndex++;
-      if (this.currentPlayerIndex === this.players.length) {
+      if (this.currentPlayerIndex === this.playerNames.length) {
         this.finishEnterScore();
         return;
       }
@@ -73,5 +97,28 @@ export class EnterScoreComponent extends EnterScoreBase {
     // user pressed number key
     const key = +buttonKey!;
     this.puntuationCurrentPlayer = +`${this.sign}${Math.abs(this.puntuationCurrentPlayer)}${key}`;
+  }
+
+  public closeEnterScore() {
+    this.location.back();
+  }
+
+  private finishEnterScore() {
+    this.playerNames.forEach((playerName, playerIndex) =>
+      this.gameService.setPlayerScore(this.gameService.getPlayerId(playerName), this.roundNumber - 1, this.punctuations[playerIndex])
+    );
+
+    // change the player that deals only if it is a new round (not edition of previous score)
+    if (this.roundNumber === this.gameService.getNextRoundNumber()) {
+      // TODO create enterScore:dealingPlayer flag for this?
+      this.gameService.setNextDealingPlayer();
+    }
+
+    if (this.gameService.hasFlagActive('game:localStorageSave')) {
+      this.gameService.saveStateToLocalStorage();
+    }
+
+    localStorage.setItem(LOCAL_STORE_KEYS.TIME_LAST_INTERACTION, JSON.stringify(Date.now()));
+    this.closeEnterScore();
   }
 }

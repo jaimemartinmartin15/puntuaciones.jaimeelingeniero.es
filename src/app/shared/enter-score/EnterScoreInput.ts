@@ -1,6 +1,5 @@
-import { Player } from '../../interfaces/player';
-
 export interface EnterScoreInput {
-  players: Player[];
+  playerNames: string[];
+  punctuations: number[];
   roundNumber: number;
 }
