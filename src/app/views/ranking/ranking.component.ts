@@ -7,7 +7,7 @@ import { GameHolderService } from '../../game-services/game-holder.service';
 import { GameService, GameServiceWithFlags } from '../../game-services/game.service';
 import { PlayerDisplayComponent } from './player-display/player-display.component';
 
-const RANKING_FLAGS = ['ranking', 'gameStartEnd'] as const as Flag[];
+const RANKING_FLAGS = ['ranking', 'game:gameStartEnd'] as const; //as Flag[]
 
 @Component({
   selector: 'app-ranking',
@@ -20,7 +20,7 @@ export class RankingComponent {
   public gameService: GameService & GameServiceWithFlags<(typeof RANKING_FLAGS)[number]>;
 
   public constructor(readonly gameHolderService: GameHolderService) {
-    if (!gameHolderService.service.isGameServiceWithFlags(RANKING_FLAGS)) {
+    if (!gameHolderService.service.isGameServiceWithFlags(RANKING_FLAGS as unknown as Flag[])) {
       throw new Error(
         `Error RankingComponent: service '${gameHolderService.service.gameName}' does not implement flags [${RANKING_FLAGS.join(', ')}]`
       );

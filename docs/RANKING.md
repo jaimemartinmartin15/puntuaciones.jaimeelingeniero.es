@@ -23,7 +23,6 @@ Allows to show a message before the ranking of players can be listed.
 **Properties**:
 
 - gameHasStarted: () => boolean
-- gameHasFinished: () => boolean
 
 ### ranking:playerDisplay
 
@@ -39,7 +38,7 @@ Allows to show information about the players.
 
 ### (*6) ranking:playerDisplay:maximumReachedScore
 
-If active, showa the highest score that the player has reached during the game.
+If active, shows the highest score that the player has reached during the game.
 
 **Properties**:
 
@@ -53,8 +52,8 @@ If active shows the number of times the player rejoined the game.
 
 - getNumberOfRejoins: (playerId: number) => number
 
-## In GameService interface
+### game:rounds
 
 **Properties**:
 
-- getNextRoundNumber(): number
+- getNextRoundNumber: () => number

@@ -6,7 +6,7 @@ import { GameHolderService } from '../../../game-services/game-holder.service';
 import { GameService, GameServiceWithFlags } from '../../../game-services/game.service';
 import { EnterScoreInput } from '../../../shared/enter-score/EnterScoreInput';
 
-const PLAYER_DISPLAY_FLAGS = ['ranking:playerDisplay'] as const as Flag[];
+const PLAYER_DISPLAY_FLAGS = ['ranking:playerDisplay', 'game:rounds'] as const; //as Flag[]
 
 @Component({
   selector: 'app-player-display',
@@ -31,7 +31,7 @@ export class PlayerDisplayComponent {
     private readonly router: Router,
     private readonly activatedRoute: ActivatedRoute
   ) {
-    if (!gameHolderService.service.isGameServiceWithFlags(PLAYER_DISPLAY_FLAGS)) {
+    if (!gameHolderService.service.isGameServiceWithFlags(PLAYER_DISPLAY_FLAGS as unknown as Flag[])) {
       throw new Error(
         `Error PlayerDisplayComponent: service '${gameHolderService.service.gameName}' does not implement flags [${PLAYER_DISPLAY_FLAGS.join(', ')}]`
       );
