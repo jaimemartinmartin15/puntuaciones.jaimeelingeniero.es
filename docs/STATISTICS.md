@@ -1,5 +1,7 @@
 # Statistics view
 
+This view shows statistics about the game.
+
 ![statistics view](./images/statistics.png)
 
 ## Flags
@@ -10,42 +12,46 @@ Allows to show the screen with statistics about the game.
 
 **Properties**:
 
-- showProgressGraph: boolean
-- getPlayersInFirstPosition: () => string
-- getPlayersInLastPosition: () => string
-- getMaximumScoreInOneRound: () => number
-- getPlayerNamesWithMaximumScoreInOneRound: () => string
-- getMinimumScoreInOneRound: () => number
-- getPlayerNamesWithMinimumScoreInOneRound: () => string
+- **(\*9)** getPlayersInFirstPosition: () => string;
+- **(\*10)** getPlayersInLastPosition: () => string;
+- **(\*11)** getMaximumScoreInOneRound: () => number;
+- **(\*12)** getPlayerNamesWithMaximumScoreInOneRound: () => string;
+- **(\*13)** getMinimumScoreInOneRound: () => number;
+- **(\*14)** getPlayerNamesWithMinimumScoreInOneRound: () => string;
 
-### (*1) statistics:progressGraph
+### gameStartEnd
 
-Allows to show the graph and the panel with info for a round
+Allows to show a message before the ranking of players can be listed.
+
+**Properties**:
+
+- gameHasStarted: () => boolean
+
+### statistics:progressGraph
+
+If active, shows the graph and the panel with info for a round.
 
 **Properties**:
 
 - svgWidth: number
 - svgHeight: number
-- svgXAxisHeight: number
-- getSvgPlayerLine: (player: Player) => string
-- getTotalScore: (playerId: number, round: number) => number
-- getRankingPlayers(round: number): Player[]
-- getPlayerPosition(playerId: number, round: number): number
+- **(\*2)** getSvgPlayerLine: (player: Player) => string
+- **(\*3)** svgXAxisHeight: number
+- **(\*4)** playerNames: string[]
+- **(\*5)** getNextRoundNumber: () => number
+- **(\*6)** getRankingPlayers(round: number): Player[]
+- **(\*6)** getPlayerName: (playerId: number) => string
+- **(\*7)** getTotalScore: (playerId: number, round: number) => number
+- **(\*8)** getPlayerPosition(playerId: number, round: number): number
 
-### (*2) statistics:progressGraph:limitScore
+### statistics:progressGraph:limitScore
 
-Shows the limit score line in the progress graph
-
-**Properties**:
-
-- svgLimitScoreHeight: number
-
-## In GameService interface
+If active, shows the limit score line in the progress graph.
 
 **Properties**:
 
-- gameHasStarted(): boolean
+- **(\*1)** svgLimitScoreHeight: number
 
-- get players(): Player[]
+## Functional analysis
 
-- getNextRoundNumber(): number
+The time the game lasts **(\*15)** is calculated on page load, and it is the difference of time since the time started in [game config view](./GAME_CONFIG.md) and now.
