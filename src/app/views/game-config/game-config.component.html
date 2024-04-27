@@ -53,19 +53,21 @@
   </app-radio-button-group>
 </ng-container>
 
-<app-enter-player-names *ngFor="let teamControl of selectedGameService.teamControls.controls; let i = index"
-  [allowEditTeamName]="selectedGameService.allowEditTeamName[i]" [formControl]="teamControl"
-  [attr.data-test-id]="'team-'+i">
-</app-enter-player-names>
+<ng-container *ngIf="selectedGameService.hasFlagActive('gameConfig:players')">
+  <app-enter-player-names *ngFor="let teamControl of selectedGameService.teamControls.controls; let i = index"
+    [allowEditTeamName]="selectedGameService.allowEditTeamName[i]" [formControl]="teamControl"
+    [attr.data-test-id]="'team-'+i">
+  </app-enter-player-names>
+</ng-container>
 
 <div class="button-group">
   <button class="app-button" *ngIf="!isEdition" (click)="startGame()"
-    [disabled]="!selectedGameService.isGameConfigCorrect()" data-test-id="btn-start">
+    [disabled]="selectedGameService.hasFlagActive('gameConfig:validation') && !selectedGameService.isGameConfigCorrect()" data-test-id="btn-start">
     Empezar
   </button>
 
   <button class="app-button" *ngIf="isEdition" (click)="editConfigCurrentGame()"
-    [disabled]="!selectedGameService.isGameConfigCorrect()" data-test-id="btn-go-back">
+    [disabled]="selectedGameService.hasFlagActive('gameConfig:validation') && !selectedGameService.isGameConfigCorrect()" data-test-id="btn-go-back">
     Volver
   </button>
 </div>

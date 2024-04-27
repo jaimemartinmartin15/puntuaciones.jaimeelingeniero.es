@@ -1,12 +1,20 @@
 # Game config view
 
+This view allows to configure a new game or edit the configuration of a game in progress (detected by a parameter in the [routing configuration](../src/app/app.routes.ts)).
+
 ![game config](./images/game_config.png)
+
+**(\*1)** Shown when _no_ edition mode, allows to select the game to play.
+
+**(\*7)** Shown when _no_ edition mode, starts the game with the selected configuration.
+
+**(\*8)** Shown when edition mode, confirms the changes in the configuration of the game in progress.
 
 ## Flags
 
 ### (*2) gameConfig:numberOfCards
 
-Shows a control to select the number of cards.
+If active, shows a control to select the number of cards.
 
 **Properties**:
 
@@ -15,7 +23,7 @@ Shows a control to select the number of cards.
 
 ### (*3) gameConfig:limitScore
 
-Shows a control to select the limit score of the game.
+If active, shows a control to select the limit score of the game.
 
 **Properties**:
 
@@ -25,7 +33,7 @@ Shows a control to select the limit score of the game.
 
 ### (*4) gameConfig:winner
 
-Shows a control to select who wins the game.
+If active, shows a control to select who wins the game.
 
 **Properties**:
 
@@ -34,45 +42,64 @@ Shows a control to select who wins the game.
 
 ### (*5) gameConfig:modality
 
-Shows a control to select if the game is individual or by teams.
+If active, shows a control to select if the game is individual or by teams.
 
 **Properties**:
 
 - modality: 'individual' | 'teams'
 - modalityFormControl: FormControl&lt;'individual' | 'teams'>
 
-## In GameService interface
+### (*6) gameConfig:players
 
-### (*1) Game name
-
-Shows the game name. This question is not shown if it is edition of current game config.
+If active, shows the controls to enter the player names and who is next turn.
 
 **Properties**:
 
-- gameName: string
-
-### (*6) Player and team names
-
-Allows to enter the names of the teams and the players.
-
-**Properties**:
-
-- teamControls: FormArray&lt;FormControl&lt;EnterPlayerNamesModel>>
 - allowEditTeamName: boolean[]
+- teamControls: FormArray&lt;FormControl&lt;EnterPlayerNamesModel&gt;&gt;
 
-### (*7 and \*8) Start game and edit config
+### (*7) (*8) gameConfig:validation
 
-Starts a new game or edits the config of the current game. Only one button is shown.
+If active, allows to disable buttons when the configuration is not correct to start or continue the game.
 
 **Properties**:
 
 - isGameConfigCorrect(): boolean
+
+### (*7) (*8) gameConfig
+
+Callbacks when the game starts or the configuration is edited.
+
+**Properties**:
+
 - onStartGame(): void
 - onEditConfigCurrentGame(): void
-- saveStateToLocalStorage(): void
-- startGameRoute: RoutingPath
-- saveStateToLocalStorage(): void
 
-### Others
+### (*7) (*8) game:localStorageSave
 
-loadStateFromLocalStorage(): void
+If active, the configuration of last service is loaded on page load and saved in local storage on start or edit game.
+
+**Properties**:
+
+- saveStateToLocalStorage(): void
+- loadStateFromLocalStorage(): void
+
+## In GameService interface
+
+**Properties**:
+
+- **(\*1)** gameName: string
+- **(\*7)** startGameRoute: RoutingPath
+
+## Functional analysis
+
+On page load:
+
+- No edition mode: the last used game service is selected by default. If the flag is active, also the configuration is loaded from local storage.
+- Edition mode: it is not possible to change the selected game. Show configuration of current game with last values in the form controls.
+
+Depending on the selected game, the service will have different flags active and different forms are shown.
+
+When the user presses the start button the configuration is optionally saved in local storage and the user is redirected to _startGameRoute_.
+
+When the user presses the go back button the configuration is optionally saved in local storage and the user is redirected to the view the user came from.
