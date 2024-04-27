@@ -15,7 +15,6 @@ import { GAME_SERVICES } from '../../game-services/utils';
   styleUrls: ['./resume-game.component.scss'],
 })
 export class ResumeGameComponent implements OnInit {
-  public gameName: string;
   public gameService: GameService;
 
   public constructor(
@@ -27,8 +26,8 @@ export class ResumeGameComponent implements OnInit {
 
   public ngOnInit() {
     // Note: gameName should not be undefined if this page was loaded
-    this.gameName = localStorage.getItem(LOCAL_STORE_KEYS.SAVED_GAME_NAME)!.toLowerCase();
-    this.gameService = this.gameServices.find((gs) => gs.gameName.toLowerCase() === this.gameName)!;
+    const gameName = localStorage.getItem(LOCAL_STORE_KEYS.SAVED_GAME_NAME)!.toLowerCase();
+    this.gameService = this.gameServices.find((gs) => gs.gameName.toLowerCase() === gameName)!;
   }
 
   public doNotResumeGame() {
@@ -36,7 +35,9 @@ export class ResumeGameComponent implements OnInit {
   }
 
   public resumeGame() {
-    this.gameService.loadStateFromLocalStorage();
+    if (this.gameService.hasFlagActive('game:localStorageSave')) {
+      this.gameService.loadStateFromLocalStorage();
+    }
     this.gameHolderService.service = this.gameService;
 
     this.router.navigate(['../', this.gameService.startGameRoute], { relativeTo: this.activatedRoute });
