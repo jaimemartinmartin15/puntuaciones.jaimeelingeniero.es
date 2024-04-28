@@ -1,26 +1,24 @@
-<ng-container *ngIf="gameHolderService.service.hasFlagActive('roundInfo:gameName')">
-  <span><strong data-test-id="game-name">{{gameHolderService.service.gameName}}</strong></span>
+<ng-container *ngIf="gameService.hasFlagActive('roundInfo:gameName')">
+  <span><strong data-test-id="game-name">{{gameService.gameName}}</strong></span>
   <br>
 </ng-container>
 
-<ng-container *ngIf="!gameHolderService.service.gameHasFinished()">
+<ng-container *ngIf="!gameService.gameHasFinished()">
   <span data-test-id="next-round-number">
-    Ronda: <strong>{{gameHolderService.service.getNextRoundNumber()}}</strong>
+    Ronda: <strong>{{gameService.getNextRoundNumber()}}</strong>
   </span>
 
-  <span data-test-id="player-name-that-deals">
-    <!-- TODO create flag? -->
-    Reparte: <strong>{{gameHolderService.service.getPlayerNameThatDeals()}}</strong>
+  <span data-test-id="player-name-that-deals" *ngIf="gameService.hasFlagActive('roundInfo:dealingPlayer')">
+    Reparte: <strong>{{gameService.getPlayerNameThatDeals()}}</strong>
   </span>
 
-  <span data-test-id="number-of-cards-to-deal-next-round"
-    *ngIf="gameHolderService.service.hasFlagActive('roundInfo:numberOfCards')">
-    Cartas: <strong>{{gameHolderService.service.getNumberOfCardsToDealNextRound()}}</strong>
+  <span data-test-id="number-of-cards-to-deal-next-round" *ngIf="gameService.hasFlagActive('roundInfo:numberOfCards')">
+    Cartas: <strong>{{gameService.getNumberOfCardsToDealNextRound()}}</strong>
   </span>
 
-  <span data-test-id="limit-score" *ngIf="gameHolderService.service.hasFlagActive('roundInfo:limitScore')">
-    Límite: <strong>{{gameHolderService.service.limitScore}}</strong>
+  <span data-test-id="limit-score" *ngIf="gameService.hasFlagActive('roundInfo:limitScore')">
+    Límite: <strong>{{gameService.limitScore}}</strong>
   </span>
 </ng-container>
 
-<span data-test-id="game-has-finished" *ngIf="gameHolderService.service.gameHasFinished()">Fin de la partida</span>
+<span data-test-id="game-has-finished" *ngIf="gameService.gameHasFinished()">Fin de la partida</span>

@@ -1,22 +1,48 @@
 # Round info component
 
+This component gives additional information about the game and the current round.
+
 ![round info](./images/round_info_1.png)
 
 ![round info](./images/round_info_2.png)
 
 ## Flags
 
+### (*6) game:gameStartEnd
+
+Allows to indicate when the game has finished.
+
+**Properties**:
+
+- gameHasFinished: () => boolean
+
+### (*2) game:rounds
+
+Allows to show the next round number.
+
+**Properties**:
+
+- getNextRoundNumber: () => number
+
 ### (*1) roundInfo:gameName
 
-Allows to show the game name.
+If active, shows the game name.
 
 **Properties**:
 
 - gameName: string
 
+### (*3) roundInfo:dealingPlayer
+
+If active, shows the player that deals in next round.
+
+**Properties**:
+
+- getPlayerNameThatDeals: () => string
+
 ### (*4) roundInfo:numberOfCards
 
-Allows to display the number of cards to deal in next round.
+If active, shows the number of cards to deal in next round.
 
 **Properties**:
 
@@ -24,34 +50,12 @@ Allows to display the number of cards to deal in next round.
 
 ### (*5) roundInfo:limitScore
 
-Allows to display the limit score of the game.
+If active, shows the limit score of the game.
 
 **Properties**:
 
 - limitScore: number
 
-## In GameService interface
+## Functional analysis
 
-### (*2) Round number
-
-Displays the round number.
-
-**Properties**:
-
-- getNextRoundNumber(): number
-
-### (*3) Player name that deals
-
-Displays the player name that deals in next round.
-
-**Properties**:
-
-- getPlayerNameThatDeals(): string
-
-### (*6) End game
-
-If true, hides all the other information (except game name if available) and shows that the game is finished.
-
-**Properties**:
-
-- gameHasFinished(): boolean
+When the user clicks the component, it is allowed to edit the configuration.
