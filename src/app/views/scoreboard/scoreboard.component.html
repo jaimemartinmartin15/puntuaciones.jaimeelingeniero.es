@@ -26,7 +26,7 @@
             [attr.style]="gameService.getCellBackgroundColor(gameService.getPlayerScore(playerId, round))">
             <div class="score">
               <span style="visibility: hidden" class="accumulated-score">
-                ({{gameService.getPlayerAccumulatedScoreAtRound(playerId, round)}})
+                ({{gameService.getPlayerAccumulatedScoreAtRound(playerId, round + 1)}})
               </span>
               <span [attr.data-test-id]="'score-player-'+playerId+'-round-'+round">
                 {{gameService.getPlayerScore(playerId, round)}}

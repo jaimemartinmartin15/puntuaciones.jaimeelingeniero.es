@@ -240,13 +240,9 @@ export class PochaService implements GameServiceWithFlags<PochaFlags> {
   public getRankingPlayers(round: number = this.getNextRoundNumber() - 1): number[] {
     const totalScores = this.playerNames.map((_, id) => this.getTotalScore(id, round));
     const maximumReachedScores = this.playerNames.map((_, id) => this.getMaximumReachedScore(id, round));
-    return [...this.playerNames]
-      .sort(
-        (p1, p2) =>
-          totalScores[this.playerNames.indexOf(p2)] - totalScores[this.playerNames.indexOf(p1)] ||
-          maximumReachedScores[this.playerNames.indexOf(p2)] - maximumReachedScores[this.playerNames.indexOf(p1)]
-      )
-      .map((playerName) => this.getPlayerId(playerName));
+    return this.playerNames
+      .map((pn) => this.getPlayerId(pn))
+      .sort((p1, p2) => totalScores[p2] - totalScores[p1] || maximumReachedScores[p2] - maximumReachedScores[p1]);
   }
 
   //#endregion ranking
