@@ -303,6 +303,10 @@ export class PochaService implements GameServiceWithFlags<PochaFlags> {
     return this.scores[playerId][round];
   }
 
+  public getPlayerAccumulatedScoreAtRound(playerId: number, round: number): number {
+    return this.getTotalScore(playerId, round);
+  }
+
   //  getTotalScore: (playerId: number, round?: number) => number -> property already declared by ranking:playerDisplay
 
   public getCellBackgroundColor(score: number): string {

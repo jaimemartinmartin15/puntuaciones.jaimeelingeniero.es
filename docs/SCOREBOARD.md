@@ -21,7 +21,8 @@ Allows to show the scoreboard view and change the scores.
 - **(\*4) (\*5)** enterScoreRoute: RoutingPath
 - **(\*1)** playerNames: string[]
 - **(\*2)** getPlayerScore: (playerId: number, round?: number) => number
-- **(\*3)** **(\*9)** getTotalScore: (playerId: number, round?: number) => number
+- **(\*3)** getPlayerAccumulatedScoreAtRound: (playerId: number, round: number) => number
+- **(\*9)** getTotalScore: (playerId: number, round?: number) => number
 - **(\*5)** getCellBackgroundColor: (score: number) => string
 
 ### scoreboard:specialRounds

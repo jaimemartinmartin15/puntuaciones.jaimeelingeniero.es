@@ -64,6 +64,7 @@ export type FlagMapping = {
     enterScoreRoute: RoutingPath;
     playerNames: string[];
     getPlayerScore: (playerId: number, round?: number) => number;
+    getPlayerAccumulatedScoreAtRound: (playerId: number, round: number) => number;
     getTotalScore: (playerId: number, round?: number) => number;
     getCellBackgroundColor: (score: number) => string;
   };
