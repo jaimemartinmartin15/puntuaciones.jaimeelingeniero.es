@@ -7,7 +7,6 @@ import { GameHolderService } from '../../game-services/game-holder.service';
 import { GameService, GameServiceWithFlags } from '../../game-services/game.service';
 import { enterScoreBaseAnimation } from '../../shared/enter-score/enter-score-base.animation';
 
-// const ENTER_SCORE_FLAGS = ['game:scores', 'game:players', 'game:dealingPlayer', 'game:rounds'] as const; //as Flag[]
 const ENTER_SCORE_FLAGS = ['enterScore'] as const; //as Flag[]
 
 @Component({
