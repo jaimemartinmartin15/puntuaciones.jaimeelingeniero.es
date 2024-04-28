@@ -4,7 +4,7 @@ This component shows at the bottom of game views. Allows to start a new game, sh
 
 ![bottom controls](./images/bottom_controls.png)
 
-**(\*1)** Navigates to [game config view](./GAME_CONFIG.md) to allow start a new game (no edition config mode).
+**(\*1)** Navigates to [game config view](./GAME_CONFIG.md) to start a new game (no edition config mode).
 
 **(\*2)** Shows or hides a pop up with links **(\*4)** that allows to navigate to other views of the game.
 
@@ -14,11 +14,11 @@ This component shows at the bottom of game views. Allows to start a new game, sh
 
 ### (*2) bottomControls:changeViews
 
-If active, shows the button that opens a pop up with links that allow to change to different views of the game. Forces to have a property describing the allowed views **(\*4)**.
+If active, shows the button that opens a pop up with links that allow to change to different views of the game. Forces to have a property describing the allowed views.
 
 **Properties**:
 
-- changeViews: { path: RoutingPath; display: string }[]
+- **(\*4)** changeViews: { path: RoutingPath; display: string }[]
 
 ### (*3) bottomControls:newRound
 

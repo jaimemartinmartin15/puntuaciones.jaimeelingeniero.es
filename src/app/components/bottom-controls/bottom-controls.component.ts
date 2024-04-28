@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { ROUTING_PATHS } from '../../constants/routes';
 import { GameHolderService } from '../../game-services/game-holder.service';
+import { GameService, GameServiceWithFlags } from '../../game-services/game.service';
 
 @Component({
   selector: 'app-bottom-controls',
@@ -12,13 +13,16 @@ import { GameHolderService } from '../../game-services/game-holder.service';
   styleUrls: ['./bottom-controls.component.scss'],
 })
 export class BottomControlsComponent {
+  public gameService: GameService;
   public showViewNavigation: boolean = false;
 
   public constructor(
     private readonly router: Router,
     private readonly activatedRoute: ActivatedRoute,
-    public readonly gameHolderService: GameHolderService
-  ) {}
+    readonly gameHolderService: GameHolderService
+  ) {
+    this.gameService = this.gameHolderService.service;
+  }
 
   public goToGameConfigView() {
     this.router.navigate(['../', ROUTING_PATHS.GAME_CONFIG], { relativeTo: this.activatedRoute });
@@ -26,9 +30,12 @@ export class BottomControlsComponent {
 
   public enterNewRound() {
     let state: { [k: string]: any } = {};
-    if (this.gameHolderService.service.hasFlagActive('bottomControls:newRound:state')) {
-      state = this.gameHolderService.service.getStateEnterNewRound();
+    if (this.gameService.hasFlagActive('bottomControls:newRound:state')) {
+      state = this.gameService.getStateEnterNewRound();
     }
-    this.router.navigate(['../', this.gameHolderService.service.enterScoreRoute], { relativeTo: this.activatedRoute, state });
+    // this method is only invoked when clicking the new round button
+    // and it is only shown if 'bottomControls:newRound' is implemented
+    const gameService = this.gameService as any as GameServiceWithFlags<'bottomControls:newRound'>;
+    this.router.navigate(['../', gameService.enterScoreRoute], { relativeTo: this.activatedRoute, state });
   }
 }
