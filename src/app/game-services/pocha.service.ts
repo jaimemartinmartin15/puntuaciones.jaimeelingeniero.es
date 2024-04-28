@@ -127,18 +127,20 @@ export class PochaService implements GameServiceWithFlags<PochaFlags> {
 
     this.dealingPlayerIndex = this.teamControls.controls[0].value.dealingPlayerIndex;
 
-    const newPlayersAndScores = this.teamControls.controls[0].value.playerNames.map((newName) => {
-      const existingPlayer = this.playerNames.find((pn) => pn === newName.trim());
+    const newPlayersAndScores = this.teamControls.controls[0].value.playerNames
+      .map((n) => n.trim())
+      .map((newName) => {
+        const existingPlayer = this.playerNames.find((pn) => pn === newName);
 
-      if (existingPlayer) {
-        // if it is an existing player, return the same name with existing scores
-        const oldPlayerId = this.getPlayerId(newName);
-        return { playerName: newName, scores: this.scores[oldPlayerId] };
-      }
+        if (existingPlayer) {
+          // if it is an existing player, return the same name with existing scores
+          const oldPlayerId = this.getPlayerId(newName);
+          return { playerName: newName, scores: this.scores[oldPlayerId] };
+        }
 
-      // if it is a new player, return the new name with scores initialized to 0
-      return { playerName: newName, scores: new Array(this.scores[0].length).fill(0) };
-    });
+        // if it is a new player, return the new name with scores initialized to 0
+        return { playerName: newName, scores: new Array(this.scores[0].length).fill(0) };
+      });
 
     this.playerNames = newPlayersAndScores.map((e) => e.playerName);
     this.scores = newPlayersAndScores.map((e) => e.scores);
