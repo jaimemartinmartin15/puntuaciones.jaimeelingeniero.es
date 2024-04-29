@@ -1,5 +1,9 @@
 # CHANGELOG
 
+Flag granulation and refactor. Adapt components and game services.
+
+Added docs with READMEs.
+
 ## 2.0.0
 
 New brisca game available
