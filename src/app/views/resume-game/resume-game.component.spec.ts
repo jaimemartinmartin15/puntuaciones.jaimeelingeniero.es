@@ -3,6 +3,7 @@ import { By } from '@angular/platform-browser';
 import { Router, provideRouter } from '@angular/router';
 import { LOCAL_STORE_KEYS } from '../../constants/local-storage-keys';
 import { ROUTING_PATHS } from '../../constants/routes';
+import { BriscaService } from '../../game-services/brisca.service';
 import { ChinchonService } from '../../game-services/chinchon.service';
 import { GameHolderService } from '../../game-services/game-holder.service';
 import { OtherGameService } from '../../game-services/other-game.service';
@@ -31,6 +32,7 @@ describe('ResumeGameComponent', () => {
         { provide: GameHolderService, useClass: GameHolderService },
         provideGameService(PochaService),
         provideGameService(ChinchonService),
+        provideGameService(BriscaService),
         provideGameService(OtherGameService),
       ],
     });
@@ -39,22 +41,19 @@ describe('ResumeGameComponent', () => {
   });
 
   describe('Pocha game', () => {
-    let service: PochaService;
-
-    const players = [
-      { id: 0, name: 'Player 1', scores: [5, -10], punctuation: 0 },
-      { id: 1, name: 'Player 2', scores: [-10, 5], punctuation: 0 },
-      { id: 2, name: 'Player 3', scores: [5, 10], punctuation: 0 },
-    ];
-
     beforeEach(() => {
       localStorage.setItem(LOCAL_STORE_KEYS.SAVED_GAME_NAME, 'Pocha');
       localStorage.setItem(
         LOCAL_STORE_KEYS.SETTINGS('Pocha'),
         JSON.stringify({
-          dealingPlayerIndex: 1,
           numberOfCards: 36,
-          players,
+          dealingPlayerIndex: 1,
+          playerNames: ['Player 1', 'Player 2', 'Player 3'],
+          scores: [
+            [5, -10],
+            [-10, 5],
+            [5, 10],
+          ],
         })
       );
 
@@ -64,7 +63,7 @@ describe('ResumeGameComponent', () => {
 
     it('should show the game name', () => {
       expect(fixture.debugElement.query(By.css(SELECTORS.GAME_NAME)).nativeElement.textContent).toContain(
-        'Parece que hay una partida de pocha en marcha.'
+        'Parece que hay una partida  de pocha en marcha.'
       );
     });
 
@@ -77,33 +76,35 @@ describe('ResumeGameComponent', () => {
     it('should allow to resume the game', () => {
       fixture.debugElement.query(By.css(SELECTORS.BTN_RESUME_GAME)).nativeElement.click();
 
-      service = gameHolderService.service as PochaService;
-      expect(service.gameName).toBe('Pocha');
-      expect(service.players).toEqual(players);
-      expect(service.dealingPlayerIndex).toEqual(1);
-      expect(service.numberOfCards).toEqual(36);
+      const gameService = gameHolderService.service as any; // * allow to set private variables in services
+      expect(gameService.gameName).toBe('Pocha');
+      expect(gameService.numberOfCards).toEqual(36);
+      expect(gameService.dealingPlayerIndex).toEqual(1);
+      expect(gameService.playerNames).toEqual(['Player 1', 'Player 2', 'Player 3']);
+      expect(gameService.scores).toEqual([
+        [5, -10],
+        [-10, 5],
+        [5, 10],
+      ]);
 
       expect(navigateSpy).toHaveBeenCalledWith(['../', ROUTING_PATHS.RANKING], jasmine.objectContaining({}));
     });
   });
 
   describe('Chinchón game', () => {
-    let service: ChinchonService;
-
-    const players = [
-      { id: 0, name: 'Player 1', scores: [4, 23], punctuation: 0 },
-      { id: 1, name: 'Player 2', scores: [12, 23], punctuation: 0 },
-      { id: 2, name: 'Player 3', scores: [28, 3], punctuation: 0 },
-    ];
-
     beforeEach(() => {
       localStorage.setItem(LOCAL_STORE_KEYS.SAVED_GAME_NAME, 'Chinchón');
       localStorage.setItem(
         LOCAL_STORE_KEYS.SETTINGS('Chinchón'),
         JSON.stringify({
-          dealingPlayerIndex: 2,
           limitScore: 102,
-          players,
+          dealingPlayerIndex: 2,
+          playerNames: ['Player 1', 'Player 2', 'Player 3'],
+          scores: [
+            [4, 23],
+            [12, 23],
+            [28, 3],
+          ],
         })
       );
 
@@ -113,7 +114,7 @@ describe('ResumeGameComponent', () => {
 
     it('should show the game name', () => {
       expect(fixture.debugElement.query(By.css(SELECTORS.GAME_NAME)).nativeElement.textContent).toContain(
-        'Parece que hay una partida de chinchón en marcha.'
+        'Parece que hay una partida  de chinchón en marcha.'
       );
     });
 
@@ -126,33 +127,35 @@ describe('ResumeGameComponent', () => {
     it('should allow to resume the game', () => {
       fixture.debugElement.query(By.css(SELECTORS.BTN_RESUME_GAME)).nativeElement.click();
 
-      service = gameHolderService.service as ChinchonService;
-      expect(service.gameName).toBe('Chinchón');
-      expect(service.players).toEqual(players);
-      expect(service.dealingPlayerIndex).toEqual(2);
-      expect(service.limitScore).toEqual(102);
+      const gameService = gameHolderService.service as any; // * allow to set private variables in services
+      expect(gameService.gameName).toBe('Chinchón');
+      expect(gameService.limitScore).toEqual(102);
+      expect(gameService.dealingPlayerIndex).toEqual(2);
+      expect(gameService.playerNames).toEqual(['Player 1', 'Player 2', 'Player 3']);
+      expect(gameService.scores).toEqual([
+        [4, 23],
+        [12, 23],
+        [28, 3],
+      ]);
 
-      expect(navigateSpy).toHaveBeenCalledWith(['../', ROUTING_PATHS.RANKING], jasmine.objectContaining({}));
+      expect(navigateSpy).toHaveBeenCalledWith(['../', ROUTING_PATHS.SCOREBOARD], jasmine.objectContaining({}));
     });
   });
 
   describe('Other game', () => {
-    let service: OtherGameService;
-
-    const players = [
-      { id: 0, name: 'Player 1', scores: [4, 23], punctuation: 0 },
-      { id: 1, name: 'Player 2', scores: [12, 23], punctuation: 0 },
-      { id: 2, name: 'Player 3', scores: [28, 3], punctuation: 0 },
-    ];
-
     beforeEach(() => {
       localStorage.setItem(LOCAL_STORE_KEYS.SAVED_GAME_NAME, 'Otro juego');
       localStorage.setItem(
         LOCAL_STORE_KEYS.SETTINGS('Otro juego'),
         JSON.stringify({
-          dealingPlayerIndex: 0,
           winner: 'lowestScore',
-          players,
+          dealingPlayerIndex: 0,
+          playerNames: ['Player 1', 'Player 2', 'Player 3'],
+          scores: [
+            [4, 23],
+            [12, 23],
+            [28, 3],
+          ],
         })
       );
 
@@ -173,13 +176,63 @@ describe('ResumeGameComponent', () => {
     it('should allow to resume the game', () => {
       fixture.debugElement.query(By.css(SELECTORS.BTN_RESUME_GAME)).nativeElement.click();
 
-      service = gameHolderService.service as OtherGameService;
-      expect(service.gameName).toBe('Otro juego');
-      expect(service.players).toEqual(players);
-      expect(service.dealingPlayerIndex).toEqual(0);
-      expect(service.winner).toEqual('lowestScore');
+      const gameService = gameHolderService.service as any; // * allow to set private variables in services
+      expect(gameService.gameName).toBe('Otro juego');
+      expect(gameService.winner).toEqual('lowestScore');
+      expect(gameService.dealingPlayerIndex).toEqual(0);
+      expect(gameService.playerNames).toEqual(['Player 1', 'Player 2', 'Player 3']);
+      expect(gameService.scores).toEqual([
+        [4, 23],
+        [12, 23],
+        [28, 3],
+      ]);
 
       expect(navigateSpy).toHaveBeenCalledWith(['../', ROUTING_PATHS.RANKING], jasmine.objectContaining({}));
+    });
+  });
+
+  describe('Brisca game', () => {
+    beforeEach(() => {
+      localStorage.setItem(LOCAL_STORE_KEYS.SAVED_GAME_NAME, 'Brisca');
+      localStorage.setItem(
+        LOCAL_STORE_KEYS.SETTINGS('Brisca'),
+        JSON.stringify({
+          modality: 'teams',
+          scores: [4, 6],
+          teamNames: ['Us', 'Them'],
+          playerNames: ['Player 1', 'Player 2', 'Player 3', 'Player 4', 'Player 5', 'Player 6'],
+          dealingPlayerIndex: 0,
+        })
+      );
+
+      fixture = TestBed.createComponent(ResumeGameComponent);
+      component = fixture.componentInstance;
+    });
+
+    it('should not show the game name', () => {
+      expect(fixture.debugElement.query(By.css(SELECTORS.GAME_NAME)).nativeElement.textContent).toContain(
+        'Parece que hay una partida  de brisca en marcha.'
+      );
+    });
+
+    it('should allow to cancel the current game', () => {
+      fixture.debugElement.query(By.css(SELECTORS.BTN_DO_NOT_RESUME_GAME)).nativeElement.click();
+
+      expect(navigateSpy).toHaveBeenCalledWith(['../', ROUTING_PATHS.GAME_CONFIG], jasmine.objectContaining({}));
+    });
+
+    it('should allow to resume the game', () => {
+      fixture.debugElement.query(By.css(SELECTORS.BTN_RESUME_GAME)).nativeElement.click();
+
+      const gameService = gameHolderService.service as any; // * allow to set private variables in services
+      expect(gameService.gameName).toBe('Brisca');
+      expect(gameService.modality).toEqual('teams');
+      expect(gameService.scores).toEqual([4, 6]);
+      expect(gameService.teamNames).toEqual(['Us', 'Them']);
+      expect(gameService.playerNames).toEqual(['Player 1', 'Player 2', 'Player 3', 'Player 4', 'Player 5', 'Player 6']);
+      expect(gameService.dealingPlayerIndex).toEqual(0);
+
+      expect(navigateSpy).toHaveBeenCalledWith(['../', ROUTING_PATHS.BRISCA], jasmine.objectContaining({}));
     });
   });
 });
