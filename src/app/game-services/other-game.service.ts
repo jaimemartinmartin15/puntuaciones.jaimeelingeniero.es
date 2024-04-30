@@ -191,7 +191,7 @@ export class OtherGameService implements GameServiceWithFlags<OtherGameFlags> {
   public getStateEnterNewRound(): EnterScoreInput {
     return {
       playerNames: this.playerNames,
-      punctuations: this.scores.map(() => 0),
+      punctuations: this.playerNames.map(() => 0),
       roundNumber: this.getNextRoundNumber(),
     };
   }

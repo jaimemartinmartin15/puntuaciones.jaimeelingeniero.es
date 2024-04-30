@@ -32,9 +32,9 @@ const SELECTORS = {
 } as const;
 
 describe('EnterScoreComponent', () => {
-  let fixture: ComponentFixture<EnterScoreComponent>;
-  let gameHolderService: GameHolderService;
   let locationBackSpy: jasmine.Spy;
+  let fixture: ComponentFixture<EnterScoreComponent>;
+  let gameService: any; // * allow to set private variables in services
 
   beforeEach(() => {
     localStorage.clear();
@@ -52,22 +52,27 @@ describe('EnterScoreComponent', () => {
           provideGameService(OtherGameService),
         ],
       });
-      const players = [
-        { id: 0, name: 'Player 1', scores: [1, 50, 3], punctuation: 5 },
-        { id: 1, name: 'Player 2', scores: [2, 30, 42], punctuation: 1 },
-        { id: 2, name: 'Player 3', scores: [10, 2, 34], punctuation: 0 },
-      ];
+
       spyOn(TestBed.inject(Router), 'getCurrentNavigation').and.returnValue({
         extras: {
           state: {
+            playerNames: ['Player 1', 'Player 2', 'Player 3'],
+            punctuations: [8, 0, 0],
             roundNumber: 4,
-            players,
           },
         },
       } as unknown as Navigation);
+
       locationBackSpy = spyOn(TestBed.inject(Location), 'back');
-      gameHolderService = TestBed.inject(GameHolderService);
-      gameHolderService.service.players = players;
+
+      gameService = TestBed.inject(GameHolderService).service;
+      gameService.playerNames = ['Player 1', 'Player 2', 'Player 3'];
+      gameService.scores = [
+        [1, 50, 3],
+        [2, 30, 42],
+        [10, 2, 34],
+      ];
+
       fixture = TestBed.createComponent(EnterScoreComponent);
       fixture.detectChanges();
     });
@@ -77,13 +82,13 @@ describe('EnterScoreComponent', () => {
       const nextButton = fixture.debugElement.query(By.css(SELECTORS.KB_BTN_NEXT)).nativeElement;
       let playerName = fixture.debugElement.query(By.css(SELECTORS.PLAYER_NAME)).nativeElement;
       let playerPunctuation = fixture.debugElement.query(By.css(SELECTORS.PLAYER_PUNCTUATION)).nativeElement;
-      const dealingPlayerIndex = gameHolderService.service.dealingPlayerIndex;
+      const dealingPlayerIndex = gameService.dealingPlayerIndex;
 
       expect(fixture.debugElement.query(By.css(SELECTORS.ROUND_NUMBER)).nativeElement.textContent).toEqual('Ronda 4');
 
       expect(prevButton.disabled).toBeTrue();
       expect(playerName.textContent).toContain('Player 1');
-      expect(playerPunctuation.textContent).toContain('5');
+      expect(playerPunctuation.textContent).toContain('8');
 
       nextButton.click();
       expect(prevButton.disabled).toBeFalse();
@@ -91,7 +96,7 @@ describe('EnterScoreComponent', () => {
       playerName = fixture.debugElement.query(By.css(SELECTORS.PLAYER_NAME)).nativeElement;
       expect(playerName.textContent).toContain('Player 2');
       playerPunctuation = fixture.debugElement.query(By.css(SELECTORS.PLAYER_PUNCTUATION)).nativeElement;
-      expect(playerPunctuation.textContent).toContain('1');
+      expect(playerPunctuation.textContent).toContain('0');
 
       nextButton.click();
       expect(nextButton.textContent).toContain('✔️');
@@ -116,7 +121,7 @@ describe('EnterScoreComponent', () => {
 
       nextButton.click();
       expect(locationBackSpy).toHaveBeenCalled();
-      expect(dealingPlayerIndex + 1).toBe(gameHolderService.service.dealingPlayerIndex);
+      expect(dealingPlayerIndex + 1).toBe(gameService.dealingPlayerIndex);
       expect(localStorage.getItem(LOCAL_STORE_KEYS.SETTINGS('Otro juego'))).not.toBeNull();
     });
   });
@@ -133,22 +138,27 @@ describe('EnterScoreComponent', () => {
           provideGameService(PochaService),
         ],
       });
-      const players = [
-        { id: 0, name: 'Player 1', scores: [1, 50, 3], punctuation: 50 },
-        { id: 1, name: 'Player 2', scores: [2, 30, 42], punctuation: 30 },
-        { id: 2, name: 'Player 3', scores: [10, 2, 34], punctuation: 2 },
-      ];
+
       spyOn(TestBed.inject(Router), 'getCurrentNavigation').and.returnValue({
         extras: {
           state: {
+            playerNames: ['Player 1', 'Player 2', 'Player 3'],
+            punctuations: [50, 30, 2],
             roundNumber: 2,
-            players,
           },
         },
       } as unknown as Navigation);
+
       locationBackSpy = spyOn(TestBed.inject(Location), 'back');
-      gameHolderService = TestBed.inject(GameHolderService);
-      gameHolderService.service.players = players;
+
+      gameService = TestBed.inject(GameHolderService).service;
+      gameService.playerNames = ['Player 1', 'Player 2', 'Player 3'];
+      gameService.scores = [
+        [1, 50, 3],
+        [2, 30, 42],
+        [10, 2, 34],
+      ];
+
       fixture = TestBed.createComponent(EnterScoreComponent);
       fixture.detectChanges();
     });
@@ -158,7 +168,7 @@ describe('EnterScoreComponent', () => {
       const nextButton = fixture.debugElement.query(By.css(SELECTORS.KB_BTN_NEXT)).nativeElement;
       let playerName = fixture.debugElement.query(By.css(SELECTORS.PLAYER_NAME)).nativeElement;
       let playerPunctuation = fixture.debugElement.query(By.css(SELECTORS.PLAYER_PUNCTUATION)).nativeElement;
-      const dealingPlayerIndex = gameHolderService.service.dealingPlayerIndex;
+      const dealingPlayerIndex = gameService.dealingPlayerIndex;
 
       expect(fixture.debugElement.query(By.css(SELECTORS.ROUND_NUMBER)).nativeElement.textContent).toEqual('Ronda 2');
 
@@ -184,8 +194,8 @@ describe('EnterScoreComponent', () => {
       nextButton.click();
       expect(locationBackSpy).toHaveBeenCalled();
 
-      expect(gameHolderService.service.players[2].scores[1]).toBe(2);
-      expect(dealingPlayerIndex).toBe(gameHolderService.service.dealingPlayerIndex);
+      expect(gameService.scores[2][1]).toBe(2);
+      expect(dealingPlayerIndex).toBe(gameService.dealingPlayerIndex);
       expect(localStorage.getItem(LOCAL_STORE_KEYS.SETTINGS('Pocha'))).not.toBeNull();
     });
   });
@@ -202,22 +212,27 @@ describe('EnterScoreComponent', () => {
           provideGameService(PochaService),
         ],
       });
-      const players = [
-        { id: 0, name: 'Player 1', scores: [1, 50, 3], punctuation: 7 },
-        { id: 1, name: 'Player 2', scores: [2, 30, 42], punctuation: 2 },
-        { id: 2, name: 'Player 3', scores: [10, 2, 34], punctuation: 9 },
-      ];
+
       spyOn(TestBed.inject(Router), 'getCurrentNavigation').and.returnValue({
         extras: {
           state: {
+            playerNames: ['Player 2'],
+            punctuations: [2],
             roundNumber: 1,
-            players: [players[1]],
           },
         },
       } as unknown as Navigation);
+
       locationBackSpy = spyOn(TestBed.inject(Location), 'back');
-      gameHolderService = TestBed.inject(GameHolderService);
-      gameHolderService.service.players = players;
+
+      gameService = TestBed.inject(GameHolderService).service;
+      gameService.playerNames = ['Player 1', 'Player 2', 'Player 3'];
+      gameService.scores = [
+        [1, 50, 3],
+        [2, 30, 42],
+        [10, 2, 34],
+      ];
+
       fixture = TestBed.createComponent(EnterScoreComponent);
       fixture.detectChanges();
     });
@@ -226,10 +241,11 @@ describe('EnterScoreComponent', () => {
       const nextButton = fixture.debugElement.query(By.css(SELECTORS.KB_BTN_NEXT)).nativeElement;
       let playerName = fixture.debugElement.query(By.css(SELECTORS.PLAYER_NAME)).nativeElement;
       let playerPunctuation = fixture.debugElement.query(By.css(SELECTORS.PLAYER_PUNCTUATION)).nativeElement;
-      const dealingPlayerIndex = gameHolderService.service.dealingPlayerIndex;
+      const dealingPlayerIndex = gameService.dealingPlayerIndex;
 
       expect(playerName.textContent).toContain('Player 2');
       expect(playerPunctuation.textContent).toContain('2');
+      expect(gameService.scores[1][0]).toBe(2);
 
       fixture.debugElement.query(By.css(SELECTORS.KB_BTN_6)).nativeElement.click();
       fixture.debugElement.query(By.css(SELECTORS.KB_BTN_SIGN)).nativeElement.click();
@@ -244,9 +260,9 @@ describe('EnterScoreComponent', () => {
       nextButton.click();
       expect(locationBackSpy).toHaveBeenCalled();
 
-      expect(gameHolderService.service.players[1].scores[0]).toBe(84);
+      expect(gameService.scores[1][0]).toBe(84);
       expect(localStorage.getItem(LOCAL_STORE_KEYS.SETTINGS('Pocha'))).not.toBeNull();
-      expect(dealingPlayerIndex).toBe(gameHolderService.service.dealingPlayerIndex);
+      expect(dealingPlayerIndex).toBe(gameService.dealingPlayerIndex);
     });
 
     it('should allow to cancel without saving changes', () => {

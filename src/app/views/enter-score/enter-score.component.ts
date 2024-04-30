@@ -103,15 +103,15 @@ export class EnterScoreComponent {
   }
 
   private finishEnterScore() {
-    this.playerNames.forEach((playerName, playerIndex) =>
-      this.gameService.setPlayerScore(this.gameService.getPlayerId(playerName), this.roundNumber - 1, this.punctuations[playerIndex])
-    );
-
     // change the player that deals only if it is a new round (not edition of previous score)
     if (this.roundNumber === this.gameService.getNextRoundNumber()) {
       // TODO create enterScore:dealingPlayer flag for this?
       this.gameService.setNextDealingPlayer();
     }
+
+    this.playerNames.forEach((playerName, playerIndex) =>
+      this.gameService.setPlayerScore(this.gameService.getPlayerId(playerName), this.roundNumber - 1, this.punctuations[playerIndex])
+    );
 
     if (this.gameService.hasFlagActive('game:localStorageSave')) {
       this.gameService.saveStateToLocalStorage();
