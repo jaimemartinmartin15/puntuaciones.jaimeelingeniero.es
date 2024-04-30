@@ -11,11 +11,9 @@ import { RankingComponent } from './ranking.component';
 describe('RankingComponent', () => {
   let component: RankingComponent;
   let fixture: ComponentFixture<RankingComponent>;
-  let gameHolderService: GameHolderService;
+  let gameService: any; // * allow to set private variables in services
 
   describe('Pocha game', () => {
-    let service: PochaService;
-
     beforeEach(() => {
       TestBed.configureTestingModule({
         imports: [RankingComponent],
@@ -26,12 +24,12 @@ describe('RankingComponent', () => {
           provideGameService(PochaService),
         ],
       });
-      gameHolderService = TestBed.inject(GameHolderService);
-      service = gameHolderService.service as PochaService;
+      gameService = TestBed.inject(GameHolderService).service;
     });
 
     it('should show message when game has no started', () => {
-      service.players = [{ id: 0, name: 'Player 1', scores: [], punctuation: 0 }];
+      gameService.playerNames = ['Player 1'];
+      gameService.scores = [[]];
       fixture = TestBed.createComponent(RankingComponent);
       component = fixture.componentInstance;
 
@@ -40,12 +38,8 @@ describe('RankingComponent', () => {
     });
 
     it('should show the list of players after first round entered', () => {
-      service.players = [
-        { id: 0, name: 'Player 1', scores: [5], punctuation: 0 },
-        { id: 1, name: 'Player 2', scores: [10], punctuation: 0 },
-        { id: 2, name: 'Player 3', scores: [-10], punctuation: 0 },
-        { id: 3, name: 'Player 4', scores: [5], punctuation: 0 },
-      ];
+      gameService.playerNames = ['Player 1', 'Player 2', 'Player 3', 'Player 4'];
+      gameService.scores = [[5], [10], [-10], [5]];
       fixture = TestBed.createComponent(RankingComponent);
       component = fixture.componentInstance;
 
@@ -63,8 +57,6 @@ describe('RankingComponent', () => {
   });
 
   describe('Chinchón game', () => {
-    let service: ChinchonService;
-
     beforeEach(() => {
       TestBed.configureTestingModule({
         imports: [RankingComponent],
@@ -75,12 +67,12 @@ describe('RankingComponent', () => {
           provideGameService(ChinchonService),
         ],
       });
-      gameHolderService = TestBed.inject(GameHolderService);
-      service = gameHolderService.service as ChinchonService;
+      gameService = TestBed.inject(GameHolderService).service;
     });
 
     it('should show message when game has no started', () => {
-      service.players = [{ id: 0, name: 'Player 1', scores: [], punctuation: 0 }];
+      gameService.playerNames = ['Player 1'];
+      gameService.scores = [[]];
       fixture = TestBed.createComponent(RankingComponent);
       component = fixture.componentInstance;
 
@@ -89,12 +81,9 @@ describe('RankingComponent', () => {
     });
 
     it('should show the list of players after first round entered', () => {
-      service.players = [
-        { id: 0, name: 'Player 1', scores: [4], punctuation: 0 },
-        { id: 1, name: 'Player 2', scores: [26], punctuation: 0 },
-        { id: 2, name: 'Player 3', scores: [11], punctuation: 0 },
-        { id: 3, name: 'Player 4', scores: [15], punctuation: 0 },
-      ];
+      gameService.playerNames = ['Player 1', 'Player 2', 'Player 3', 'Player 4'];
+      gameService.scores = [[4], [26], [11], [15]];
+
       fixture = TestBed.createComponent(RankingComponent);
       component = fixture.componentInstance;
 
@@ -112,8 +101,6 @@ describe('RankingComponent', () => {
   });
 
   describe('Other game', () => {
-    let service: OtherGameService;
-
     beforeEach(() => {
       TestBed.configureTestingModule({
         imports: [RankingComponent],
@@ -124,12 +111,12 @@ describe('RankingComponent', () => {
           provideGameService(OtherGameService),
         ],
       });
-      gameHolderService = TestBed.inject(GameHolderService);
-      service = gameHolderService.service as OtherGameService;
+      gameService = TestBed.inject(GameHolderService).service;
     });
 
     it('should show message when game has no started', () => {
-      service.players = [{ id: 0, name: 'Player 1', scores: [], punctuation: 0 }];
+      gameService.playerNames = ['Player 1'];
+      gameService.scores = [[]];
       fixture = TestBed.createComponent(RankingComponent);
       component = fixture.componentInstance;
 
@@ -138,13 +125,10 @@ describe('RankingComponent', () => {
     });
 
     it('should show the list of players after first round entered (winner highest score)', () => {
-      service.players = [
-        { id: 0, name: 'Player 1', scores: [20], punctuation: 0 },
-        { id: 1, name: 'Player 2', scores: [35], punctuation: 0 },
-        { id: 2, name: 'Player 3', scores: [46], punctuation: 0 },
-        { id: 3, name: 'Player 4', scores: [12], punctuation: 0 },
-      ];
-      service.winner = 'highestScore';
+      gameService.playerNames = ['Player 1', 'Player 2', 'Player 3', 'Player 4'];
+      gameService.scores = [[20], [35], [46], [12]];
+
+      gameService.winner = 'highestScore';
       fixture = TestBed.createComponent(RankingComponent);
       component = fixture.componentInstance;
 
@@ -161,13 +145,10 @@ describe('RankingComponent', () => {
     });
 
     it('should show the list of players after first round entered (winner lowest score)', () => {
-      service.players = [
-        { id: 0, name: 'Player 1', scores: [20], punctuation: 0 },
-        { id: 1, name: 'Player 2', scores: [35], punctuation: 0 },
-        { id: 2, name: 'Player 3', scores: [46], punctuation: 0 },
-        { id: 3, name: 'Player 4', scores: [12], punctuation: 0 },
-      ];
-      service.winner = 'lowestScore';
+      gameService.playerNames = ['Player 1', 'Player 2', 'Player 3', 'Player 4'];
+      gameService.scores = [[20], [35], [46], [12]];
+
+      gameService.winner = 'lowestScore';
       fixture = TestBed.createComponent(RankingComponent);
       component = fixture.componentInstance;
 
