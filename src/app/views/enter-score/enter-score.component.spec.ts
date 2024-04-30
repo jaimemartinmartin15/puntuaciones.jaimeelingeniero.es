@@ -53,18 +53,6 @@ describe('EnterScoreComponent', () => {
         ],
       });
 
-      spyOn(TestBed.inject(Router), 'getCurrentNavigation').and.returnValue({
-        extras: {
-          state: {
-            playerNames: ['Player 1', 'Player 2', 'Player 3'],
-            punctuations: [8, 0, 0],
-            roundNumber: 4,
-          },
-        },
-      } as unknown as Navigation);
-
-      locationBackSpy = spyOn(TestBed.inject(Location), 'back');
-
       gameService = TestBed.inject(GameHolderService).service;
       gameService.playerNames = ['Player 1', 'Player 2', 'Player 3'];
       gameService.scores = [
@@ -72,6 +60,14 @@ describe('EnterScoreComponent', () => {
         [2, 30, 42],
         [10, 2, 34],
       ];
+
+      spyOn(TestBed.inject(Router), 'getCurrentNavigation').and.returnValue({
+        extras: {
+          state: gameService.getStateEnterNewRound(),
+        },
+      } as unknown as Navigation);
+
+      locationBackSpy = spyOn(TestBed.inject(Location), 'back');
 
       fixture = TestBed.createComponent(EnterScoreComponent);
       fixture.detectChanges();
@@ -88,7 +84,7 @@ describe('EnterScoreComponent', () => {
 
       expect(prevButton.disabled).toBeTrue();
       expect(playerName.textContent).toContain('Player 1');
-      expect(playerPunctuation.textContent).toContain('8');
+      expect(playerPunctuation.textContent).toContain('0');
 
       nextButton.click();
       expect(prevButton.disabled).toBeFalse();
@@ -102,9 +98,10 @@ describe('EnterScoreComponent', () => {
       expect(nextButton.textContent).toContain('✔️');
       playerName = fixture.debugElement.query(By.css(SELECTORS.PLAYER_NAME)).nativeElement;
       expect(playerName.textContent).toContain('Player 3');
+      playerPunctuation = fixture.debugElement.query(By.css(SELECTORS.PLAYER_PUNCTUATION)).nativeElement;
+      expect(playerPunctuation.textContent).toContain('0');
       fixture.debugElement.query(By.css(SELECTORS.KB_BTN_3)).nativeElement.click();
       fixture.debugElement.query(By.css(SELECTORS.KB_BTN_6)).nativeElement.click();
-      playerPunctuation = fixture.debugElement.query(By.css(SELECTORS.PLAYER_PUNCTUATION)).nativeElement;
       expect(playerPunctuation.textContent).toContain('36');
 
       fixture.debugElement.query(By.css(SELECTORS.KB_BTN_SIGN)).nativeElement.click();
