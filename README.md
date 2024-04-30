@@ -75,8 +75,6 @@ To solve this follow these steps:
 - Commit changes.
 - Try to deploy again.
 
-, you can a Run the workflow manually in the branch you are working on. Pull the changes and compare yourself the results. Deactivate the flag again in [angular.json](angular.json). Commit the new screenshots and remove the results added in the workflow.
-
 ## Deploy
 
 After doing the changes in your branch, increase the [package.json](./package.json) version and then run `npm i` to update the package-lock.json
