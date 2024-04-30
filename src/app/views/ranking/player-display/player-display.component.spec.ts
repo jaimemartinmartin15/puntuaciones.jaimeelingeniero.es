@@ -19,11 +19,9 @@ const SELECTORS = {
 
 describe('PlayerDisplayComponent', () => {
   let fixture: ComponentFixture<PlayerDisplayComponent>;
-  let gameHolderService: GameHolderService;
+  let gameService: any; // * allow to set private variables in services
 
   describe('Pocha game', () => {
-    let service: PochaService;
-
     beforeEach(() => {
       TestBed.configureTestingModule({
         imports: [PlayerDisplayComponent],
@@ -34,16 +32,16 @@ describe('PlayerDisplayComponent', () => {
           provideGameService(PochaService),
         ],
       });
-      gameHolderService = TestBed.inject(GameHolderService);
-      service = gameHolderService.service as PochaService;
+      gameService = TestBed.inject(GameHolderService).service;
     });
 
     it('should show the position number and medal with proper css class', () => {
-      service.players = [
-        { id: 0, name: 'Player 1', scores: [-10, -10], punctuation: 0 },
-        { id: 1, name: 'Player 2', scores: [5, 5], punctuation: 0 },
-        { id: 2, name: 'Player 3', scores: [10, 5], punctuation: 0 },
-        { id: 3, name: 'Player 4', scores: [5, -10], punctuation: 0 },
+      gameService.playerNames = ['Player 1', 'Player 2', 'Player 3', 'Player 4'];
+      gameService.scores = [
+        [-10, -10],
+        [5, 5],
+        [10, 5],
+        [5, -10],
       ];
       fixture = TestBed.createComponent(PlayerDisplayComponent);
 
@@ -69,11 +67,12 @@ describe('PlayerDisplayComponent', () => {
     });
 
     it('should show the player name and total score', () => {
-      service.players = [
-        { id: 0, name: 'Player 1', scores: [-10, -10], punctuation: 0 },
-        { id: 1, name: 'Player 2', scores: [5, 5], punctuation: 0 },
-        { id: 2, name: 'Player 3', scores: [10, 5], punctuation: 0 },
-        { id: 3, name: 'Player 4', scores: [5, -10], punctuation: 0 },
+      gameService.playerNames = ['Player 1', 'Player 2', 'Player 3', 'Player 4'];
+      gameService.scores = [
+        [-10, -10],
+        [5, 5],
+        [10, 5],
+        [5, -10],
       ];
       fixture = TestBed.createComponent(PlayerDisplayComponent);
 
@@ -84,11 +83,12 @@ describe('PlayerDisplayComponent', () => {
 
     it('should show the last round score and navigate to enter score pocha when clicking the number', () => {
       const navigateSpy = spyOn(TestBed.inject(Router), 'navigate');
-      service.players = [
-        { id: 0, name: 'Player 1', scores: [5, 10], punctuation: 0 },
-        { id: 1, name: 'Player 2', scores: [10, -10], punctuation: 0 },
-        { id: 2, name: 'Player 3', scores: [-10, 5], punctuation: 0 },
-        { id: 3, name: 'Player 4', scores: [5, 5], punctuation: 0 },
+      gameService.playerNames = ['Player 1', 'Player 2', 'Player 3', 'Player 4'];
+      gameService.scores = [
+        [5, 10],
+        [10, -10],
+        [-10, 5],
+        [5, 5],
       ];
       fixture = TestBed.createComponent(PlayerDisplayComponent);
 
@@ -106,17 +106,22 @@ describe('PlayerDisplayComponent', () => {
       expect(navigateSpy).toHaveBeenCalledWith(
         ['../', ROUTING_PATHS.ENTER_SCORE_POCHA],
         jasmine.objectContaining({
-          state: { players: [{ id: 2, name: 'Player 3', scores: [-10, 5], punctuation: 5 }], roundNumber: 2 },
+          state: {
+            playerNames: ['Player 3'],
+            punctuations: [5],
+            roundNumber: 2,
+          },
         })
       );
     });
 
     it('should show maximum reached score', () => {
-      service.players = [
-        { id: 0, name: 'Player 1', scores: [5, 10], punctuation: 0 },
-        { id: 1, name: 'Player 2', scores: [10, -10], punctuation: 0 },
-        { id: 2, name: 'Player 3', scores: [-10, 5], punctuation: 0 },
-        { id: 3, name: 'Player 4', scores: [5, -10], punctuation: 0 },
+      gameService.playerNames = ['Player 1', 'Player 2', 'Player 3', 'Player 4'];
+      gameService.scores = [
+        [5, 10],
+        [10, -10],
+        [-10, 5],
+        [5, -10],
       ];
       fixture = TestBed.createComponent(PlayerDisplayComponent);
 
@@ -130,7 +135,8 @@ describe('PlayerDisplayComponent', () => {
     });
 
     it('should not show number of rejoins', () => {
-      service.players = [{ id: 0, name: 'Player 1', scores: [5, 10], punctuation: 0 }];
+      gameService.playerNames = ['Player 1'];
+      gameService.scores = [[5, 10]];
       fixture = TestBed.createComponent(PlayerDisplayComponent);
 
       fixture.componentInstance.playerId = 0;
@@ -140,8 +146,6 @@ describe('PlayerDisplayComponent', () => {
   });
 
   describe('Chinchón game', () => {
-    let service: ChinchonService;
-
     beforeEach(() => {
       TestBed.configureTestingModule({
         imports: [PlayerDisplayComponent],
@@ -152,17 +156,12 @@ describe('PlayerDisplayComponent', () => {
           provideGameService(ChinchonService),
         ],
       });
-      gameHolderService = TestBed.inject(GameHolderService);
-      service = gameHolderService.service as ChinchonService;
+      gameService = TestBed.inject(GameHolderService).service;
     });
 
     it('should show the position number and medal with proper css class', () => {
-      service.players = [
-        { id: 0, name: 'Player 1', scores: [2], punctuation: 0 },
-        { id: 1, name: 'Player 2', scores: [15], punctuation: 0 },
-        { id: 2, name: 'Player 3', scores: [7], punctuation: 0 },
-        { id: 3, name: 'Player 4', scores: [15], punctuation: 0 },
-      ];
+      gameService.playerNames = ['Player 1', 'Player 2', 'Player 3', 'Player 4'];
+      gameService.scores = [[2], [15], [7], [15]];
       fixture = TestBed.createComponent(PlayerDisplayComponent);
 
       fixture.componentInstance.playerId = 0;
@@ -187,13 +186,14 @@ describe('PlayerDisplayComponent', () => {
     });
 
     it('should show the player name and total score', () => {
-      service.players = [
-        { id: 0, name: 'Player 1', scores: [1, 1, 1], punctuation: 0 },
-        { id: 1, name: 'Player 2', scores: [2, 1, 10], punctuation: 0 },
-        { id: 2, name: 'Player 3', scores: [3, 6, 1], punctuation: 0 },
-        { id: 3, name: 'Player 4', scores: [12, 8, 2], punctuation: 0 },
+      gameService.playerNames = ['Player 1', 'Player 2', 'Player 3', 'Player 4'];
+      gameService.scores = [
+        [1, 1, 1],
+        [2, 1, 10],
+        [3, 6, 1],
+        [12, 8, 2],
       ];
-      service.limitScore = 10;
+      gameService.limitScore = 10;
       fixture = TestBed.createComponent(PlayerDisplayComponent);
 
       fixture.componentInstance.playerId = 0;
@@ -207,11 +207,12 @@ describe('PlayerDisplayComponent', () => {
 
     it('should show the last round score and navigate to enter score when clicking the number', () => {
       const navigateSpy = spyOn(TestBed.inject(Router), 'navigate');
-      service.players = [
-        { id: 0, name: 'Player 1', scores: [1, 1, 1], punctuation: 0 },
-        { id: 1, name: 'Player 2', scores: [2, 1, 10], punctuation: 0 },
-        { id: 2, name: 'Player 3', scores: [3, 6, 1], punctuation: 0 },
-        { id: 3, name: 'Player 4', scores: [12, 8, 2], punctuation: 0 },
+      gameService.playerNames = ['Player 1', 'Player 2', 'Player 3', 'Player 4'];
+      gameService.scores = [
+        [1, 1, 1],
+        [2, 1, 10],
+        [3, 6, 1],
+        [12, 8, 2],
       ];
       fixture = TestBed.createComponent(PlayerDisplayComponent);
 
@@ -225,13 +226,18 @@ describe('PlayerDisplayComponent', () => {
       expect(navigateSpy).toHaveBeenCalledWith(
         ['../', ROUTING_PATHS.ENTER_SCORE],
         jasmine.objectContaining({
-          state: { players: [{ id: 3, name: 'Player 4', scores: [12, 8, 2], punctuation: 2 }], roundNumber: 3 },
+          state: {
+            playerNames: ['Player 4'],
+            punctuations: [2],
+            roundNumber: 3,
+          },
         })
       );
     });
 
     it('should not show maximum reached score', () => {
-      service.players = [{ id: 0, name: 'Player 1', scores: [5, 10], punctuation: 0 }];
+      gameService.playerNames = ['Player 1'];
+      gameService.scores = [[5, 10]];
       fixture = TestBed.createComponent(PlayerDisplayComponent);
 
       fixture.componentInstance.playerId = 0;
@@ -240,13 +246,14 @@ describe('PlayerDisplayComponent', () => {
     });
 
     it('should show the number of rejoins', () => {
-      service.players = [
-        { id: 0, name: 'Player 1', scores: [1, 1, 1], punctuation: 0 },
-        { id: 1, name: 'Player 2', scores: [2, 1, 10], punctuation: 0 },
-        { id: 2, name: 'Player 3', scores: [3, 6, 1], punctuation: 0 },
-        { id: 3, name: 'Player 4', scores: [12, 8, 2], punctuation: 0 },
+      gameService.playerNames = ['Player 1', 'Player 2', 'Player 3', 'Player 4'];
+      gameService.scores = [
+        [1, 1, 1],
+        [2, 1, 10],
+        [3, 6, 1],
+        [12, 8, 2],
       ];
-      service.limitScore = 10;
+      gameService.limitScore = 10;
       fixture = TestBed.createComponent(PlayerDisplayComponent);
 
       fixture.componentInstance.playerId = 0;
@@ -268,8 +275,6 @@ describe('PlayerDisplayComponent', () => {
   });
 
   describe('Other game', () => {
-    let service: OtherGameService;
-
     beforeEach(() => {
       TestBed.configureTestingModule({
         imports: [PlayerDisplayComponent],
@@ -280,18 +285,18 @@ describe('PlayerDisplayComponent', () => {
           provideGameService(OtherGameService),
         ],
       });
-      gameHolderService = TestBed.inject(GameHolderService);
-      service = gameHolderService.service as OtherGameService;
+      gameService = TestBed.inject(GameHolderService).service;
     });
 
     it('should show the position number and medal with proper css class', () => {
-      service.players = [
-        { id: 0, name: 'Player 1', scores: [15, 8, 9, 12], punctuation: 0 },
-        { id: 1, name: 'Player 2', scores: [2, 19, 3, 8], punctuation: 0 },
-        { id: 2, name: 'Player 3', scores: [2, 15, 10, 8], punctuation: 0 },
-        { id: 3, name: 'Player 4', scores: [2, 10, 5, 14], punctuation: 0 },
+      gameService.playerNames = ['Player 1', 'Player 2', 'Player 3', 'Player 4'];
+      gameService.scores = [
+        [15, 8, 9, 12],
+        [2, 19, 3, 8],
+        [2, 15, 10, 8],
+        [2, 10, 5, 14],
       ];
-      service.winner = 'lowestScore';
+      gameService.winner = 'lowestScore';
       fixture = TestBed.createComponent(PlayerDisplayComponent);
 
       fixture.componentInstance.playerId = 3;
@@ -316,7 +321,8 @@ describe('PlayerDisplayComponent', () => {
     });
 
     it('should show the player name and total score', () => {
-      service.players = [{ id: 0, name: 'Player 1', scores: [12, 5, 8], punctuation: 0 }];
+      gameService.playerNames = ['Player 1'];
+      gameService.scores = [[12, 5, 8]];
       fixture = TestBed.createComponent(PlayerDisplayComponent);
 
       fixture.componentInstance.playerId = 0;
@@ -326,9 +332,10 @@ describe('PlayerDisplayComponent', () => {
 
     it('should show the last round score and navigate to enter score when clicking the number', () => {
       const navigateSpy = spyOn(TestBed.inject(Router), 'navigate');
-      service.players = [
-        { id: 0, name: 'Player 1', scores: [23, 14, 86], punctuation: 0 },
-        { id: 1, name: 'Player 2', scores: [35, 76, 41], punctuation: 0 },
+      gameService.playerNames = ['Player 1', 'Player 2'];
+      gameService.scores = [
+        [23, 14, 86],
+        [35, 76, 41],
       ];
       fixture = TestBed.createComponent(PlayerDisplayComponent);
 
@@ -342,13 +349,18 @@ describe('PlayerDisplayComponent', () => {
       expect(navigateSpy).toHaveBeenCalledWith(
         ['../', ROUTING_PATHS.ENTER_SCORE],
         jasmine.objectContaining({
-          state: { players: [{ id: 1, name: 'Player 2', scores: [35, 76, 41], punctuation: 41 }], roundNumber: 3 },
+          state: {
+            playerNames: ['Player 2'],
+            punctuations: [41],
+            roundNumber: 3,
+          },
         })
       );
     });
 
     it('should not show maximum reached score', () => {
-      service.players = [{ id: 0, name: 'Player 1', scores: [5, 10], punctuation: 0 }];
+      gameService.playerNames = ['Player 1'];
+      gameService.scores = [[5, 10]];
       fixture = TestBed.createComponent(PlayerDisplayComponent);
 
       fixture.componentInstance.playerId = 0;
@@ -357,7 +369,8 @@ describe('PlayerDisplayComponent', () => {
     });
 
     it('should not show number of rejoins', () => {
-      service.players = [{ id: 0, name: 'Player 1', scores: [5, 10], punctuation: 0 }];
+      gameService.playerNames = ['Player 1'];
+      gameService.scores = [[5, 10]];
       fixture = TestBed.createComponent(PlayerDisplayComponent);
 
       fixture.componentInstance.playerId = 0;
