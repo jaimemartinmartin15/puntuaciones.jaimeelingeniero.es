@@ -19,6 +19,7 @@ describe('Chinchón game', function () {
     // game started
     await page.locator('[data-test-id="btn-start"]').click();
     await verifyUrl('/tabla');
+    await page.setViewport({ width: 570, height: 650 });
     await takeScreenshot(SCREENSHOTS_PATH('scoreboard-0'));
 
     /******************************************* ROUND 1 *******************************************/
@@ -61,7 +62,6 @@ describe('Chinchón game', function () {
     await page.locator('[data-test-id="btn-change-view"]').click();
     await page.locator('[data-test-id="change-view-pop-up"] a:nth-child(1)').click();
     await verifyUrl('/ranking');
-    await page.setViewport({ width: 570, height: 650 });
     await takeScreenshot(SCREENSHOTS_PATH('ranking'));
 
     // change to statistics view

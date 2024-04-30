@@ -63,12 +63,14 @@ To solve this follow these steps:
 - Run `npm run test:e2e` to generate the new screenshots.
 - Move the [new screenshots](./e2e/screenshots/e2e-results) to the [originals](./e2e/screenshots/originals/) folder.
 - Activate the flag _commitResults_ of `e2e-puppeteer` builder in [angular.json](angular.json).
+- Comment the AWS sections in the [workflow](./.github/workflows//build-and-publish.yml) to avoid deploy by mistake.
 - Commit the changes and push them to the remote.
 - Run the workflow manually in the branch you are working on.
 - Pull the changes and compare yourself the results.
-- Pick the [result screenshots](./e2e/screenshots/e2e-results) generated in the pipeline and move the correct ones to [originals](./e2e/screenshots/originals/).
+- Pick the [result screenshots](./e2e/screenshots/e2e-results) generated in the workflow and move the correct ones to [originals](./e2e/screenshots/originals/).
 - Deactive the flag _commitResults_ of `e2e-puppeteer` builder in [angular.json](angular.json).
 - Remove _all_ [result screenshots](./e2e/screenshots/e2e-results).
+- Uncomment the AWS sections in the [workflow](./.github/workflows//build-and-publish.yml) to avoid deploy by mistake.
 - Commit changes.
 - Try to deploy again.
 
