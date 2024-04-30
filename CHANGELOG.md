@@ -1,5 +1,9 @@
 # CHANGELOG
 
+Fix unit test and e2e tests.
+
+Changed default view of Chinchón to show scoreboard.
+
 Flag granulation and refactor. Adapt components and game services.
 
 Added docs with READMEs.
