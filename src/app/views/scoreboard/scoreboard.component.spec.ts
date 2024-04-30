@@ -4,10 +4,10 @@ import { Router, provideRouter } from '@angular/router';
 import { ROUTING_PATHS } from '../../constants/routes';
 import { ChinchonService } from '../../game-services/chinchon.service';
 import { GameHolderService } from '../../game-services/game-holder.service';
+import { OtherGameService } from '../../game-services/other-game.service';
 import { PochaService } from '../../game-services/pocha.service';
 import { provideGameService } from '../../game-services/utils';
 import { ScoreboardComponent } from './scoreboard.component';
-import { OtherGameService } from '../../game-services/other-game.service';
 
 const SELECTORS = {
   EMPTY_MESSAGE: '[data-test-id="empty-state"]',
@@ -24,7 +24,7 @@ const SELECTORS = {
 
 describe('ScoreboardComponent', () => {
   let fixture: ComponentFixture<ScoreboardComponent>;
-  let gameHolderService: GameHolderService;
+  let gameService: any; // * allow to set private variables in services
   let navigateSpy: jasmine.Spy;
 
   describe('Pocha game', () => {
@@ -38,12 +38,14 @@ describe('ScoreboardComponent', () => {
           provideGameService(PochaService),
         ],
       });
-      gameHolderService = TestBed.inject(GameHolderService);
-      gameHolderService.service.players = [
-        { id: 0, name: 'Player 1', scores: [5, 5, 5], punctuation: 0 },
-        { id: 1, name: 'Player 2', scores: [-10, -20, -10], punctuation: 0 },
-        { id: 2, name: 'Player 3', scores: [5, 10, 5], punctuation: 0 },
-        { id: 3, name: 'Player 4', scores: [5, -10, 10], punctuation: 0 },
+
+      gameService = TestBed.inject(GameHolderService).service;
+      gameService.playerNames = ['Player 1', 'Player 2', 'Player 3', 'Player 4'];
+      gameService.scores = [
+        [5, 5, 5],
+        [-10, -20, -10],
+        [5, 10, 5],
+        [5, -10, 10],
       ];
       navigateSpy = spyOn(TestBed.inject(Router), 'navigate');
       fixture = TestBed.createComponent(ScoreboardComponent);
@@ -64,13 +66,9 @@ describe('ScoreboardComponent', () => {
         ['../', ROUTING_PATHS.ENTER_SCORE_POCHA],
         jasmine.objectContaining({
           state: {
+            playerNames: ['Player 1', 'Player 2', 'Player 3', 'Player 4'],
+            punctuations: [5, -10, 5, 10],
             roundNumber: 3,
-            players: [
-              { id: 0, name: 'Player 1', scores: [5, 5, 5], punctuation: 5 },
-              { id: 1, name: 'Player 2', scores: [-10, -20, -10], punctuation: -10 },
-              { id: 2, name: 'Player 3', scores: [5, 10, 5], punctuation: 5 },
-              { id: 3, name: 'Player 4', scores: [5, -10, 10], punctuation: 10 },
-            ],
           },
         })
       );
@@ -85,8 +83,9 @@ describe('ScoreboardComponent', () => {
         ['../', ROUTING_PATHS.ENTER_SCORE_POCHA],
         jasmine.objectContaining({
           state: {
+            playerNames: ['Player 2'],
+            punctuations: [-20],
             roundNumber: 2,
-            players: [{ id: 1, name: 'Player 2', scores: [-10, -20, -10], punctuation: -20 }],
           },
         })
       );
@@ -143,13 +142,16 @@ describe('ScoreboardComponent', () => {
           provideGameService(ChinchonService),
         ],
       });
-      gameHolderService = TestBed.inject(GameHolderService);
-      gameHolderService.service.players = [
-        { id: 0, name: 'Player 1', scores: [2, 30, 15], punctuation: 0 },
-        { id: 1, name: 'Player 2', scores: [32, 5, -10], punctuation: 0 },
-        { id: 2, name: 'Player 3', scores: [23, 2, 42], punctuation: 0 },
-        { id: 3, name: 'Player 4', scores: [50, 60, 80], punctuation: 0 },
+
+      gameService = TestBed.inject(GameHolderService).service;
+      gameService.playerNames = ['Player 1', 'Player 2', 'Player 3', 'Player 4'];
+      gameService.scores = [
+        [2, 30, 15],
+        [32, 5, -10],
+        [23, 2, 42],
+        [50, 60, 80],
       ];
+
       navigateSpy = spyOn(TestBed.inject(Router), 'navigate');
       fixture = TestBed.createComponent(ScoreboardComponent);
     });
@@ -169,13 +171,9 @@ describe('ScoreboardComponent', () => {
         ['../', ROUTING_PATHS.ENTER_SCORE],
         jasmine.objectContaining({
           state: {
+            playerNames: ['Player 1', 'Player 2', 'Player 3', 'Player 4'],
+            punctuations: [15, -10, 42, 80],
             roundNumber: 3,
-            players: [
-              { id: 0, name: 'Player 1', scores: [2, 30, 15], punctuation: 15 },
-              { id: 1, name: 'Player 2', scores: [32, 5, -10], punctuation: -10 },
-              { id: 2, name: 'Player 3', scores: [23, 2, 42], punctuation: 42 },
-              { id: 3, name: 'Player 4', scores: [50, 60, 80], punctuation: 80 },
-            ],
           },
         })
       );
@@ -190,8 +188,9 @@ describe('ScoreboardComponent', () => {
         ['../', ROUTING_PATHS.ENTER_SCORE],
         jasmine.objectContaining({
           state: {
+            playerNames: ['Player 2'],
+            punctuations: [5],
             roundNumber: 2,
-            players: [{ id: 1, name: 'Player 2', scores: [32, 5, -10], punctuation: 5 }],
           },
         })
       );
@@ -262,13 +261,16 @@ describe('ScoreboardComponent', () => {
           provideGameService(OtherGameService),
         ],
       });
-      gameHolderService = TestBed.inject(GameHolderService);
-      gameHolderService.service.players = [
-        { id: 0, name: 'Player 1', scores: [0, 15, 23], punctuation: 0 },
-        { id: 1, name: 'Player 2', scores: [-5, -23, 75], punctuation: 0 },
-        { id: 2, name: 'Player 3', scores: [8, 45, 3], punctuation: 0 },
-        { id: 3, name: 'Player 4', scores: [7, 10, 11], punctuation: 0 },
+
+      gameService = TestBed.inject(GameHolderService).service;
+      gameService.playerNames = ['Player 1', 'Player 2', 'Player 3', 'Player 4'];
+      gameService.scores = [
+        [0, 15, 23],
+        [-5, -23, 75],
+        [8, 45, 3],
+        [7, 10, 11],
       ];
+
       navigateSpy = spyOn(TestBed.inject(Router), 'navigate');
       fixture = TestBed.createComponent(ScoreboardComponent);
     });
@@ -288,13 +290,9 @@ describe('ScoreboardComponent', () => {
         ['../', ROUTING_PATHS.ENTER_SCORE],
         jasmine.objectContaining({
           state: {
+            playerNames: ['Player 1', 'Player 2', 'Player 3', 'Player 4'],
+            punctuations: [23, 75, 3, 11],
             roundNumber: 3,
-            players: [
-              { id: 0, name: 'Player 1', scores: [0, 15, 23], punctuation: 23 },
-              { id: 1, name: 'Player 2', scores: [-5, -23, 75], punctuation: 75 },
-              { id: 2, name: 'Player 3', scores: [8, 45, 3], punctuation: 3 },
-              { id: 3, name: 'Player 4', scores: [7, 10, 11], punctuation: 11 },
-            ],
           },
         })
       );
@@ -309,8 +307,9 @@ describe('ScoreboardComponent', () => {
         ['../', ROUTING_PATHS.ENTER_SCORE],
         jasmine.objectContaining({
           state: {
+            playerNames: ['Player 2'],
+            punctuations: [-23],
             roundNumber: 2,
-            players: [{ id: 1, name: 'Player 2', scores: [-5, -23, 75], punctuation: -23 }],
           },
         })
       );

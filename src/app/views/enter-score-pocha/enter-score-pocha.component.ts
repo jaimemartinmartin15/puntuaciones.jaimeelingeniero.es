@@ -1,9 +1,13 @@
 import { CommonModule, Location } from '@angular/common';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { LOCAL_STORE_KEYS } from '../../constants/local-storage-keys';
+import { Flag } from '../../game-services/flags';
 import { GameHolderService } from '../../game-services/game-holder.service';
-import { EnterScoreBase } from '../../shared/enter-score/EnterScoreBase';
+import { GameService, GameServiceWithFlags } from '../../game-services/game.service';
 import { enterScoreBaseAnimation } from '../../shared/enter-score/enter-score-base.animation';
+
+const ENTER_SCORE_POCHA_FLAGS = ['enterScore', 'enterScore:pocha'] as const; //as Flag[]
 
 @Component({
   selector: 'app-enter-score-pocha',
@@ -13,31 +17,38 @@ import { enterScoreBaseAnimation } from '../../shared/enter-score/enter-score-ba
   styleUrls: ['./enter-score-pocha.component.scss'],
   animations: [enterScoreBaseAnimation],
 })
-export class EnterScorePochaComponent extends EnterScoreBase {
-  public constructor(router: Router, location: Location, gameHolderService: GameHolderService) {
-    super(location, router, gameHolderService);
-    if (this.roundNumber === this.gameHolderService.service.getNextRoundNumber()) {
-      // only if it is a new round, init to 5 by default
-      this.players.forEach((p) => (p.punctuation = 5));
+export class EnterScorePochaComponent {
+  public gameService: GameService & GameServiceWithFlags<(typeof ENTER_SCORE_POCHA_FLAGS)[number]>;
+
+  public roundNumber: number;
+  public playerNames: string[];
+  public punctuations: number[];
+
+  public currentPlayerIndex = 0;
+
+  public get puntuationCurrentPlayer() {
+    return this.punctuations[this.currentPlayerIndex];
+  }
+
+  public set puntuationCurrentPlayer(punctuation: number) {
+    this.punctuations[this.currentPlayerIndex] = punctuation;
+  }
+
+  public constructor(private readonly location: Location, private readonly router: Router, readonly gameHolderService: GameHolderService) {
+    if (!gameHolderService.service.isGameServiceWithFlags(ENTER_SCORE_POCHA_FLAGS as unknown as Flag[])) {
+      throw new Error(
+        `Error EnterScorePochaComponent: service '${gameHolderService.service.gameName}' does not implement flags [${ENTER_SCORE_POCHA_FLAGS.join(
+          ', '
+        )}]`
+      );
     }
-  }
 
-  protected override passValidation(): boolean {
-    let isInvalid = false;
+    this.gameService = gameHolderService.service;
 
-    // scores cannot be ... , -15 , -5 , 0 , 15 , 25 , ...
-    isInvalid ||= this.players.some((p) => p.punctuation === 0 || (p.punctuation !== 5 && Math.abs(p.punctuation % 10) === 5));
-
-    // if it is editing all scores of a round, check at least one is negative
-    isInvalid ||= this.players.length === this.gameHolderService.service.players.length && this.players.every((p) => p.punctuation > 0);
-
-    return !isInvalid;
-  }
-
-  protected override getPlayerIndexWithWrongScore(): number {
-    return this.players.indexOf(
-      this.players.find((p) => p.punctuation == 0 || (p.punctuation !== 5 && Math.abs(p.punctuation % 10) === 5)) || this.players[0]
-    );
+    // read EnterScoreInput
+    this.roundNumber = this.router.getCurrentNavigation()?.extras?.state?.['roundNumber'];
+    this.playerNames = this.router.getCurrentNavigation()?.extras?.state?.['playerNames'];
+    this.punctuations = this.router.getCurrentNavigation()?.extras?.state?.['punctuations'];
   }
 
   public onClickKeyboard(event: Event) {
@@ -50,7 +61,7 @@ export class EnterScorePochaComponent extends EnterScoreBase {
 
     if (buttonKey.includes('→') || buttonKey.includes('✔️')) {
       this.currentPlayerIndex++;
-      if (this.currentPlayerIndex === this.players.length) {
+      if (this.currentPlayerIndex === this.playerNames.length) {
         this.finishEnterScore();
       }
       return;
@@ -72,5 +83,51 @@ export class EnterScorePochaComponent extends EnterScoreBase {
     }
 
     this.puntuationCurrentPlayer = +buttonKey;
+  }
+
+  public closeEnterScore() {
+    this.location.back();
+  }
+
+  private passValidation(): boolean {
+    let isInvalid = false;
+
+    // scores cannot be ... , -15 , -5 , 0 , 15 , 25 , ...
+    isInvalid ||= this.punctuations.some((p) => p === 0 || (p !== 5 && Math.abs(p % 10) === 5));
+
+    // if it is editing all scores of a round, check at least one is negative
+    isInvalid ||= this.playerNames.length === this.gameService.playerNames.length && this.punctuations.every((p) => p > 0);
+
+    return !isInvalid;
+  }
+
+  private getPlayerIndexWithWrongScore(): number {
+    // if wrong score is undefined, then all scores are positive
+    const wrongScore = this.punctuations.find((p) => p === 0 || (p !== 5 && Math.abs(p % 10) === 5));
+    return wrongScore !== undefined ? this.punctuations.indexOf(wrongScore) : 0;
+  }
+
+  private finishEnterScore() {
+    if (!this.passValidation()) {
+      this.currentPlayerIndex = this.getPlayerIndexWithWrongScore();
+      return;
+    }
+
+    // change the player that deals only if it is a new round (not edition of previous score)
+    if (this.roundNumber === this.gameService.getNextRoundNumber()) {
+      // TODO create enterScore:dealingPlayer flag for this?
+      this.gameService.setNextDealingPlayer();
+    }
+
+    this.playerNames.forEach((playerName, playerIndex) =>
+      this.gameService.setPlayerScore(this.gameService.getPlayerId(playerName), this.roundNumber - 1, this.punctuations[playerIndex])
+    );
+
+    if (this.gameService.hasFlagActive('game:localStorageSave')) {
+      this.gameService.saveStateToLocalStorage();
+    }
+
+    localStorage.setItem(LOCAL_STORE_KEYS.TIME_LAST_INTERACTION, JSON.stringify(Date.now()));
+    this.closeEnterScore();
   }
 }

@@ -3,9 +3,12 @@ import { Component, OnInit } from '@angular/core';
 import { BottomControlsComponent } from '../../components/bottom-controls/bottom-controls.component';
 import { RoundInfoComponent } from '../../components/round-info/round-info.component';
 import { LOCAL_STORE_KEYS } from '../../constants/local-storage-keys';
+import { Flag } from '../../game-services/flags';
 import { GameHolderService } from '../../game-services/game-holder.service';
-import { ProgressGraphComponent } from './progress-graph/progress-graph.component';
 import { GameService, GameServiceWithFlags } from '../../game-services/game.service';
+import { ProgressGraphComponent } from './progress-graph/progress-graph.component';
+
+const STATISTICS_FLAGS = ['statistics', 'game:gameStartEnd'] as const; //as Flag[]
 
 @Component({
   selector: 'app-statistics',
@@ -15,18 +18,20 @@ import { GameService, GameServiceWithFlags } from '../../game-services/game.serv
   styleUrls: ['./statistics.component.scss'],
 })
 export class StatisticsComponent implements OnInit {
-  public gameService: GameService & GameServiceWithFlags<'statistics'>;
+  public gameService: GameService & GameServiceWithFlags<(typeof STATISTICS_FLAGS)[number]>;
   public playedTime: string;
 
-  public constructor(public readonly gameHolderService: GameHolderService) {}
-
-  public ngOnInit(): void {
-    if (!this.gameHolderService.service.hasFlagActive('statistics')) {
+  public constructor(readonly gameHolderService: GameHolderService) {
+    if (!gameHolderService.service.isGameServiceWithFlags(STATISTICS_FLAGS as unknown as Flag[])) {
       throw new Error(
-        `It is not possible to load statistics page for game service ${this.gameHolderService.service.gameName}. It does not implement flag 'statistics'`
+        `Error StatisticsComponent: service '${gameHolderService.service.gameName}' does not implement flags [${STATISTICS_FLAGS.join(', ')}]`
       );
     }
-    this.gameService = this.gameHolderService.service;
+
+    this.gameService = gameHolderService.service;
+  }
+
+  public ngOnInit(): void {
     this.setPlayedTime();
   }
 

@@ -20,10 +20,9 @@ const SELECTORS = {
 
 describe('RoundInfoComponent', () => {
   let fixture: ComponentFixture<RoundInfoComponent>;
+  let gameService: any; // * allow to set private variables in services
 
   describe('Pocha game', () => {
-    let service: PochaService;
-
     beforeEach(() => {
       TestBed.configureTestingModule({
         imports: [RoundInfoComponent],
@@ -34,13 +33,10 @@ describe('RoundInfoComponent', () => {
           provideGameService(PochaService),
         ],
       });
-      const gameHolderService = TestBed.inject(GameHolderService);
-      service = gameHolderService.service as PochaService;
-      service.numberOfCards = 4;
-      service.players = [
-        { id: 0, name: 'Player 1', scores: [], punctuation: 0 },
-        { id: 1, name: 'Player 2', scores: [], punctuation: 0 },
-      ];
+      gameService = TestBed.inject(GameHolderService).service;
+      gameService.numberOfCards = 4;
+      gameService.playerNames = ['Player 1', 'Player 2'];
+      gameService.scores = [[], []];
       fixture = TestBed.createComponent(RoundInfoComponent);
     });
 
@@ -53,10 +49,7 @@ describe('RoundInfoComponent', () => {
       const nextRoundNumber = fixture.debugElement.query(By.css(SELECTORS.NEXT_ROUND_NUMBER)).nativeElement;
       expect(nextRoundNumber.textContent).toContain('Ronda: 1');
 
-      service.players = [
-        { id: 0, name: 'Player 1', scores: [5], punctuation: 0 },
-        { id: 1, name: 'Player 2', scores: [-10], punctuation: 0 },
-      ];
+      gameService.scores = [[5], [-10]];
       fixture.detectChanges();
       expect(nextRoundNumber.textContent).toContain('Ronda: 2');
     });
@@ -65,7 +58,7 @@ describe('RoundInfoComponent', () => {
       const playerNameThatDeals = fixture.debugElement.query(By.css(SELECTORS.PLAYER_NAME_THAT_DEALS)).nativeElement;
       expect(playerNameThatDeals.textContent).toContain('Reparte: Player 1');
 
-      service.dealingPlayerIndex = 1;
+      gameService.dealingPlayerIndex = 1;
       fixture.detectChanges();
       expect(playerNameThatDeals.textContent).toContain('Reparte: Player 2');
     });
@@ -76,9 +69,9 @@ describe('RoundInfoComponent', () => {
     });
 
     it('should show the number of cards to deal in last round', () => {
-      service.players = [
-        { id: 0, name: 'Player 1', scores: [-10, -10, 20, -10], punctuation: 0 },
-        { id: 1, name: 'Player 2', scores: [5, 10, -10, 5], punctuation: 0 },
+      gameService.scores = [
+        [-10, -10, 20, -10],
+        [5, 10, -10, 5],
       ];
       fixture.detectChanges();
 
@@ -92,10 +85,10 @@ describe('RoundInfoComponent', () => {
     });
 
     it('should show if the game has finished', () => {
-      service.numberOfCards = 4;
-      service.players = [
-        { id: 0, name: 'Player 1', scores: [-10, -10, 20, -10, -10], punctuation: 0 },
-        { id: 1, name: 'Player 2', scores: [5, 10, -10, 5, 5], punctuation: 0 },
+      gameService.numberOfCards = 4;
+      gameService.scores = [
+        [-10, -10, 20, -10, -10],
+        [5, 10, -10, 5, 5],
       ];
       fixture.detectChanges();
 
@@ -105,8 +98,6 @@ describe('RoundInfoComponent', () => {
   });
 
   describe('Chinchón game', () => {
-    let service: ChinchonService;
-
     beforeEach(() => {
       TestBed.configureTestingModule({
         imports: [RoundInfoComponent],
@@ -117,12 +108,9 @@ describe('RoundInfoComponent', () => {
           provideGameService(ChinchonService),
         ],
       });
-      const gameHolderService = TestBed.inject(GameHolderService);
-      service = gameHolderService.service as ChinchonService;
-      service.players = [
-        { id: 0, name: 'Player 1', scores: [], punctuation: 0 },
-        { id: 1, name: 'Player 2', scores: [], punctuation: 0 },
-      ];
+      gameService = TestBed.inject(GameHolderService).service;
+      gameService.playerNames = ['Player 1', 'Player 2'];
+      gameService.scores = [[], []];
       fixture = TestBed.createComponent(RoundInfoComponent);
     });
 
@@ -135,10 +123,7 @@ describe('RoundInfoComponent', () => {
       const nextRoundNumber = fixture.debugElement.query(By.css(SELECTORS.NEXT_ROUND_NUMBER)).nativeElement;
       expect(nextRoundNumber.textContent).toContain('Ronda: 1');
 
-      service.players = [
-        { id: 0, name: 'Player 1', scores: [23], punctuation: 0 },
-        { id: 1, name: 'Player 2', scores: [7], punctuation: 0 },
-      ];
+      gameService.scores = [[23], [7]];
       fixture.detectChanges();
       expect(nextRoundNumber.textContent).toContain('Ronda: 2');
     });
@@ -147,7 +132,7 @@ describe('RoundInfoComponent', () => {
       const playerNameThatDeals = fixture.debugElement.query(By.css(SELECTORS.PLAYER_NAME_THAT_DEALS)).nativeElement;
       expect(playerNameThatDeals.textContent).toContain('Reparte: Player 1');
 
-      service.dealingPlayerIndex = 1;
+      gameService.dealingPlayerIndex = 1;
       fixture.detectChanges();
       expect(playerNameThatDeals.textContent).toContain('Reparte: Player 2');
     });
@@ -161,15 +146,15 @@ describe('RoundInfoComponent', () => {
       const limitScore = fixture.debugElement.query(By.css(SELECTORS.LIMIT_SCORE)).nativeElement;
       expect(limitScore.textContent).toContain('Límite: 100');
 
-      service.limitScore = 60;
+      gameService.limitScore = 60;
       fixture.detectChanges();
       expect(limitScore.textContent).toContain('Límite: 60');
     });
 
     it('should show if the game has finished', () => {
-      service.players = [
-        { id: 0, name: 'Player 1', scores: [70, 35], punctuation: 0 },
-        { id: 1, name: 'Player 2', scores: [75, 8], punctuation: 0 },
+      gameService.scores = [
+        [70, 35],
+        [75, 8],
       ];
       fixture.detectChanges();
 
@@ -179,8 +164,6 @@ describe('RoundInfoComponent', () => {
   });
 
   describe('Other game', () => {
-    let service: OtherGameService;
-
     beforeEach(() => {
       TestBed.configureTestingModule({
         imports: [RoundInfoComponent],
@@ -191,12 +174,9 @@ describe('RoundInfoComponent', () => {
           provideGameService(OtherGameService),
         ],
       });
-      const gameHolderService = TestBed.inject(GameHolderService);
-      service = gameHolderService.service as OtherGameService;
-      service.players = [
-        { id: 0, name: 'Player 1', scores: [], punctuation: 0 },
-        { id: 1, name: 'Player 2', scores: [], punctuation: 0 },
-      ];
+      gameService = TestBed.inject(GameHolderService).service;
+      gameService.playerNames = ['Player 1', 'Player 2'];
+      gameService.scores = [[], []];
       fixture = TestBed.createComponent(RoundInfoComponent);
     });
 
@@ -209,10 +189,7 @@ describe('RoundInfoComponent', () => {
       const nextRoundNumber = fixture.debugElement.query(By.css(SELECTORS.NEXT_ROUND_NUMBER)).nativeElement;
       expect(nextRoundNumber.textContent).toContain('Ronda: 1');
 
-      service.players = [
-        { id: 0, name: 'Player 1', scores: [23], punctuation: 0 },
-        { id: 1, name: 'Player 2', scores: [7], punctuation: 0 },
-      ];
+      gameService.scores = [[23], [7]];
       fixture.detectChanges();
       expect(nextRoundNumber.textContent).toContain('Ronda: 2');
     });
@@ -221,7 +198,7 @@ describe('RoundInfoComponent', () => {
       const playerNameThatDeals = fixture.debugElement.query(By.css(SELECTORS.PLAYER_NAME_THAT_DEALS)).nativeElement;
       expect(playerNameThatDeals.textContent).toContain('Reparte: Player 1');
 
-      service.dealingPlayerIndex = 1;
+      gameService.dealingPlayerIndex = 1;
       fixture.detectChanges();
       expect(playerNameThatDeals.textContent).toContain('Reparte: Player 2');
     });
@@ -243,8 +220,6 @@ describe('RoundInfoComponent', () => {
   });
 
   describe('Brisca game', () => {
-    let service: BriscaService;
-
     beforeEach(() => {
       TestBed.configureTestingModule({
         imports: [RoundInfoComponent],
@@ -255,9 +230,8 @@ describe('RoundInfoComponent', () => {
           provideGameService(BriscaService),
         ],
       });
-      const gameHolderService = TestBed.inject(GameHolderService);
-      service = gameHolderService.service as BriscaService;
-      service.playerNames = ['Player 1', 'Player 2'];
+      gameService = TestBed.inject(GameHolderService).service;
+      gameService.playerNames = ['Player 1', 'Player 2'];
       fixture = TestBed.createComponent(RoundInfoComponent);
     });
 
@@ -270,7 +244,7 @@ describe('RoundInfoComponent', () => {
       const nextRoundNumber = fixture.debugElement.query(By.css(SELECTORS.NEXT_ROUND_NUMBER)).nativeElement;
       expect(nextRoundNumber.textContent).toContain('Ronda: 1');
 
-      service.scores = [0, 1];
+      gameService.scores = [0, 1];
       fixture.detectChanges();
       expect(nextRoundNumber.textContent).toContain('Ronda: 2');
     });
@@ -279,7 +253,7 @@ describe('RoundInfoComponent', () => {
       const playerNameThatDeals = fixture.debugElement.query(By.css(SELECTORS.PLAYER_NAME_THAT_DEALS)).nativeElement;
       expect(playerNameThatDeals.textContent).toContain('Reparte: Player 1');
 
-      service.setNextDealingPlayer();
+      gameService.setNextDealingPlayer();
       fixture.detectChanges();
       expect(playerNameThatDeals.textContent).toContain('Reparte: Player 2');
     });

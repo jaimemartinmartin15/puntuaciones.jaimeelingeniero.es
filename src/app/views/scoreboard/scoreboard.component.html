@@ -9,7 +9,7 @@
     <thead class="sticky-header">
       <tr data-test-id="top-row-header">
         <th class="highlight-cell sticky-round-number">Ronda</th>
-        <th class="highlight-cell" *ngFor="let player of gameService.players">{{player.name}}</th>
+        <th class="highlight-cell" *ngFor="let playerName of gameService.playerNames">{{playerName}}</th>
       </tr>
     </thead>
 
@@ -20,18 +20,20 @@
             [attr.data-test-id]="'round-number-'+round">
             {{round + 1}}
           </th>
-          <td *ngFor="let score of getRoundScores(round); let playerId = index"
+          <td *ngFor="let playerName of gameService.playerNames; let playerId = index"
             (click)="changeScoreForPlayerAndRound(playerId, round)"
             [attr.data-test-id]="'table-cell-player-'+playerId+'-round-'+round+''"
-            [attr.style]="gameService.getCellBackgroundColor(score)">
+            [attr.style]="gameService.getCellBackgroundColor(gameService.getPlayerScore(playerId, round))">
             <div class="score">
               <span style="visibility: hidden" class="accumulated-score">
-                ({{gameService.getPlayerAccumulatedScoreAtRound(playerId, round)}})
+                ({{gameService.getPlayerAccumulatedScoreAtRound(playerId, round + 1)}})
               </span>
-              <span [attr.data-test-id]="'score-player-'+playerId+'-round-'+round">{{score}}</span>
+              <span [attr.data-test-id]="'score-player-'+playerId+'-round-'+round">
+                {{gameService.getPlayerScore(playerId, round)}}
+              </span>
               <span class="accumulated-score"
                 [attr.data-test-id]="'accumulated-score-player-'+playerId+'-round-'+round">
-                ({{gameService.getPlayerAccumulatedScoreAtRound(playerId, round)}})
+                ({{gameService.getPlayerAccumulatedScoreAtRound(playerId, round + 1)}})
               </span>
             </div>
           </td>
@@ -61,9 +63,9 @@
     <tfoot class="sticky-footer">
       <tr>
         <th class="highlight-cell sticky-round-number">Total</th>
-        <th class="highlight-cell" *ngFor="let player of gameService.players"
-          [attr.data-test-id]="'total-score-player-'+player.id">
-          {{gameService.getTotalScore(player.id)}}</th>
+        <th class="highlight-cell" *ngFor="let player of gameService.playerNames; let id = index"
+          [attr.data-test-id]="'total-score-player-'+id">
+          {{gameService.getTotalScore(id)}}</th>
       </tr>
     </tfoot>
   </table>

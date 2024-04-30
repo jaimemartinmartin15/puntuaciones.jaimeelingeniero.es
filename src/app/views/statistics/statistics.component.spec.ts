@@ -20,7 +20,7 @@ const SELECTORS = {
 describe('StatisticsComponent', () => {
   let component: StatisticsComponent;
   let fixture: ComponentFixture<StatisticsComponent>;
-  let gameHolderService: GameHolderService;
+  let gameService: any; // * allow to set private variables in services
 
   describe('Pocha game', () => {
     beforeEach(() => {
@@ -33,19 +33,21 @@ describe('StatisticsComponent', () => {
           provideGameService(PochaService),
         ],
       });
-      gameHolderService = TestBed.inject(GameHolderService);
-      gameHolderService.service.players = [
-        { id: 0, name: 'Player 1', scores: [10, 20, -10], punctuation: 0 },
-        { id: 1, name: 'Player 2', scores: [5, -10, 5], punctuation: 0 },
-        { id: 2, name: 'Player 3', scores: [5, 5, -10], punctuation: 0 },
+      gameService = TestBed.inject(GameHolderService).service;
+      gameService.playerNames = ['Player 1', 'Player 2', 'Player 3'];
+      gameService.scores = [
+        [10, 20, -10],
+        [5, -10, 5],
+        [5, 5, -10],
       ];
+
       localStorage.setItem(LOCAL_STORE_KEYS.TIME_GAME_STARTS, JSON.stringify(Date.now()));
       fixture = TestBed.createComponent(StatisticsComponent);
       component = fixture.componentInstance;
     });
 
     it('should show message when game has no started', () => {
-      gameHolderService.service.players = [{ id: 0, name: 'Player 1', scores: [], punctuation: 0 }];
+      gameService.scores = [[], [], []];
       fixture.detectChanges();
 
       const emptyMessage = fixture.debugElement.query(By.css('.empty-state')).nativeElement.textContent;
@@ -89,11 +91,12 @@ describe('StatisticsComponent', () => {
           provideGameService(ChinchonService),
         ],
       });
-      gameHolderService = TestBed.inject(GameHolderService);
-      gameHolderService.service.players = [
-        { id: 0, name: 'Player 1', scores: [12, 23, 56], punctuation: 0 },
-        { id: 1, name: 'Player 2', scores: [2, 4, 42], punctuation: 0 },
-        { id: 2, name: 'Player 3', scores: [42, 12, 2], punctuation: 0 },
+      gameService = TestBed.inject(GameHolderService).service;
+      gameService.playerNames = ['Player 1', 'Player 2', 'Player 3'];
+      gameService.scores = [
+        [12, 23, 56],
+        [2, 4, 42],
+        [42, 12, 2],
       ];
       localStorage.setItem(LOCAL_STORE_KEYS.TIME_GAME_STARTS, JSON.stringify(Date.now() - 420000));
       fixture = TestBed.createComponent(StatisticsComponent);
@@ -101,7 +104,7 @@ describe('StatisticsComponent', () => {
     });
 
     it('should show message when game has no started', () => {
-      gameHolderService.service.players = [{ id: 0, name: 'Player 1', scores: [], punctuation: 0 }];
+      gameService.scores = [[], [], []];
       fixture.detectChanges();
 
       const emptyMessage = fixture.debugElement.query(By.css('.empty-state')).nativeElement.textContent;
@@ -145,11 +148,12 @@ describe('StatisticsComponent', () => {
           provideGameService(OtherGameService),
         ],
       });
-      gameHolderService = TestBed.inject(GameHolderService);
-      gameHolderService.service.players = [
-        { id: 0, name: 'Player 1', scores: [12, 23, 56], punctuation: 0 },
-        { id: 1, name: 'Player 2', scores: [2, 4, 42], punctuation: 0 },
-        { id: 2, name: 'Player 3', scores: [42, 12, 2], punctuation: 0 },
+      gameService = TestBed.inject(GameHolderService).service;
+      gameService.playerNames = ['Player 1', 'Player 2', 'Player 3'];
+      gameService.scores = [
+        [12, 23, 56],
+        [2, 4, 42],
+        [42, 12, 2],
       ];
       localStorage.setItem(LOCAL_STORE_KEYS.TIME_GAME_STARTS, JSON.stringify(Date.now() - 3660000));
       fixture = TestBed.createComponent(StatisticsComponent);
@@ -157,7 +161,7 @@ describe('StatisticsComponent', () => {
     });
 
     it('should show message when game has no started', () => {
-      gameHolderService.service.players = [{ id: 0, name: 'Player 1', scores: [], punctuation: 0 }];
+      gameService.scores = [[], [], []];
       fixture.detectChanges();
 
       const emptyMessage = fixture.debugElement.query(By.css('.empty-state')).nativeElement.textContent;

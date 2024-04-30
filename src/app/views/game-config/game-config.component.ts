@@ -33,12 +33,12 @@ import { GamesSvgModule } from '../../svg/generated/games-svg.module';
 })
 export class GameConfigComponent implements OnInit {
   public isEdition = false;
-
+  public gameService: GameService;
   public selectedGameServiceFormControl: FormControl<GameService>;
 
   public constructor(
     @Inject(GAME_SERVICES) public gameServices: GameService[],
-    public readonly gameHolderService: GameHolderService,
+    private readonly gameHolderService: GameHolderService,
     private readonly router: Router,
     private readonly activatedRoute: ActivatedRoute,
     private readonly location: Location,
@@ -61,32 +61,42 @@ export class GameConfigComponent implements OnInit {
 
     if (savedGameName === null || this.isEdition) {
       // if no saved game, it is first time after installing the app this page loads. Return default gameService in gameHolderService
-      // if it is edition (edit current game settings), return current game service
+      // if it is edition (edit current game settings), return current game service stored in gameHolderService
       return this.gameHolderService.service;
     }
 
     // return game service with same settings that was used last time
     const gameService = this.gameServices.find((g) => g.gameName === savedGameName)!;
-    gameService.loadStateFromLocalStorage();
+    if (gameService.hasFlagActive('game:localStorageSave')) {
+      gameService.loadStateFromLocalStorage();
+    }
     return gameService;
   }
 
   public startGame() {
     this.gameHolderService.service = this.selectedGameService;
 
+    localStorage.setItem(LOCAL_STORE_KEYS.SAVED_GAME_NAME, this.selectedGameService.gameName);
     localStorage.setItem(LOCAL_STORE_KEYS.TIME_GAME_STARTS, JSON.stringify(Date.now()));
     localStorage.setItem(LOCAL_STORE_KEYS.TIME_LAST_INTERACTION, JSON.stringify(Date.now()));
-    localStorage.setItem(LOCAL_STORE_KEYS.SAVED_GAME_NAME, this.selectedGameService.gameName);
 
-    this.selectedGameService.onStartGame();
-    this.selectedGameService.saveStateToLocalStorage();
+    if (this.selectedGameService.hasFlagActive('gameConfig')) {
+      this.selectedGameService.onStartGame();
+    }
+    if (this.selectedGameService.hasFlagActive('game:localStorageSave')) {
+      this.selectedGameService.saveStateToLocalStorage();
+    }
 
     this.router.navigate(['../', this.selectedGameService.startGameRoute], { relativeTo: this.activatedRoute });
   }
 
   public editConfigCurrentGame() {
-    this.selectedGameService.onEditConfigCurrentGame();
-    this.selectedGameService.saveStateToLocalStorage();
+    if (this.selectedGameService.hasFlagActive('gameConfig')) {
+      this.selectedGameService.onEditConfigCurrentGame();
+    }
+    if (this.selectedGameService.hasFlagActive('game:localStorageSave')) {
+      this.selectedGameService.saveStateToLocalStorage();
+    }
     this.location.back();
   }
 }

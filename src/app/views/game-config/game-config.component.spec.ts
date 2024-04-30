@@ -29,7 +29,7 @@ const SELECTORS = {
 describe('GameConfigComponent', () => {
   let component: GameConfigComponent;
   let fixture: ComponentFixture<GameConfigComponent>;
-  let gameHolderService: GameHolderService;
+  let gameService: any; // * allow to set private variables in services
   let navigateSpy: jasmine.Spy;
 
   beforeEach(() => {
@@ -46,7 +46,7 @@ describe('GameConfigComponent', () => {
       ],
     });
     localStorage.clear();
-    gameHolderService = TestBed.inject(GameHolderService);
+    gameService = TestBed.inject(GameHolderService).service;
     fixture = TestBed.createComponent(GameConfigComponent);
     component = fixture.componentInstance;
     navigateSpy = spyOn(TestBed.inject(Router), 'navigate');
@@ -54,10 +54,10 @@ describe('GameConfigComponent', () => {
 
   it('should be possible to add, delete and enter player names', () => {
     const startButtonEl = fixture.debugElement.query(By.css(SELECTORS.BTN_START)).nativeElement;
-    expect(gameHolderService.service.teamControls.controls[0].value.playerNames).toEqual(['', '', '', '']);
+    expect(gameService.teamControls.controls[0].value.playerNames).toEqual(['', '', '', '']);
     expect(startButtonEl.disabled).toBeTrue();
 
-    gameHolderService.service.teamControls.controls[0].setValue({
+    gameService.teamControls.controls[0].setValue({
       teamName: 'Jugadores',
       playerNames: ['Player 1', 'Player 2', 'Player 3', 'Player 4'],
       dealingPlayerIndex: 0,
@@ -67,7 +67,7 @@ describe('GameConfigComponent', () => {
     expect(startButtonEl.disabled).toBeFalse();
 
     fixture.debugElement.query(By.css(SELECTORS.BTN_DELET_PLAYER(2))).nativeElement.click();
-    expect(gameHolderService.service.teamControls.controls[0].value.playerNames.length).toEqual(3);
+    expect(gameService.teamControls.controls[0].value.playerNames.length).toEqual(3);
 
     fixture.debugElement.query(By.css(SELECTORS.BTN_ADD_PLAYER)).nativeElement.click();
     fixture.detectChanges();
@@ -83,9 +83,9 @@ describe('GameConfigComponent', () => {
   });
 
   it('should be possible to select who starts dealing', () => {
-    expect(gameHolderService.service.teamControls.controls[0].value.dealingPlayerIndex).toBe(0);
+    expect(gameService.teamControls.controls[0].value.dealingPlayerIndex).toBe(0);
     fixture.debugElement.query(By.css(SELECTORS.DEALING_PLAYER_ICON(1))).nativeElement.dispatchEvent(new Event('click'));
-    expect(gameHolderService.service.teamControls.controls[0].value.dealingPlayerIndex).toBe(1);
+    expect(gameService.teamControls.controls[0].value.dealingPlayerIndex).toBe(1);
   });
 
   describe('Pocha game', () => {

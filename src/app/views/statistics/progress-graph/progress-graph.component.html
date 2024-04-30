@@ -34,10 +34,10 @@
 </svg>
 
 <div class="legend">
-    <div class="legend-item" *ngFor="let player of gameService.players"
-        (click)="showPlayerGraphLines[player.id] = !showPlayerGraphLines[player.id]">
-        <span class="dot-player" [attr.style]="'background-color: ' + colors[player.id]"></span>
-        <span>{{player.name}}</span>
+    <div class="legend-item" *ngFor="let playerName of gameService.playerNames; let id=index"
+        (click)="showPlayerGraphLines[id] = !showPlayerGraphLines[id]">
+        <span class="dot-player" [attr.style]="'background-color: ' + colors[id]"></span>
+        <span>{{playerName}}</span>
     </div>
 </div>
 
@@ -46,22 +46,25 @@
         <span [ngClass]="{'hidden-arrow': selectedRound <= 1}" (click)="showRoundInfo(selectedRound - 1)">⬅️</span>
         <strong>Ronda {{ selectedRound }}</strong>
         <span [ngClass]="{'hidden-arrow': selectedRound >= gameService.getNextRoundNumber()-1}"
-            (click)="showRoundInfo(selectedRound + 1)">➡️</span>
+            (click)="showRoundInfo(selectedRound + 1)">
+            ➡️
+        </span>
     </div>
-    <div class="player-display" *ngFor="let player of roundPanelPlayers">
-        <span class="dot-player" [attr.style]="'background-color: ' + colors[player.id]"></span>
-        <span class="name" (click)="showPlayerGraphLines[player.id] = !showPlayerGraphLines[player.id]">
-            {{player.name}}
+
+    <div class="player-display" *ngFor="let playerId of roundPanelPlayers">
+        <span class="dot-player" [attr.style]="'background-color: ' + colors[playerId]"></span>
+        <span class="name" (click)="showPlayerGraphLines[playerId] = !showPlayerGraphLines[playerId]">
+            {{gameService.getPlayerName(playerId)}}
         </span>
         <span class="accumulated-score">
-            {{gameService.getTotalScore(player.id, selectedRound)}}
+            {{gameService.getTotalScore(playerId, selectedRound)}}
         </span>
         <span *ngIf="selectedRound > 1">
-            <ng-container *ngIf="playerMovements[player.id] > 0">
-                ⬆️{{playerMovements[player.id] | toEmoji}}
+            <ng-container *ngIf="playerMovements[playerId] > 0">
+                ⬆️{{playerMovements[playerId] | toEmoji}}
             </ng-container>
-            <ng-container *ngIf="playerMovements[player.id] < 0">
-                ⬇️{{playerMovements[player.id] | toEmoji}}
+            <ng-container *ngIf="playerMovements[playerId] < 0">
+                ⬇️{{playerMovements[playerId] | toEmoji}}
             </ng-container>
         </span>
     </div>

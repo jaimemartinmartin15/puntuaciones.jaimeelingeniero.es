@@ -1,10 +1,13 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { BottomControlsComponent } from '../../components/bottom-controls/bottom-controls.component';
 import { RoundInfoComponent } from '../../components/round-info/round-info.component';
+import { Flag } from '../../game-services/flags';
 import { GameHolderService } from '../../game-services/game-holder.service';
 import { GameService, GameServiceWithFlags } from '../../game-services/game.service';
 import { PlayerDisplayComponent } from './player-display/player-display.component';
+
+const RANKING_FLAGS = ['ranking', 'game:gameStartEnd'] as const; //as Flag[]
 
 @Component({
   selector: 'app-ranking',
@@ -13,18 +16,16 @@ import { PlayerDisplayComponent } from './player-display/player-display.componen
   templateUrl: './ranking.component.html',
   styleUrls: ['./ranking.component.scss'],
 })
-export class RankingComponent implements OnInit {
-  public gameService: GameService & GameServiceWithFlags<'ranking'>;
+export class RankingComponent {
+  public gameService: GameService & GameServiceWithFlags<(typeof RANKING_FLAGS)[number]>;
 
-  public constructor(public readonly gameHolderService: GameHolderService) {}
-
-  public ngOnInit(): void {
-    if (!this.gameHolderService.service.hasFlagActive('ranking')) {
+  public constructor(readonly gameHolderService: GameHolderService) {
+    if (!gameHolderService.service.isGameServiceWithFlags(RANKING_FLAGS as unknown as Flag[])) {
       throw new Error(
-        `It is not possible to load ranking page for game service ${this.gameHolderService.service.gameName}. It does not implement flag 'ranking'`
+        `Error RankingComponent: service '${gameHolderService.service.gameName}' does not implement flags [${RANKING_FLAGS.join(', ')}]`
       );
     }
 
-    this.gameService = this.gameHolderService.service;
+    this.gameService = gameHolderService.service;
   }
 }

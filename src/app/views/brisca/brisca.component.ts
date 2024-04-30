@@ -3,8 +3,9 @@ import { Component, OnInit } from '@angular/core';
 import { BottomControlsComponent } from '../../components/bottom-controls/bottom-controls.component';
 import { RoundInfoComponent } from '../../components/round-info/round-info.component';
 import { LOCAL_STORE_KEYS } from '../../constants/local-storage-keys';
-import { BriscaService } from '../../game-services/brisca.service';
+import { Flag } from '../../game-services/flags';
 import { GameHolderService } from '../../game-services/game-holder.service';
+import { GameService, GameServiceWithFlags } from '../../game-services/game.service';
 import { intervalArray } from '../../utils/arrays';
 
 interface PlayerInfo {
@@ -12,6 +13,8 @@ interface PlayerInfo {
   score: number;
   deletePointProgress: number;
 }
+
+const BRISCA_FLAGS = ['brisca', 'game:localStorageSave'] as const; // as Flag[]
 
 @Component({
   selector: 'app-brisca',
@@ -26,30 +29,30 @@ export class BriscaComponent implements OnInit {
 
   public playersInfo: PlayerInfo[] = [];
   public showDeleteBanner = true;
-  public briscaService: BriscaService;
+  public gameService: GameService & GameServiceWithFlags<(typeof BRISCA_FLAGS)[number]>;
 
   public constructor(gameHolderService: GameHolderService) {
-    if (!(gameHolderService.service instanceof BriscaService)) {
-      throw new Error('Cannot load Brisca component because game holder service does not contain a BriscaService');
+    if (!gameHolderService.service.isGameServiceWithFlags(BRISCA_FLAGS as unknown as Flag[])) {
+      throw new Error(`Error BriscaComponent: service '${gameHolderService.service.gameName}' does not implement flags [${BRISCA_FLAGS.join(', ')}]`);
     }
 
-    this.briscaService = gameHolderService.service;
+    this.gameService = gameHolderService.service;
   }
 
   public ngOnInit(): void {
     this.checkShowDeleteBanner();
 
     let names: string[] = [];
-    if (this.briscaService.modality === 'individual') {
-      names = this.briscaService.playerNames;
-    } else if (this.briscaService.modality === 'teams') {
-      names = this.briscaService.teamNames;
+    if (this.gameService.modality === 'individual') {
+      names = this.gameService.playerNames;
+    } else if (this.gameService.modality === 'teams') {
+      names = this.gameService.teamNames;
     }
 
     this.playersInfo = names.map((name, i) => {
       return {
         name,
-        score: this.briscaService.scores[i],
+        score: this.gameService.scores[i],
         deletePointProgress: 0,
       };
     });
@@ -73,10 +76,10 @@ export class BriscaComponent implements OnInit {
       player.deletePointProgress = 0;
 
       player.score--;
-      this.briscaService.scores[playerIndex]--;
+      this.gameService.scores[playerIndex]--;
 
-      this.briscaService.setPreviousDealingPlayerIndex();
-      this.briscaService.saveStateToLocalStorage();
+      this.gameService.setPreviousDealingPlayerIndex();
+      this.gameService.saveStateToLocalStorage();
     }
   }
 

@@ -1,14 +1,14 @@
+import { Type } from '@angular/core';
 import { ComponentFixture, ComponentFixtureAutoDetect, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { provideRouter } from '@angular/router';
 import { ChinchonService } from '../../../game-services/chinchon.service';
 import { GameHolderService } from '../../../game-services/game-holder.service';
+import { GameService } from '../../../game-services/game.service';
 import { OtherGameService } from '../../../game-services/other-game.service';
 import { PochaService } from '../../../game-services/pocha.service';
 import { provideGameService } from '../../../game-services/utils';
 import { ProgressGraphComponent } from './progress-graph.component';
-import { Type } from '@angular/core';
-import { GameService } from '../../../game-services/game.service';
 
 const SELECTORS = {
   GRAPH: '[data-test-id="graph"]',
@@ -18,9 +18,9 @@ const SELECTORS = {
 describe('ProgressGraphComponent', () => {
   let component: ProgressGraphComponent;
   let fixture: ComponentFixture<ProgressGraphComponent>;
-  let gameHolderService: GameHolderService;
+  let gameService: any; // * allow to set private variables in services
 
-  function describeGame(gameName: string, gameService: Type<GameService>) {
+  function describeGame(gameName: string, gameServiceType: Type<GameService>) {
     describe(gameName, () => {
       beforeEach(() => {
         TestBed.configureTestingModule({
@@ -29,16 +29,18 @@ describe('ProgressGraphComponent', () => {
             provideRouter([]),
             { provide: ComponentFixtureAutoDetect, useValue: true },
             { provide: GameHolderService, useClass: GameHolderService },
-            provideGameService(gameService),
+            provideGameService(gameServiceType),
           ],
         });
 
-        gameHolderService = TestBed.inject(GameHolderService);
-        gameHolderService.service.players = [
-          { id: 0, name: 'Player 1', scores: [10, 20, -10], punctuation: 0 },
-          { id: 1, name: 'Player 2', scores: [5, -10, 5], punctuation: 0 },
-          { id: 2, name: 'Player 3', scores: [5, 5, -10], punctuation: 0 },
+        gameService = TestBed.inject(GameHolderService).service;
+        gameService.playerNames = ['Player 1', 'Player 2', 'Player 3'];
+        gameService.scores = [
+          [10, 20, -10],
+          [5, -10, 5],
+          [5, 5, -10],
         ];
+
         fixture = TestBed.createComponent(ProgressGraphComponent);
         component = fixture.componentInstance;
       });

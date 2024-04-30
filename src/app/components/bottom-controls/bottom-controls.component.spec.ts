@@ -19,7 +19,7 @@ const SELECTORS = {
 
 describe('BottomControlsComponent', () => {
   let fixture: ComponentFixture<BottomControlsComponent>;
-  let gameHolderService: GameHolderService;
+  let gameService: any; // * allow to set private variables in services
   let btnNewGame: HTMLButtonElement;
   let btnChangeView: HTMLButtonElement;
   let btnNewRound: HTMLButtonElement;
@@ -35,7 +35,10 @@ describe('BottomControlsComponent', () => {
           provideGameService(PochaService),
         ],
       });
-      gameHolderService = TestBed.inject(GameHolderService);
+      gameService = TestBed.inject(GameHolderService).service;
+      gameService.playerNames = ['Player 1', 'Player 2'];
+      gameService.scores = [[], []];
+
       fixture = TestBed.createComponent(BottomControlsComponent);
 
       btnNewGame = fixture.debugElement.query(By.css(SELECTORS.BTN_NEW_GAME)).nativeElement;
@@ -73,20 +76,14 @@ describe('BottomControlsComponent', () => {
 
     it('should navigate to enter score pocha when clicking on new round button', () => {
       const navigateSpy = spyOn(TestBed.inject(Router), 'navigate');
-      gameHolderService.service.players = [
-        { id: 0, name: 'Player 1', scores: [], punctuation: 0 },
-        { id: 1, name: 'Player 2', scores: [], punctuation: 0 },
-      ];
       btnNewRound.click();
 
       expect(navigateSpy).toHaveBeenCalledWith(
         ['../', ROUTING_PATHS.ENTER_SCORE_POCHA],
         jasmine.objectContaining({
           state: {
-            players: [
-              { id: 0, name: 'Player 1', scores: [], punctuation: 0 },
-              { id: 1, name: 'Player 2', scores: [], punctuation: 0 },
-            ],
+            playerNames: ['Player 1', 'Player 2'],
+            punctuations: [5, 5],
             roundNumber: 1,
           },
         })
@@ -105,7 +102,10 @@ describe('BottomControlsComponent', () => {
           provideGameService(ChinchonService),
         ],
       });
-      gameHolderService = TestBed.inject(GameHolderService);
+      gameService = TestBed.inject(GameHolderService).service;
+      gameService.playerNames = ['Player 1', 'Player 2'];
+      gameService.scores = [[], []];
+
       fixture = TestBed.createComponent(BottomControlsComponent);
 
       btnNewGame = fixture.debugElement.query(By.css(SELECTORS.BTN_NEW_GAME)).nativeElement;
@@ -143,20 +143,14 @@ describe('BottomControlsComponent', () => {
 
     it('should navigate to enter score when clicking on new round button', () => {
       const navigateSpy = spyOn(TestBed.inject(Router), 'navigate');
-      gameHolderService.service.players = [
-        { id: 0, name: 'Player 1', scores: [], punctuation: 0 },
-        { id: 1, name: 'Player 2', scores: [], punctuation: 0 },
-      ];
       btnNewRound.click();
 
       expect(navigateSpy).toHaveBeenCalledWith(
         ['../', ROUTING_PATHS.ENTER_SCORE],
         jasmine.objectContaining({
           state: {
-            players: [
-              { id: 0, name: 'Player 1', scores: [], punctuation: 0 },
-              { id: 1, name: 'Player 2', scores: [], punctuation: 0 },
-            ],
+            playerNames: ['Player 1', 'Player 2'],
+            punctuations: [0, 0],
             roundNumber: 1,
           },
         })
@@ -175,7 +169,10 @@ describe('BottomControlsComponent', () => {
           provideGameService(OtherGameService),
         ],
       });
-      gameHolderService = TestBed.inject(GameHolderService);
+      gameService = TestBed.inject(GameHolderService).service;
+      gameService.playerNames = ['Player 1', 'Player 2'];
+      gameService.scores = [[], []];
+
       fixture = TestBed.createComponent(BottomControlsComponent);
 
       btnNewGame = fixture.debugElement.query(By.css(SELECTORS.BTN_NEW_GAME)).nativeElement;
@@ -213,20 +210,14 @@ describe('BottomControlsComponent', () => {
 
     it('should navigate to enter score when clicking on new round button', () => {
       const navigateSpy = spyOn(TestBed.inject(Router), 'navigate');
-      gameHolderService.service.players = [
-        { id: 0, name: 'Player 1', scores: [], punctuation: 0 },
-        { id: 1, name: 'Player 2', scores: [], punctuation: 0 },
-      ];
       btnNewRound.click();
 
       expect(navigateSpy).toHaveBeenCalledWith(
         ['../', ROUTING_PATHS.ENTER_SCORE],
         jasmine.objectContaining({
           state: {
-            players: [
-              { id: 0, name: 'Player 1', scores: [], punctuation: 0 },
-              { id: 1, name: 'Player 2', scores: [], punctuation: 0 },
-            ],
+            playerNames: ['Player 1', 'Player 2'],
+            punctuations: [0, 0],
             roundNumber: 1,
           },
         })
@@ -245,7 +236,7 @@ describe('BottomControlsComponent', () => {
           provideGameService(BriscaService),
         ],
       });
-      gameHolderService = TestBed.inject(GameHolderService);
+      gameService = TestBed.inject(GameHolderService).service;
       fixture = TestBed.createComponent(BottomControlsComponent);
 
       btnNewGame = fixture.debugElement.query(By.css(SELECTORS.BTN_NEW_GAME)).nativeElement;

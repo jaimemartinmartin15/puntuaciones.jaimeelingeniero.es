@@ -1,11 +1,14 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BottomControlsComponent } from '../../components/bottom-controls/bottom-controls.component';
 import { RoundInfoComponent } from '../../components/round-info/round-info.component';
+import { Flag } from '../../game-services/flags';
 import { GameHolderService } from '../../game-services/game-holder.service';
 import { GameService, GameServiceWithFlags } from '../../game-services/game.service';
 import { intervalArray } from '../../utils/arrays';
+
+const SCOREBOARD_FLAGS = ['scoreboard', 'game:gameStartEnd', 'game:rounds'] as const; // as Flag[]
 
 @Component({
   selector: 'app-scoreboard',
@@ -14,37 +17,38 @@ import { intervalArray } from '../../utils/arrays';
   templateUrl: './scoreboard.component.html',
   styleUrls: ['./scoreboard.component.scss'],
 })
-export class ScoreboardComponent implements OnInit {
-  public gameService: GameService & GameServiceWithFlags<'scoreboard'>;
+export class ScoreboardComponent {
+  public gameService: GameService & GameServiceWithFlags<(typeof SCOREBOARD_FLAGS)[number]>;
 
   public constructor(
     public readonly gameHolderService: GameHolderService,
     private readonly router: Router,
     private readonly activatedRoute: ActivatedRoute
-  ) {}
-
-  public ngOnInit(): void {
-    if (!this.gameHolderService.service.hasFlagActive('scoreboard')) {
+  ) {
+    if (!gameHolderService.service.isGameServiceWithFlags(SCOREBOARD_FLAGS as unknown as Flag[])) {
       throw new Error(
-        `It is not possible to load scoreboard page for game service ${this.gameHolderService.service.gameName}. It does not implement flag 'scoreboard'`
+        `Error ScoreboardComponent: service '${gameHolderService.service.gameName}' does not implement flags [${SCOREBOARD_FLAGS.join(', ')}]`
       );
     }
 
-    this.gameService = this.gameHolderService.service;
+    this.gameService = gameHolderService.service;
   }
 
   public changeScoresForRound(round: number) {
+    // TODO implement flag enterScore that has a method that gets the state?
     const state = {
-      players: this.gameService.players.map((p) => ({ ...p, punctuation: p.scores[round] })),
+      playerNames: this.gameService.playerNames,
+      punctuations: this.gameService.playerNames.map((_, id) => this.gameService.getPlayerScore(id, round)),
       roundNumber: round + 1,
     };
     this.router.navigate(['../', this.gameService.enterScoreRoute], { relativeTo: this.activatedRoute, state });
   }
 
   public changeScoreForPlayerAndRound(playerId: number, round: number) {
-    const player = this.gameService.players[playerId];
+    // TODO implement flag enterScore that has a method that gets the state?
     const state = {
-      players: [{ ...player, punctuation: player.scores[round] }],
+      playerNames: [this.gameService.playerNames[playerId]],
+      punctuations: [this.gameService.getPlayerScore(playerId, round)],
       roundNumber: round + 1,
     };
     this.router.navigate(['../', this.gameService.enterScoreRoute], { relativeTo: this.activatedRoute, state });
@@ -52,9 +56,5 @@ export class ScoreboardComponent implements OnInit {
 
   public getRoundNumbersAsArray() {
     return intervalArray(this.gameService.getNextRoundNumber() - 1).map((r) => r - 1);
-  }
-
-  public getRoundScores(round: number) {
-    return this.gameService.players.map((p) => p.scores[round]);
   }
 }

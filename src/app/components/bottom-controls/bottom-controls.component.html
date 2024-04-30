@@ -3,18 +3,19 @@
 </button>
 
 <button class="app-button" data-test-id="btn-change-view" (click)="showViewNavigation = !showViewNavigation"
-  *ngIf="gameHolderService.service.hasFlagActive('bottomControls:changeViews')">
+  *ngIf="gameService.hasFlagActive('bottomControls:changeViews')">
   Cambiar vista
 </button>
 
-<button class="app-button" data-test-id="btn-new-round" (click)="enterNewRound()">
+<button class="app-button" data-test-id="btn-new-round" (click)="enterNewRound()"
+  *ngIf="gameService.hasFlagActive('bottomControls:newRound')">
   Nueva ronda
 </button>
 
 <div class="view-list" data-test-id="change-view-pop-up"
-  *ngIf="showViewNavigation && gameHolderService.service.hasFlagActive('bottomControls:changeViews')"
+  *ngIf="showViewNavigation && gameService.hasFlagActive('bottomControls:changeViews')"
   (click)="showViewNavigation = false">
-  <a *ngFor="let view of gameHolderService.service.changeViews" [routerLink]="['../', view.path]">
+  <a *ngFor="let view of gameService.changeViews" [routerLink]="['../', view.path]">
     {{view.display}}
   </a>
 </div>
