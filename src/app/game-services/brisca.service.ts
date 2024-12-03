@@ -254,7 +254,7 @@ export class BriscaService implements GameServiceWithFlags<BriscaFlags> {
   // init in the constructor
   public teamControls: FormArray<FormControl<EnterPlayerNamesModel>>;
 
-  public usePlayerNames(playerNames: string[], modality = this.modality): void {
+  public usePlayerNames(playerNames: string[], modality = this.modalityFormControl.value): void {
     if (modality === 'individual') {
       const tempValue = this.modalityIndividualTeamControl.value;
       tempValue.playerNames = playerNames;
@@ -270,7 +270,7 @@ export class BriscaService implements GameServiceWithFlags<BriscaFlags> {
     }
   }
   
-  public getPlayerNames(modality = this.modality): string[] {
+  public getPlayerNames(modality = this.modalityFormControl.value): string[] {
     if (modality === 'individual') {
        return this.modalityIndividualTeamControl.value.playerNames;
     } else if (modality === 'teams') {
