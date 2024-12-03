@@ -152,6 +152,16 @@ export class OtherGameService implements GameServiceWithFlags<OtherGameFlags> {
     { teamName: this.teamName, playerNames: ['', '', '', ''], dealingPlayerIndex: 0 },
   ]);
 
+  public usePlayerNames(playerNames: string[]): void {
+    const tempValue = this.teamControls.controls[0].value
+    tempValue.playerNames = playerNames;
+    this.teamControls.controls[0].setValue(tempValue);
+  }
+  
+  public getPlayerNames(): string[] {
+    return this.teamControls.controls[0].value.playerNames;
+  }
+
   //#endregion gameConfig:players
 
   //#region gameConfig:winner

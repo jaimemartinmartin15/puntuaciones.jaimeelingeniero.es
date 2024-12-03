@@ -51,12 +51,14 @@ If active, shows a control to select if the game is individual or by teams.
 
 ### (*6) gameConfig:players
 
-If active, shows the controls to enter the player names and who is next turn.
+If active, shows the controls to enter the player names and who is next turn. It also provides raw methods to share the player names on selecting which game to play.
 
 **Properties**:
 
 - allowEditTeamName: boolean[]
 - teamControls: FormArray&lt;FormControl&lt;EnterPlayerNamesModel&gt;&gt;
+- usePlayerNames(playerNames: string[]): void
+- getPlayerNames(): string[]
 
 ### (*7) (*8) gameConfig:validation
 
