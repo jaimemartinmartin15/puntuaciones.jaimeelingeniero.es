@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 2.1.1
+
+Use players from one service to another when selecting another game in GameConfig view.
+
 ## 2.1.0
 
 Added docs with READMEs.
