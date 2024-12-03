@@ -39,9 +39,11 @@ export class BriscaService implements GameServiceWithFlags<BriscaFlags> {
     this.modalityFormControl.valueChanges.subscribe((v) => {
       if (v === 'individual') {
         this.teamControls.clear();
+        this.usePlayerNames(this.getPlayerNames('teams'), v)
         this.teamControls.push(this.modalityIndividualTeamControl);
         this.allowEditTeamName = [false];
       } else if (v === 'teams') {
+        this.usePlayerNames(this.getPlayerNames('individual'), v)
         this.teamControls.clear();
         this.teamControls.push(this.modalityTeamsTeam1Control);
         this.teamControls.push(this.modalityTeamsTeam2Control);
@@ -251,6 +253,35 @@ export class BriscaService implements GameServiceWithFlags<BriscaFlags> {
 
   // init in the constructor
   public teamControls: FormArray<FormControl<EnterPlayerNamesModel>>;
+
+  public usePlayerNames(playerNames: string[], modality = this.modality): void {
+    if (modality === 'individual') {
+      const tempValue = this.modalityIndividualTeamControl.value;
+      tempValue.playerNames = playerNames;
+      this.modalityIndividualTeamControl.setValue(tempValue);
+    } else if (modality === 'teams') {
+      const tempValue1 = this.modalityTeamsTeam1Control.value;
+      tempValue1.playerNames = playerNames.filter((_, i) => i % 2 === 0);
+      this.modalityTeamsTeam1Control.setValue(tempValue1);
+
+      const tempValue2 = this.modalityTeamsTeam2Control.value;
+      tempValue2.playerNames = playerNames.filter((_, i) => i % 2 !== 0);
+      this.modalityTeamsTeam2Control.setValue(tempValue2);
+    }
+  }
+  
+  public getPlayerNames(modality = this.modality): string[] {
+    if (modality === 'individual') {
+       return this.modalityIndividualTeamControl.value.playerNames;
+    } else if (modality === 'teams') {
+      return this.modalityTeamsTeam1Control.value.playerNames.flatMap((_, i) => ([
+        this.modalityTeamsTeam1Control.value.playerNames[i],
+        this.modalityTeamsTeam2Control.value.playerNames[i],
+      ]));
+    } else {
+      return []; // not possible
+    }
+  }
 
   //#endregion gameConfig:players
 

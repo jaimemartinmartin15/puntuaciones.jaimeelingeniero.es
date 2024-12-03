@@ -3,6 +3,7 @@ import { CommonModule, Location } from '@angular/common';
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl, NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { filter, pairwise, startWith } from 'rxjs';
 import { EnterPlayerNamesComponent } from '../../components/enter-player-names/enter-player-names.component';
 import { InputNumberScrollerComponent } from '../../components/input-number-scroller/input-number-scroller.component';
 import { RadioButtonGroupModule } from '../../components/radio-button-group/radio-button-group.module';
@@ -50,6 +51,17 @@ export class GameConfigComponent implements OnInit {
 
     const gameService = this.getGameServiceToLoad();
     this.selectedGameServiceFormControl = this.fb.control(gameService);
+
+    // share player names between game services
+    this.selectedGameServiceFormControl.valueChanges.pipe(
+      filter(gameService => gameService.hasFlagActive('gameConfig:players')),
+      startWith(gameService),
+      pairwise()
+    ).subscribe(([prevGameService, currentGameService]) => {
+      if(currentGameService.hasFlagActive('gameConfig:players') && prevGameService.hasFlagActive('gameConfig:players')) {
+        currentGameService.usePlayerNames(prevGameService.getPlayerNames());
+      }
+    })
   }
 
   public get selectedGameService(): GameService {

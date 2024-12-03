@@ -24,7 +24,7 @@ export type FlagMapping = {
     onEditConfigCurrentGame(): void;
   };
   'gameConfig:validation': { isGameConfigCorrect(): boolean };
-  'gameConfig:players': { allowEditTeamName: boolean[]; teamControls: FormArray<FormControl<EnterPlayerNamesModel>> };
+  'gameConfig:players': { allowEditTeamName: boolean[]; teamControls: FormArray<FormControl<EnterPlayerNamesModel>>; usePlayerNames(playerNames: string[]): void; getPlayerNames(): string[]; };
   'gameConfig:numberOfCards': { numberOfCards: number; numberOfCardsFormControl: FormControl<number> };
   'gameConfig:limitScore': { limitScore: number; limitScoreFormControl: FormControl<number>; numberOfScrollers: number };
   'gameConfig:winner': { winner: 'highestScore' | 'lowestScore'; winnerFormControl: FormControl<'highestScore' | 'lowestScore'> };
