@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 2.1.2
+
+Fix bug after editing number of players in game config when game has already started. Keep scores of each player.
+
 ## 2.1.1
 
 Use players from one service to another when selecting another game in GameConfig view.
