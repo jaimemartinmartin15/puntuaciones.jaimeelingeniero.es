@@ -93,7 +93,7 @@ export class PochaService implements GameServiceWithFlags<PochaFlags> {
     this.numberOfCardsFormControl.setValue(this.numberOfCards);
     this.playerNames = settings.playerNames;
     this.dealingPlayerIndex = settings.dealingPlayerIndex;
-    this.teamControls.setValue([{ teamName: this.teamName, playerNames: this.playerNames, dealingPlayerIndex: this.dealingPlayerIndex }]);
+    this.teamControls.setValue([{ teamName: this.teamName, playerNames: [...this.playerNames], dealingPlayerIndex: this.dealingPlayerIndex }]);
     this.scores = settings.scores;
   }
 
@@ -166,7 +166,7 @@ export class PochaService implements GameServiceWithFlags<PochaFlags> {
   
   public usePlayerNames(playerNames: string[]): void {
     const tempValue = this.teamControls.controls[0].value
-    tempValue.playerNames = playerNames;
+    tempValue.playerNames = [...playerNames];
     this.teamControls.controls[0].setValue(tempValue);
   }
   
@@ -437,7 +437,7 @@ export class PochaService implements GameServiceWithFlags<PochaFlags> {
     this.teamControls.controls[0].setValue({
       teamName: this.teamName,
       dealingPlayerIndex: this.dealingPlayerIndex,
-      playerNames: this.playerNames,
+      playerNames: [...this.playerNames],
     });
   }
 
