@@ -43,7 +43,7 @@ export class ChinchonService implements GameServiceWithFlags<ChinchonFlags> {
   private scores: number[][] = [];
   private readonly svgLimitScoreMargin = 5;
 
-  public constructor(private readonly fb: NonNullableFormBuilder) {}
+  public constructor(private readonly fb: NonNullableFormBuilder) { }
 
   //#region GameService
 
@@ -113,7 +113,7 @@ export class ChinchonService implements GameServiceWithFlags<ChinchonFlags> {
     this.limitScoreFormControl.setValue(this.limitScore);
     this.playerNames = settings.playerNames;
     this.dealingPlayerIndex = settings.dealingPlayerIndex;
-    this.teamControls.setValue([{ teamName: this.teamName, playerNames: this.playerNames, dealingPlayerIndex: this.dealingPlayerIndex }]);
+    this.teamControls.setValue([{ teamName: this.teamName, playerNames: [...this.playerNames], dealingPlayerIndex: this.dealingPlayerIndex }]);
     this.scores = settings.scores;
   }
 
@@ -184,13 +184,13 @@ export class ChinchonService implements GameServiceWithFlags<ChinchonFlags> {
   public teamControls: FormArray<FormControl<EnterPlayerNamesModel>> = this.fb.array([
     { teamName: this.teamName, playerNames: ['', '', '', ''], dealingPlayerIndex: 0 },
   ]);
-  
+
   public usePlayerNames(playerNames: string[]): void {
     const tempValue = this.teamControls.controls[0].value
-    tempValue.playerNames = playerNames;
+    tempValue.playerNames = [...playerNames];
     this.teamControls.controls[0].setValue(tempValue);
   }
-  
+
   public getPlayerNames(): string[] {
     return this.teamControls.controls[0].value.playerNames;
   }
@@ -592,7 +592,7 @@ export class ChinchonService implements GameServiceWithFlags<ChinchonFlags> {
     this.teamControls.controls[0].setValue({
       teamName: this.teamName,
       dealingPlayerIndex: this.dealingPlayerIndex,
-      playerNames: this.playerNames,
+      playerNames: [...this.playerNames],
     });
   }
 

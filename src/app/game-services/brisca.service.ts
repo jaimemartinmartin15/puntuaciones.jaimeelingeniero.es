@@ -141,7 +141,7 @@ export class BriscaService implements GameServiceWithFlags<BriscaFlags> {
     if (this.modality === 'individual') {
       this.modalityIndividualTeamControl.setValue({
         teamName: 'Jugadores',
-        playerNames: this.playerNames,
+        playerNames: [...this.playerNames],
         dealingPlayerIndex: this.dealingPlayerIndex,
       });
       this.teamControls.push(this.modalityIndividualTeamControl);
@@ -257,7 +257,7 @@ export class BriscaService implements GameServiceWithFlags<BriscaFlags> {
   public usePlayerNames(playerNames: string[], modality = this.modalityFormControl.value): void {
     if (modality === 'individual') {
       const tempValue = this.modalityIndividualTeamControl.value;
-      tempValue.playerNames = playerNames;
+      tempValue.playerNames = [...playerNames];
       this.modalityIndividualTeamControl.setValue(tempValue);
     } else if (modality === 'teams') {
       const tempValue1 = this.modalityTeamsTeam1Control.value;

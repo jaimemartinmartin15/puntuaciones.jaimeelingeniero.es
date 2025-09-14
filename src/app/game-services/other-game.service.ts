@@ -88,7 +88,7 @@ export class OtherGameService implements GameServiceWithFlags<OtherGameFlags> {
     this.winnerFormControl.setValue(this.winner);
     this.playerNames = settings.playerNames;
     this.dealingPlayerIndex = settings.dealingPlayerIndex;
-    this.teamControls.setValue([{ teamName: this.teamName, playerNames: this.playerNames, dealingPlayerIndex: this.dealingPlayerIndex }]);
+    this.teamControls.setValue([{ teamName: this.teamName, playerNames: [...this.playerNames], dealingPlayerIndex: this.dealingPlayerIndex }]);
     this.scores = settings.scores;
   }
 
@@ -154,7 +154,7 @@ export class OtherGameService implements GameServiceWithFlags<OtherGameFlags> {
 
   public usePlayerNames(playerNames: string[]): void {
     const tempValue = this.teamControls.controls[0].value
-    tempValue.playerNames = playerNames;
+    tempValue.playerNames = [...playerNames];
     this.teamControls.controls[0].setValue(tempValue);
   }
   
@@ -372,7 +372,7 @@ export class OtherGameService implements GameServiceWithFlags<OtherGameFlags> {
     this.teamControls.controls[0].setValue({
       teamName: this.teamName,
       dealingPlayerIndex: this.dealingPlayerIndex,
-      playerNames: this.playerNames,
+      playerNames: [...this.playerNames],
     });
   }
 
