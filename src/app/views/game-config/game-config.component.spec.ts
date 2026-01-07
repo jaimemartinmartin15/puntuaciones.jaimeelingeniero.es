@@ -152,6 +152,11 @@ describe('GameConfigComponent', () => {
       fixture.detectChanges();
     });
 
+    it('should be possible to select the limit score', () => {
+      const limitScore = fixture.debugElement.query(By.css(SELECTORS.SELECTED_LIMIT_SCORE)).nativeElement.textContent;
+      expect(limitScore).not.toBeNull();
+    });
+    
     it('should be possible to select brisca game', () => {
       expect(component.selectedGameService.gameName).toBe('Brisca');
     });

@@ -2,6 +2,7 @@
 
 ## Unreleased version
 
+Added limit score in round info of brisca game.
 Added playing time to brisca game.
 
 ## 2.1.2

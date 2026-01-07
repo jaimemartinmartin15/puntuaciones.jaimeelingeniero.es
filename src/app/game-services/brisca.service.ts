@@ -15,9 +15,11 @@ const briscaFlags = [
   'gameConfig',
   'gameConfig:validation',
   'gameConfig:players',
+  'gameConfig:limitScore',
   'gameConfig:modality',
   'roundInfo:gameName',
   'roundInfo:dealingPlayer',
+  'roundInfo:limitScore',
   'bottomControls:newRound',
   'brisca',
   'enterScore:brisca',
@@ -106,7 +108,7 @@ export class BriscaService implements GameServiceWithFlags<BriscaFlags> {
   }
 
   public gameHasFinished(): boolean {
-    return false;
+    return this.scores.some(score => score >= this.limitScore);
   }
 
   //#endregion game:gameStartEnd
@@ -182,6 +184,7 @@ export class BriscaService implements GameServiceWithFlags<BriscaFlags> {
 
   public onStartGame(): void {
     this.modality = this.modalityFormControl.value;
+    this.limitScore = this.limitScoreFormControl.value;
 
     if (this.modality === 'individual') {
       this.playerNames = this.modalityIndividualTeamControl.value.playerNames.map((n) => n.trim());
@@ -204,6 +207,8 @@ export class BriscaService implements GameServiceWithFlags<BriscaFlags> {
   }
 
   public onEditConfigCurrentGame(): void {
+    this.limitScore = this.limitScoreFormControl.value;
+
     if (this.modality === 'individual') {
       this.dealingPlayerIndex = this.modalityIndividualTeamControl.value.dealingPlayerIndex;
 
@@ -269,10 +274,10 @@ export class BriscaService implements GameServiceWithFlags<BriscaFlags> {
       this.modalityTeamsTeam2Control.setValue(tempValue2);
     }
   }
-  
+
   public getPlayerNames(modality = this.modalityFormControl.value): string[] {
     if (modality === 'individual') {
-       return this.modalityIndividualTeamControl.value.playerNames;
+      return this.modalityIndividualTeamControl.value.playerNames;
     } else if (modality === 'teams') {
       return this.modalityTeamsTeam1Control.value.playerNames.flatMap((_, i) => ([
         this.modalityTeamsTeam1Control.value.playerNames[i],
@@ -284,6 +289,16 @@ export class BriscaService implements GameServiceWithFlags<BriscaFlags> {
   }
 
   //#endregion gameConfig:players
+
+  //#region gameConfig:limitScore
+
+  public limitScore: number = 9;
+
+  public limitScoreFormControl = this.fb.control(this.limitScore);
+
+  public numberOfScrollers: number = 2;
+
+  //#endregion
 
   //#region gameConfig:modality
 
@@ -307,6 +322,12 @@ export class BriscaService implements GameServiceWithFlags<BriscaFlags> {
   }
 
   //#endregion roundInfo:dealingPlayer
+
+  //#region roundInfo:limitScore
+
+  // limitScore: number -> property already declared by gameConfig:limitScore
+
+  //#endregion roundInfo:limitScore
 
   //#region bottomControls:newRound
 

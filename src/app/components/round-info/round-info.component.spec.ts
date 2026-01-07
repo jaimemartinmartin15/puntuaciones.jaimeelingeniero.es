@@ -263,9 +263,13 @@ describe('RoundInfoComponent', () => {
       expect(numberOfCards).toBeNull();
     });
 
-    it('should not show the limit score', () => {
-      const limitScore = fixture.debugElement.query(By.css(SELECTORS.LIMIT_SCORE));
-      expect(limitScore).toBeNull();
+    it('should show the limit score', () => {
+      const limitScore = fixture.debugElement.query(By.css(SELECTORS.LIMIT_SCORE)).nativeElement;
+      expect(limitScore.textContent).toContain('Límite: 9');
+
+      gameService.limitScore = 11;
+      fixture.detectChanges();
+      expect(limitScore.textContent).toContain('Límite: 11');
     });
 
     it('should not show if the game has finished', () => {
