@@ -30,6 +30,8 @@ Allows to save the state of the game when a point is removed to a team or player
 
 On page load it checks if the banner explaining how to delete a point **(\*4)** has to be shown. It is shown each time a game starts or if it has been hidden for more than one day. The cross closes the banner and it is not shown after entering new points.
 
+The time the game lasts is calculated every second after the page loads, and it is the difference of time since the time started in [game config view](./GAME_CONFIG.md) and now.
+
 When the user clicks the quadrant **(\*3)** of a team or a player five times, a point is deleted for that team or player.
 
 Every five points, a bullet is shown at the end of a the stripe.
