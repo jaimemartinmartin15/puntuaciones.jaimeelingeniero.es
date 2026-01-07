@@ -1,8 +1,9 @@
 # CHANGELOG
 
-## Unreleased version
+## 2.2.0
 
 Added limit score in round info of brisca game.
+
 Added playing time to brisca game.
 
 ## 2.1.2
