@@ -31,18 +31,18 @@ jobs:
         run: npm run test:ci
       - name: E2e test
         run: npm run test:e2e
-      - name: Set AWS credentials
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          mask-aws-account-id: true
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: eu-south-2
-      - name: Deploy
-        run: |
-          aws --version
-          aws s3 sync ./dist/puntuaciones/browser \
-                      s3://puntuaciones.jaimeelingeniero.es \
-                      --delete \
-                      --exclude 3rdpartylicenses.txt
-          aws s3 cp ./dist/puntuaciones/3rdpartylicenses.txt s3://puntuaciones.jaimeelingeniero.es
+      # - name: Set AWS credentials
+      #   uses: aws-actions/configure-aws-credentials@v4
+      #   with:
+      #     mask-aws-account-id: true
+      #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      #     aws-region: eu-south-2
+      # - name: Deploy
+      #   run: |
+      #     aws --version
+      #     aws s3 sync ./dist/puntuaciones/browser \
+      #                 s3://puntuaciones.jaimeelingeniero.es \
+      #                 --delete \
+      #                 --exclude 3rdpartylicenses.txt
+      #     aws s3 cp ./dist/puntuaciones/3rdpartylicenses.txt s3://puntuaciones.jaimeelingeniero.es
