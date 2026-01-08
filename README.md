@@ -37,7 +37,7 @@ npm run start:public
 To run the unit test in development mode (watch changes and open karma) run:
 
 ```text
-npm run test
+npm run test:watch
 ```
 
 To just run the unit test once and exit:

@@ -14,6 +14,7 @@ describe('Brisca game', function () {
     await page.locator('[data-test-id="game-name-option-Brisca"]').click();
     await page.locator('[data-test-id="btn-add-player"]').click();
     await enterTeamAndPlayerNames(['Player 1', 'Player 2', 'Player 3', 'Player 4', 'Player 5', 'Player 6'], ['Us', 'Them']);
+    await page.setViewport({ width: 360, height: 790 });
     await takeScreenshot(SCREENSHOTS_PATH('configuration'));
 
     // game started

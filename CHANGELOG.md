@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 2.2.0
+
+Added limit score in round info of brisca game.
+
+Added playing time to brisca game.
+
 ## 2.1.2
 
 Fix bug after editing number of players in game config when game has already started. Keep scores of each player.
