@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## Unreleased
+
+Fix dragging of players in game-config.
+
+Fix statistics graph for other game.
+
 ## 2.2.0
 
 Added limit score in round info of brisca game.
