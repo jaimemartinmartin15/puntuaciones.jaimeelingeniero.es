@@ -71,15 +71,6 @@
   margin: 5px 0 0 0;
   list-style: none;
 
-  .cdk-drag-preview {
-    box-shadow:
-      3px 3px 5px $color-box-shadow,
-      -3px -3px 5px $color-box-shadow;
-    background-color: white;
-    padding: 5px !important;
-    height: auto !important;
-  }
-
   .player-item {
     color: $color-orange;
     display: flex;
@@ -88,6 +79,15 @@
 
     &:not(:first-child) {
       padding-top: 12px;
+    }
+
+    &.cdk-drag-preview {
+      box-shadow:
+        3px 3px 5px $color-box-shadow,
+        -3px -3px 5px $color-box-shadow;
+      background-color: white;
+      padding: 5px 0 5px 5px;
+      height: 24px !important;
     }
 
     .player-id {
