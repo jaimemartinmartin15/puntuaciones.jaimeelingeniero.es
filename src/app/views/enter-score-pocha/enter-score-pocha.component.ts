@@ -1,4 +1,4 @@
-import { CommonModule, Location } from '@angular/common';
+import { Location } from '@angular/common';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { LOCAL_STORE_KEYS } from '../../constants/local-storage-keys';
@@ -11,7 +11,6 @@ const ENTER_SCORE_POCHA_FLAGS = ['enterScore', 'enterScore:pocha'] as const; //a
 
 @Component({
     selector: 'app-enter-score-pocha',
-    imports: [CommonModule],
     templateUrl: './enter-score-pocha.component.html',
     styleUrls: ['./enter-score-pocha.component.scss'],
     animations: [enterScoreBaseAnimation]

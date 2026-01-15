@@ -1,35 +1,32 @@
-<ng-container *ngIf="!isEdition">
+@if (!isEdition) {
   <label>Juego</label>
-
   <app-select [formControl]="selectedGameServiceFormControl">
     <span data-test-id="select-game-name">{{selectedGameService.gameName}}</span>
-
-    <app-select-option *ngFor="let gameService of gameServices" [value]="gameService"
-      [attr.data-test-id]="'game-name-option-'+gameService.gameName">
-      {{gameService.gameName}}
-    </app-select-option>
+    @for (gameService of gameServices; track gameService) {
+      <app-select-option [value]="gameService"
+        [attr.data-test-id]="'game-name-option-'+gameService.gameName">
+        {{gameService.gameName}}
+      </app-select-option>
+    }
   </app-select>
-</ng-container>
+}
 
-<ng-container *ngIf="selectedGameService.hasFlagActive('gameConfig:numberOfCards')">
+@if (selectedGameService.hasFlagActive('gameConfig:numberOfCards')) {
   <label>Cartas</label>
-
   <app-input-number-scroller [formControl]="selectedGameService.numberOfCardsFormControl"
     data-test-id="selected-number-of-cards">
   </app-input-number-scroller>
-</ng-container>
+}
 
-<ng-container *ngIf="selectedGameService.hasFlagActive('gameConfig:limitScore')">
+@if (selectedGameService.hasFlagActive('gameConfig:limitScore')) {
   <label>Límite</label>
-
   <app-input-number-scroller [formControl]="selectedGameService.limitScoreFormControl"
     [numberOfScrollers]="selectedGameService.numberOfScrollers" data-test-id="selected-limit-score">
   </app-input-number-scroller>
-</ng-container>
+}
 
-<ng-container *ngIf="selectedGameService.hasFlagActive('gameConfig:winner')">
+@if (selectedGameService.hasFlagActive('gameConfig:winner')) {
   <label>Ganador</label>
-
   <app-radio-button-group [formControl]="selectedGameService.winnerFormControl">
     <app-radio-button [value]="'highestScore'" data-test-id="option-winner-highest-score">
       Quien más puntos tiene
@@ -38,11 +35,10 @@
       Quien menos puntos tiene
     </app-radio-button>
   </app-radio-button-group>
-</ng-container>
+}
 
-<ng-container *ngIf="selectedGameService.hasFlagActive('gameConfig:modality')">
+@if (selectedGameService.hasFlagActive('gameConfig:modality')) {
   <label>Modalidad</label>
-
   <app-radio-button-group [formControl]="selectedGameService.modalityFormControl">
     <app-radio-button [value]="'individual'" data-test-id="option-modality-individual">
       Juego individual
@@ -51,23 +47,29 @@
       Juego por equipos
     </app-radio-button>
   </app-radio-button-group>
-</ng-container>
+}
 
-<ng-container *ngIf="selectedGameService.hasFlagActive('gameConfig:players')">
-  <app-enter-player-names *ngFor="let teamControl of selectedGameService.teamControls.controls; let i = index"
-    [allowEditTeamName]="selectedGameService.allowEditTeamName[i]" [formControl]="teamControl"
-    [attr.data-test-id]="'team-'+i">
-  </app-enter-player-names>
-</ng-container>
+@if (selectedGameService.hasFlagActive('gameConfig:players')) {
+  @for (teamControl of selectedGameService.teamControls.controls; track teamControl; let i = $index) {
+    <app-enter-player-names
+      [allowEditTeamName]="selectedGameService.allowEditTeamName[i]" [formControl]="teamControl"
+      [attr.data-test-id]="'team-'+i">
+    </app-enter-player-names>
+  }
+}
 
 <div class="button-group">
-  <button class="app-button" *ngIf="!isEdition" (click)="startGame()"
-    [disabled]="selectedGameService.hasFlagActive('gameConfig:validation') && !selectedGameService.isGameConfigCorrect()" data-test-id="btn-start">
-    Empezar
-  </button>
+  @if (!isEdition) {
+    <button class="app-button" (click)="startGame()"
+      [disabled]="selectedGameService.hasFlagActive('gameConfig:validation') && !selectedGameService.isGameConfigCorrect()" data-test-id="btn-start">
+      Empezar
+    </button>
+  }
 
-  <button class="app-button" *ngIf="isEdition" (click)="editConfigCurrentGame()"
-    [disabled]="selectedGameService.hasFlagActive('gameConfig:validation') && !selectedGameService.isGameConfigCorrect()" data-test-id="btn-go-back">
-    Volver
-  </button>
+  @if (isEdition) {
+    <button class="app-button" (click)="editConfigCurrentGame()"
+      [disabled]="selectedGameService.hasFlagActive('gameConfig:validation') && !selectedGameService.isGameConfigCorrect()" data-test-id="btn-go-back">
+      Volver
+    </button>
+  }
 </div>

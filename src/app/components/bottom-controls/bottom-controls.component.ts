@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { ROUTING_PATHS } from '../../constants/routes';
@@ -7,7 +6,7 @@ import { GameService, GameServiceWithFlags } from '../../game-services/game.serv
 
 @Component({
     selector: 'app-bottom-controls',
-    imports: [CommonModule, RouterLink],
+    imports: [RouterLink],
     templateUrl: './bottom-controls.component.html',
     styleUrls: ['./bottom-controls.component.scss']
 })

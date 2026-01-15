@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BottomControlsComponent } from '../../components/bottom-controls/bottom-controls.component';
@@ -12,7 +11,7 @@ const SCOREBOARD_FLAGS = ['scoreboard', 'game:gameStartEnd', 'game:rounds'] as c
 
 @Component({
     selector: 'app-scoreboard',
-    imports: [CommonModule, RoundInfoComponent, BottomControlsComponent],
+    imports: [RoundInfoComponent, BottomControlsComponent],
     templateUrl: './scoreboard.component.html',
     styleUrls: ['./scoreboard.component.scss']
 })

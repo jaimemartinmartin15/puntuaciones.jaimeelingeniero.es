@@ -1,74 +1,85 @@
 <app-round-info></app-round-info>
 
-<div class="empty-state" data-test-id="empty-state" *ngIf="!gameService.gameHasStarted()">
-  Introduce al menos una ronda para mostrar la tabla de puntuaciones
-</div>
+@if (!gameService.gameHasStarted()) {
+  <div class="empty-state" data-test-id="empty-state">
+    Introduce al menos una ronda para mostrar la tabla de puntuaciones
+  </div>
+}
 
-<div class="scoreboard" *ngIf="gameService.gameHasStarted()">
-  <table>
-    <thead class="sticky-header">
-      <tr data-test-id="top-row-header">
-        <th class="highlight-cell sticky-round-number">Ronda</th>
-        <th class="highlight-cell" *ngFor="let playerName of gameService.playerNames">{{playerName}}</th>
-      </tr>
-    </thead>
-
-    <tbody>
-      <ng-container *ngFor="let round of getRoundNumbersAsArray()">
-        <tr>
-          <th class="highlight-cell sticky-round-number" (click)="changeScoresForRound(round)"
-            [attr.data-test-id]="'round-number-'+round">
-            {{round + 1}}
-          </th>
-          <td *ngFor="let playerName of gameService.playerNames; let playerId = index"
-            (click)="changeScoreForPlayerAndRound(playerId, round)"
-            [attr.data-test-id]="'table-cell-player-'+playerId+'-round-'+round+''"
-            [attr.style]="gameService.getCellBackgroundColor(gameService.getPlayerScore(playerId, round))">
-            <div class="score">
-              <span style="visibility: hidden" class="accumulated-score">
-                ({{gameService.getPlayerAccumulatedScoreAtRound(playerId, round + 1)}})
-              </span>
-              <span [attr.data-test-id]="'score-player-'+playerId+'-round-'+round">
-                {{gameService.getPlayerScore(playerId, round)}}
-              </span>
-              <span class="accumulated-score"
-                [attr.data-test-id]="'accumulated-score-player-'+playerId+'-round-'+round">
-                ({{gameService.getPlayerAccumulatedScoreAtRound(playerId, round + 1)}})
-              </span>
-            </div>
-          </td>
+@if (gameService.gameHasStarted()) {
+  <div class="scoreboard">
+    <table>
+      <thead class="sticky-header">
+        <tr data-test-id="top-row-header">
+          <th class="highlight-cell sticky-round-number">Ronda</th>
+          @for (playerName of gameService.playerNames; track playerName) {
+            <th class="highlight-cell">{{playerName}}</th>
+          }
         </tr>
-
-        <ng-container *ngIf="gameService.hasFlagActive('scoreboard:specialRounds')">
-          <tr *ngIf="gameService.showSpecialRowAfterRound(round)">
-            <th class="highlight-cell sticky-round-number">-</th>
-            <td *ngFor="let score of gameService.getSpecialRoundScores(round); let playerId = index"
-              class="score--rejoin">
-              <div class="score">
-                <span style="visibility: hidden" class="accumulated-score">
-                  ({{gameService.getPlayerAccumulatedScoreAtSpecialRound(playerId, round)}})
-                </span>
-                <span [attr.data-test-id]="'special-score-player-'+playerId+'-round-'+round">{{score || ''}}</span>
-                <span class="accumulated-score" *ngIf="score !== 0"
-                  [attr.data-test-id]="'accumulated-special-score-player-'+playerId+'-round-'+round">
-                  ({{gameService.getPlayerAccumulatedScoreAtSpecialRound(playerId, round)}})
-                </span>
-              </div>
-            </td>
+      </thead>
+      <tbody>
+        @for (round of getRoundNumbersAsArray(); track round) {
+          <tr>
+            <th class="highlight-cell sticky-round-number" (click)="changeScoresForRound(round)"
+              [attr.data-test-id]="'round-number-'+round">
+              {{round + 1}}
+            </th>
+            @for (playerName of gameService.playerNames; track playerName; let playerId = $index) {
+              <td
+                (click)="changeScoreForPlayerAndRound(playerId, round)"
+                [attr.data-test-id]="'table-cell-player-'+playerId+'-round-'+round+''"
+                [attr.style]="gameService.getCellBackgroundColor(gameService.getPlayerScore(playerId, round))">
+                <div class="score">
+                  <span style="visibility: hidden" class="accumulated-score">
+                    ({{gameService.getPlayerAccumulatedScoreAtRound(playerId, round + 1)}})
+                  </span>
+                  <span [attr.data-test-id]="'score-player-'+playerId+'-round-'+round">
+                    {{gameService.getPlayerScore(playerId, round)}}
+                  </span>
+                  <span class="accumulated-score"
+                    [attr.data-test-id]="'accumulated-score-player-'+playerId+'-round-'+round">
+                    ({{gameService.getPlayerAccumulatedScoreAtRound(playerId, round + 1)}})
+                  </span>
+                </div>
+              </td>
+            }
           </tr>
-        </ng-container>
-      </ng-container>
-    </tbody>
-
-    <tfoot class="sticky-footer">
-      <tr>
-        <th class="highlight-cell sticky-round-number">Total</th>
-        <th class="highlight-cell" *ngFor="let player of gameService.playerNames; let id = index"
-          [attr.data-test-id]="'total-score-player-'+id">
-          {{gameService.getTotalScore(id)}}</th>
-      </tr>
-    </tfoot>
-  </table>
-</div>
+          @if (gameService.hasFlagActive('scoreboard:specialRounds')) {
+            @if (gameService.showSpecialRowAfterRound(round)) {
+              <tr>
+                <th class="highlight-cell sticky-round-number">-</th>
+                @for (score of gameService.getSpecialRoundScores(round); track score; let playerId = $index) {
+                  <td class="score--rejoin">
+                    <div class="score">
+                      <span style="visibility: hidden" class="accumulated-score">
+                        ({{gameService.getPlayerAccumulatedScoreAtSpecialRound(playerId, round)}})
+                      </span>
+                      <span [attr.data-test-id]="'special-score-player-'+playerId+'-round-'+round">{{score || ''}}</span>
+                      @if (score !== 0) {
+                        <span class="accumulated-score" [attr.data-test-id]="'accumulated-special-score-player-'+playerId+'-round-'+round">
+                          ({{gameService.getPlayerAccumulatedScoreAtSpecialRound(playerId, round)}})
+                        </span>
+                      }
+                    </div>
+                  </td>
+                }
+              </tr>
+            }
+          }
+        }
+      </tbody>
+      <tfoot class="sticky-footer">
+        <tr>
+          <th class="highlight-cell sticky-round-number">Total</th>
+          @for (player of gameService.playerNames; track player; let id = $index) {
+            <th class="highlight-cell" [attr.data-test-id]="'total-score-player-'+id">
+              {{gameService.getTotalScore(id)}}
+            </th>
+          }
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+}
 
 <app-bottom-controls></app-bottom-controls>

@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { BottomControlsComponent } from '../../components/bottom-controls/bottom-controls.component';
 import { RoundInfoComponent } from '../../components/round-info/round-info.component';
@@ -11,7 +10,7 @@ const RANKING_FLAGS = ['ranking', 'game:gameStartEnd'] as const; //as Flag[]
 
 @Component({
     selector: 'app-ranking',
-    imports: [CommonModule, RoundInfoComponent, BottomControlsComponent, PlayerDisplayComponent],
+    imports: [RoundInfoComponent, BottomControlsComponent, PlayerDisplayComponent],
     templateUrl: './ranking.component.html',
     styleUrls: ['./ranking.component.scss']
 })

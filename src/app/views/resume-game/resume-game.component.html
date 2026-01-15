@@ -1,9 +1,9 @@
 <div class="content">
   <span data-test-id="game-name">
     Parece que hay una partida
-    <ng-container *ngIf="gameService.hasFlagActive('resumeGame:gameName')">
+    @if (gameService.hasFlagActive('resumeGame:gameName')) {
       de <strong>{{gameService.gameName.toLocaleLowerCase()}}</strong>
-    </ng-container>
+    }
     en marcha.
   </span>
 

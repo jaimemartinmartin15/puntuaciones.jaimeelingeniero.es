@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { BottomControlsComponent } from '../../components/bottom-controls/bottom-controls.component';
 import { RoundInfoComponent } from '../../components/round-info/round-info.component';
@@ -12,7 +11,7 @@ const STATISTICS_FLAGS = ['statistics', 'game:gameStartEnd'] as const; //as Flag
 
 @Component({
     selector: 'app-statistics',
-    imports: [CommonModule, BottomControlsComponent, ProgressGraphComponent, RoundInfoComponent],
+    imports: [BottomControlsComponent, ProgressGraphComponent, RoundInfoComponent],
     templateUrl: './statistics.component.html',
     styleUrls: ['./statistics.component.scss']
 })

@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component, HostBinding, Input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Flag } from '../../../game-services/flags';
@@ -10,7 +9,6 @@ const PLAYER_DISPLAY_FLAGS = ['ranking:playerDisplay', 'game:rounds'] as const; 
 
 @Component({
     selector: 'app-player-display',
-    imports: [CommonModule],
     templateUrl: './player-display.component.html',
     styleUrls: ['./player-display.component.scss']
 })

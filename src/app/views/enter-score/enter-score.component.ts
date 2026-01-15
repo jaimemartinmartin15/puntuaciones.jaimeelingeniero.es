@@ -1,4 +1,4 @@
-import { CommonModule, Location } from '@angular/common';
+import { Location } from '@angular/common';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { LOCAL_STORE_KEYS } from '../../constants/local-storage-keys';
@@ -11,7 +11,6 @@ const ENTER_SCORE_FLAGS = ['enterScore'] as const; //as Flag[]
 
 @Component({
     selector: 'app-enter-score',
-    imports: [CommonModule],
     templateUrl: './enter-score.component.html',
     styleUrls: ['./enter-score.component.scss'],
     animations: [enterScoreBaseAnimation]

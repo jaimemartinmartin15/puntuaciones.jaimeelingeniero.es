@@ -4,9 +4,11 @@
   <p class="question">¿Para quién ha sido el punto?</p>
 
   <div class="players-container">
-    <div *ngFor="let name of names; let i = index" (click)="addPointToIndex(i)" class="name-card"
-      [attr.data-test-id]="'player-'+i">
-      {{name}}
-    </div>
+    @for (name of names; track name; let i = $index) {
+      <div (click)="addPointToIndex(i)" class="name-card"
+        [attr.data-test-id]="'player-'+i">
+        {{name}}
+      </div>
+    }
   </div>
 </div>

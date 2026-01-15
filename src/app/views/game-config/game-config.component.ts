@@ -1,5 +1,5 @@
 import { DragDropModule } from '@angular/cdk/drag-drop';
-import { CommonModule, Location } from '@angular/common';
+import { Location } from '@angular/common';
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl, NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -17,17 +17,16 @@ import { GamesSvgModule } from '../../svg/generated/games-svg.module';
 @Component({
     selector: 'app-game-config',
     imports: [
-        CommonModule,
-        DragDropModule,
-        ReactiveFormsModule,
-        GamesSvgModule,
+    DragDropModule,
+    ReactiveFormsModule,
+    GamesSvgModule,
 
-        // Custom form controls
-        SelectModule,
-        InputNumberScrollerComponent,
-        RadioButtonGroupModule,
-        EnterPlayerNamesComponent,
-    ],
+    // Custom form controls
+    SelectModule,
+    InputNumberScrollerComponent,
+    RadioButtonGroupModule,
+    EnterPlayerNamesComponent
+],
     templateUrl: './game-config.component.html',
     styleUrls: ['./game-config.component.scss']
 })

@@ -1,11 +1,13 @@
 <div class="gradient-top"></div>
 
-<div *ngFor="let digit of digits; trackBy:trackByDigit; let i = index" class="digitScroller" #digitScroller [ngClass]="{disabled}">
-  <span [ngClass]="{disabled}">{{twoPositionsBefore(digit)}}</span>
-  <span [ngClass]="{disabled}">{{onePositionBefore(digit)}}</span>
-  <span [ngClass]="{disabled, selected: true}">{{digit}}</span>
-  <span [ngClass]="{disabled}">{{onePositionAfter(digit)}}</span>
-  <span [ngClass]="{disabled}">{{twoPositionsAfter(digit)}}</span>
-</div>
+@for (digit of digits; track trackByDigit(i); let i = $index) {
+  <div class="digitScroller" #digitScroller [ngClass]="{disabled}">
+    <span [ngClass]="{disabled}">{{twoPositionsBefore(digit)}}</span>
+    <span [ngClass]="{disabled}">{{onePositionBefore(digit)}}</span>
+    <span [ngClass]="{disabled, selected: true}">{{digit}}</span>
+    <span [ngClass]="{disabled}">{{onePositionAfter(digit)}}</span>
+    <span [ngClass]="{disabled}">{{twoPositionsAfter(digit)}}</span>
+  </div>
+}
 
 <div class="gradient-bottom"></div>

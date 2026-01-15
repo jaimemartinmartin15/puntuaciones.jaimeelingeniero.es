@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component, Inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LOCAL_STORE_KEYS } from '../../constants/local-storage-keys';
@@ -9,7 +8,6 @@ import { GAME_SERVICES } from '../../game-services/utils';
 
 @Component({
     selector: 'app-resume-game',
-    imports: [CommonModule],
     templateUrl: './resume-game.component.html',
     styleUrls: ['./resume-game.component.scss']
 })

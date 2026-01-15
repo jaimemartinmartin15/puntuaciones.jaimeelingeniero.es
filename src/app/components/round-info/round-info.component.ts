@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component, HostListener } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ROUTING_PATHS } from '../../constants/routes';
@@ -10,7 +9,6 @@ const ROUND_INFO_FLAGS = ['game:gameStartEnd', 'game:rounds'] as const; //as Fla
 
 @Component({
     selector: 'app-round-info',
-    imports: [CommonModule],
     templateUrl: './round-info.component.html',
     styleUrls: ['./round-info.component.scss']
 })
