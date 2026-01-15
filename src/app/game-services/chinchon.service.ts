@@ -53,11 +53,11 @@ export class ChinchonService implements GameServiceWithFlags<ChinchonFlags> {
 
   public readonly flags: Flag[] = chinchonFlags as any as ChinchonFlags[];
 
-  public hasFlagActive(flag: Flag) {
+  public hasFlagActive<K extends Flag>(flag: K): this is GameServiceWithFlags<K> {
     return this.flags.includes(flag);
   }
 
-  public isGameServiceWithFlags(flags: Flag[]) {
+  public isGameServiceWithFlags<K extends Flag[]>(flags: K): this is GameServiceWithFlags<K[number]> {
     return flags.every((f) => this.hasFlagActive(f));
   }
 

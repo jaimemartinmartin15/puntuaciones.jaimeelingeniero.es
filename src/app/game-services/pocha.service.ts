@@ -51,11 +51,11 @@ export class PochaService implements GameServiceWithFlags<PochaFlags> {
 
   public readonly flags: Flag[] = pochaFlags as any as PochaFlags[];
 
-  public hasFlagActive(flag: Flag) {
+  public hasFlagActive<K extends Flag>(flag: K): this is GameServiceWithFlags<K> {
     return this.flags.includes(flag);
   }
 
-  public isGameServiceWithFlags(flags: Flag[]) {
+  public isGameServiceWithFlags<K extends Flag[]>(flags: K): this is GameServiceWithFlags<K[number]> {
     return flags.every((f) => this.hasFlagActive(f));
   }
 

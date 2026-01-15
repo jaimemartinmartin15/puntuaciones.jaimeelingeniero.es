@@ -1,21 +1,21 @@
-@import "./colors";
+@use "./colors";
 
 .app-button {
   border: none;
-  background-color: $color-orange;
-  color: $color-primary-button-text;
+  background-color: colors.$color-orange;
+  color: colors.$color-primary-button-text;
   border-radius: 4px;
-  box-shadow: 3px 3px 5px $color-box-shadow;
+  box-shadow: 3px 3px 5px colors.$color-box-shadow;
   cursor: pointer;
 
   &:active {
     transform: translateX(1px) translateY(2px);
-    box-shadow: 2px 1px 5px $color-box-shadow;
+    box-shadow: 2px 1px 5px colors.$color-box-shadow;
   }
 
   &:disabled {
-    background-color: $color-background-disabled;
-    color: $color-text-disabled;
+    background-color: colors.$color-background-disabled;
+    color: colors.$color-text-disabled;
     transform: translateX(0) translateY(0);
     box-shadow: none;
     cursor: default;

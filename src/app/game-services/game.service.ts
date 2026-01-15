@@ -12,5 +12,5 @@ export interface GameService {
 
   readonly flags: Flag[];
   hasFlagActive<K extends Flag>(flag: K): this is GameServiceWithFlags<K>;
-  isGameServiceWithFlags<K extends Flag[]>(flag: K): this is GameServiceWithFlags<K[number]>;
+  isGameServiceWithFlags<K extends Flag[]>(flags: K): this is GameServiceWithFlags<K[number]>;
 }

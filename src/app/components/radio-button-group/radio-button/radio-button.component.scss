@@ -1,4 +1,4 @@
-@import "../../../styles/colors";
+@use "../../../styles/colors";
 
 :host {
   display: flex;
@@ -6,7 +6,7 @@
   cursor: pointer;
 
   &.disabled {
-    color: $color-text-disabled;
+    color: colors.$color-text-disabled;
   }
 
   span {
@@ -14,12 +14,12 @@
     position: relative;
     width: 20px;
     height: 20px;
-    border: 2px solid $color-orange;
+    border: 2px solid colors.$color-orange;
     border-radius: 50%;
     margin-right: 10px;
 
     &.disabled {
-      border-color: $color-background-disabled;
+      border-color: colors.$color-background-disabled;
     }
   }
 
@@ -32,10 +32,10 @@
     top: 5px;
     left: 5px;
     border-radius: 50%;
-    background-color: $color-orange;
+    background-color: colors.$color-orange;
   }
 
   span.selected.disabled:after {
-    background-color: $color-background-disabled;
+    background-color: colors.$color-background-disabled;
   }
 }

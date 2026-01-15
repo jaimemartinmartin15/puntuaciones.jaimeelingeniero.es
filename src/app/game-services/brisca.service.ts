@@ -95,7 +95,7 @@ export class BriscaService implements GameServiceWithFlags<BriscaFlags> {
     return this.flags.includes(flag);
   }
 
-  public isGameServiceWithFlags(flags: Flag[]) {
+  public isGameServiceWithFlags<K extends Flag[]>(flags: K): this is GameServiceWithFlags<K[number]> {
     return flags.every((f) => this.hasFlagActive(f));
   }
 

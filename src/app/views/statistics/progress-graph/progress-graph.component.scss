@@ -1,4 +1,4 @@
-@import "../../../styles/colors";
+@use "../../../styles/colors";
 
 :host {
     display: block;
@@ -36,7 +36,7 @@
     }
 
     .round-panel-info-line {
-        stroke: $color-orange;
+        stroke: colors.$color-orange;
         stroke-width: 1;
     }
 
@@ -47,12 +47,12 @@
             transform: scale(1, -1);
             text-anchor: end;
             stroke: none;
-            fill: $color-orange;
+            fill: colors.$color-orange;
         }
 
         line {
             stroke-width: 1;
-            stroke: $color-orange;
+            stroke: colors.$color-orange;
         }
     }
 }
@@ -84,8 +84,8 @@
     gap: 15px;
     margin-top: 30px;
     padding: 15px;
-    background-color: $color-background-panel;
-    border: 3px solid $color-orange;
+    background-color: colors.$color-background-panel;
+    border: 3px solid colors.$color-orange;
     border-radius: 5px;
     font-size: 0.9rem;
 
