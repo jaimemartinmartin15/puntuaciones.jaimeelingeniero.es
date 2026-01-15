@@ -328,7 +328,7 @@ export class OtherGameService implements GameServiceWithFlags<OtherGameFlags> {
     const maximumScore = Math.max(...this.playerNames.map((_, id) => this.getMaximumReachedScore(id)));
     const svgRoundWidth = this.svgWidth / (this.getNextRoundNumber() - 1);
 
-    this.scores
+    this.scores[playerId]
       .map((_, round) => this.getTotalScore(playerId, round + 1))
       .forEach((score, round) => {
         const pointX = svgRoundWidth * (round + 1);
