@@ -2,7 +2,7 @@ import { CdkDragDrop, DragDropModule, moveItemInArray } from '@angular/cdk/drag-
 import { CommonModule } from '@angular/common';
 import { AfterViewInit, Component, ElementRef, Input, QueryList, ViewChild, ViewChildren, forwardRef } from '@angular/core';
 import { FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { GamesSvgModule } from '../../svg/generated/games-svg.module';
+import { GamesSvgModule } from '../../svg-generated/games-svg.module';
 
 export interface EnterPlayerNamesModel {
   teamName: string;

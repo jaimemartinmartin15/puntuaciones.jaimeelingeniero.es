@@ -12,14 +12,12 @@ import { LOCAL_STORE_KEYS } from '../../constants/local-storage-keys';
 import { GameHolderService } from '../../game-services/game-holder.service';
 import { GameService } from '../../game-services/game.service';
 import { GAME_SERVICES } from '../../game-services/utils';
-import { GamesSvgModule } from '../../svg/generated/games-svg.module';
 
 @Component({
     selector: 'app-game-config',
     imports: [
     DragDropModule,
     ReactiveFormsModule,
-    GamesSvgModule,
 
     // Custom form controls
     SelectModule,

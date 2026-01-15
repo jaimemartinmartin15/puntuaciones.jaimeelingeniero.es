@@ -1,8 +1,6 @@
 {
-    "inputDirs": [
-        "src/app/svg/files"
-    ],
-    "outputDir": "src/app/svg/generated",
+    "inputDirs": [ "~@jaimemartinmartin15/svg-icons" ],
+    "outputDir": "src/app/svg-generated",
     "prefix": "app",
     "modules": [
         {
