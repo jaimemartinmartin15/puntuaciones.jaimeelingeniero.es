@@ -6,6 +6,8 @@ Fix dragging of players in game-config.
 
 Fix statistics graph for other game.
 
+Use SvgIcons repository.
+
 Upgraded to angular 20.
 
 ## 2.2.0
