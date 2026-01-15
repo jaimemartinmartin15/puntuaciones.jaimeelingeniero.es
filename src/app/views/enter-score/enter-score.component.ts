@@ -10,12 +10,11 @@ import { enterScoreBaseAnimation } from '../../shared/enter-score/enter-score-ba
 const ENTER_SCORE_FLAGS = ['enterScore'] as const; //as Flag[]
 
 @Component({
-  selector: 'app-enter-score',
-  standalone: true,
-  imports: [CommonModule],
-  templateUrl: './enter-score.component.html',
-  styleUrls: ['./enter-score.component.scss'],
-  animations: [enterScoreBaseAnimation],
+    selector: 'app-enter-score',
+    imports: [CommonModule],
+    templateUrl: './enter-score.component.html',
+    styleUrls: ['./enter-score.component.scss'],
+    animations: [enterScoreBaseAnimation]
 })
 export class EnterScoreComponent {
   public gameService: GameService & GameServiceWithFlags<(typeof ENTER_SCORE_FLAGS)[number]>;

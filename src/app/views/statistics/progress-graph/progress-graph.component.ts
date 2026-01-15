@@ -10,11 +10,10 @@ import { ToEmojiPipe } from './to-emoji.pipe';
 const PROGRESS_GRAPH_FLAGS = ['statistics:progressGraph'] as const; //as Flag[]
 
 @Component({
-  selector: 'app-progress-graph',
-  standalone: true,
-  imports: [CommonModule, ToEmojiPipe],
-  templateUrl: './progress-graph.component.html',
-  styleUrls: ['./progress-graph.component.scss'],
+    selector: 'app-progress-graph',
+    imports: [CommonModule, ToEmojiPipe],
+    templateUrl: './progress-graph.component.html',
+    styleUrls: ['./progress-graph.component.scss']
 })
 export class ProgressGraphComponent implements OnInit {
   public gameService: GameService & GameServiceWithFlags<(typeof PROGRESS_GRAPH_FLAGS)[number]>;

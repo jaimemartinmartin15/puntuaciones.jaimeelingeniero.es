@@ -15,22 +15,21 @@ import { GAME_SERVICES } from '../../game-services/utils';
 import { GamesSvgModule } from '../../svg/generated/games-svg.module';
 
 @Component({
-  selector: 'app-game-config',
-  standalone: true,
-  imports: [
-    CommonModule,
-    DragDropModule,
-    ReactiveFormsModule,
-    GamesSvgModule,
+    selector: 'app-game-config',
+    imports: [
+        CommonModule,
+        DragDropModule,
+        ReactiveFormsModule,
+        GamesSvgModule,
 
-    // Custom form controls
-    SelectModule,
-    InputNumberScrollerComponent,
-    RadioButtonGroupModule,
-    EnterPlayerNamesComponent,
-  ],
-  templateUrl: './game-config.component.html',
-  styleUrls: ['./game-config.component.scss'],
+        // Custom form controls
+        SelectModule,
+        InputNumberScrollerComponent,
+        RadioButtonGroupModule,
+        EnterPlayerNamesComponent,
+    ],
+    templateUrl: './game-config.component.html',
+    styleUrls: ['./game-config.component.scss']
 })
 export class GameConfigComponent implements OnInit {
   public isEdition = false;

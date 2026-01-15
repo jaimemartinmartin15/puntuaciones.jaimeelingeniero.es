@@ -28,12 +28,11 @@ const CONSTANTS = {
 };
 
 @Component({
-  selector: 'app-input-number-scroller',
-  standalone: true,
-  imports: [CommonModule],
-  templateUrl: './input-number-scroller.component.html',
-  styleUrls: ['./input-number-scroller.component.scss'],
-  providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => InputNumberScrollerComponent), multi: true }],
+    selector: 'app-input-number-scroller',
+    imports: [CommonModule],
+    templateUrl: './input-number-scroller.component.html',
+    styleUrls: ['./input-number-scroller.component.scss'],
+    providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => InputNumberScrollerComponent), multi: true }]
 })
 export class InputNumberScrollerComponent implements OnChanges, AfterViewInit, ControlValueAccessor {
   @ViewChildren('digitScroller')

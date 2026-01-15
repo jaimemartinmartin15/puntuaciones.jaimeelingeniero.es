@@ -3,10 +3,11 @@ import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { RadioButtonComponent } from './radio-button/radio-button.component';
 
 @Component({
-  selector: 'app-radio-button-group',
-  template: '<ng-content></ng-content>',
-  styles: [':host{ display: flex; flex-direction: column; gap: 8px; }'],
-  providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => RadioButtonGroupComponent), multi: true }],
+    selector: 'app-radio-button-group',
+    template: '<ng-content></ng-content>',
+    styles: [':host{ display: flex; flex-direction: column; gap: 8px; }'],
+    providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => RadioButtonGroupComponent), multi: true }],
+    standalone: false
 })
 export class RadioButtonGroupComponent {
   @ContentChildren(RadioButtonComponent, { read: ElementRef })

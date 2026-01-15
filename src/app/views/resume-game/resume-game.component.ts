@@ -8,11 +8,10 @@ import { GameService } from '../../game-services/game.service';
 import { GAME_SERVICES } from '../../game-services/utils';
 
 @Component({
-  selector: 'app-resume-game',
-  standalone: true,
-  imports: [CommonModule],
-  templateUrl: './resume-game.component.html',
-  styleUrls: ['./resume-game.component.scss'],
+    selector: 'app-resume-game',
+    imports: [CommonModule],
+    templateUrl: './resume-game.component.html',
+    styleUrls: ['./resume-game.component.scss']
 })
 export class ResumeGameComponent implements OnInit {
   public gameService: GameService;

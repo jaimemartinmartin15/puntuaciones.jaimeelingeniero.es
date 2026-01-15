@@ -10,11 +10,10 @@ import { PlayerDisplayComponent } from './player-display/player-display.componen
 const RANKING_FLAGS = ['ranking', 'game:gameStartEnd'] as const; //as Flag[]
 
 @Component({
-  selector: 'app-ranking',
-  standalone: true,
-  imports: [CommonModule, RoundInfoComponent, BottomControlsComponent, PlayerDisplayComponent],
-  templateUrl: './ranking.component.html',
-  styleUrls: ['./ranking.component.scss'],
+    selector: 'app-ranking',
+    imports: [CommonModule, RoundInfoComponent, BottomControlsComponent, PlayerDisplayComponent],
+    templateUrl: './ranking.component.html',
+    styleUrls: ['./ranking.component.scss']
 })
 export class RankingComponent {
   public gameService: GameService & GameServiceWithFlags<(typeof RANKING_FLAGS)[number]>;

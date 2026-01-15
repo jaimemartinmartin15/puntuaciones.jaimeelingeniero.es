@@ -18,11 +18,10 @@ interface PlayerInfo {
 const BRISCA_FLAGS = ['brisca', 'game:localStorageSave'] as const; // as Flag[]
 
 @Component({
-  selector: 'app-brisca',
-  standalone: true,
-  imports: [CommonModule, RoundInfoComponent, BottomControlsComponent],
-  templateUrl: './brisca.component.html',
-  styleUrls: ['./brisca.component.scss'],
+    selector: 'app-brisca',
+    imports: [CommonModule, RoundInfoComponent, BottomControlsComponent],
+    templateUrl: './brisca.component.html',
+    styleUrls: ['./brisca.component.scss']
 })
 export class BriscaComponent implements OnInit, OnDestroy {
   private readonly CLICKS_TO_DELETE_POINT = 5;

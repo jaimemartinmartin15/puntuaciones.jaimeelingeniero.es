@@ -10,12 +10,11 @@ import { enterScoreBaseAnimation } from '../../shared/enter-score/enter-score-ba
 const ENTER_SCORE_POCHA_FLAGS = ['enterScore', 'enterScore:pocha'] as const; //as Flag[]
 
 @Component({
-  selector: 'app-enter-score-pocha',
-  standalone: true,
-  imports: [CommonModule],
-  templateUrl: './enter-score-pocha.component.html',
-  styleUrls: ['./enter-score-pocha.component.scss'],
-  animations: [enterScoreBaseAnimation],
+    selector: 'app-enter-score-pocha',
+    imports: [CommonModule],
+    templateUrl: './enter-score-pocha.component.html',
+    styleUrls: ['./enter-score-pocha.component.scss'],
+    animations: [enterScoreBaseAnimation]
 })
 export class EnterScorePochaComponent {
   public gameService: GameService & GameServiceWithFlags<(typeof ENTER_SCORE_POCHA_FLAGS)[number]>;
