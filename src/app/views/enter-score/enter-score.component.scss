@@ -1,14 +1,14 @@
-@import "../../shared/enter-score/enter-score-base";
-@import "../../styles/colors";
+@use "../../shared/enter-score/enter-score-base";
+@use "../../styles/colors";
 
 .content {
     .keyboard {
         button {
-            border: 3px solid $color-orange;
-            background-color: $color-primary-button-text;
+            border: 3px solid colors.$color-orange;
+            background-color: colors.$color-primary-button-text;
 
             &:active {
-                color: $color-orange;
+                color: colors.$color-orange;
             }
         }
     }

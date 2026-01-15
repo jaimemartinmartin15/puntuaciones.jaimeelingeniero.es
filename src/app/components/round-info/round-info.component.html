@@ -1,24 +1,32 @@
-<ng-container *ngIf="gameService.hasFlagActive('roundInfo:gameName')">
+@if (gameService.hasFlagActive('roundInfo:gameName')) {
   <span><strong data-test-id="game-name">{{gameService.gameName}}</strong></span>
   <br>
-</ng-container>
+}
 
-<ng-container *ngIf="!gameService.gameHasFinished()">
+@if (!gameService.gameHasFinished()) {
   <span data-test-id="next-round-number">
     Ronda: <strong>{{gameService.getNextRoundNumber()}}</strong>
   </span>
 
-  <span data-test-id="player-name-that-deals" *ngIf="gameService.hasFlagActive('roundInfo:dealingPlayer')">
-    Reparte: <strong>{{gameService.getPlayerNameThatDeals()}}</strong>
-  </span>
+  @if (gameService.hasFlagActive('roundInfo:dealingPlayer')) {
+    <span data-test-id="player-name-that-deals">
+      Reparte: <strong>{{gameService.getPlayerNameThatDeals()}}</strong>
+    </span>
+  }
 
-  <span data-test-id="number-of-cards-to-deal-next-round" *ngIf="gameService.hasFlagActive('roundInfo:numberOfCards')">
-    Cartas: <strong>{{gameService.getNumberOfCardsToDealNextRound()}}</strong>
-  </span>
+  @if (gameService.hasFlagActive('roundInfo:numberOfCards')) {
+    <span data-test-id="number-of-cards-to-deal-next-round">
+      Cartas: <strong>{{gameService.getNumberOfCardsToDealNextRound()}}</strong>
+    </span>
+  }
+  
+  @if (gameService.hasFlagActive('roundInfo:limitScore')) {
+    <span data-test-id="limit-score">
+      Límite: <strong>{{gameService.limitScore}}</strong>
+    </span>
+  }
+}
 
-  <span data-test-id="limit-score" *ngIf="gameService.hasFlagActive('roundInfo:limitScore')">
-    Límite: <strong>{{gameService.limitScore}}</strong>
-  </span>
-</ng-container>
-
-<span data-test-id="game-has-finished" *ngIf="gameService.gameHasFinished()">Fin de la partida</span>
+@if (gameService.gameHasFinished()) {
+  <span data-test-id="game-has-finished">Fin de la partida</span>
+}

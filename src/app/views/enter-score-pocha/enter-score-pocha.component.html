@@ -5,15 +5,15 @@
     <h1 data-test-id="round-number">Ronda {{roundNumber}}</h1>
 
     <div class="players-animation-container" [@animatePlayer]="currentPlayerIndex">
-      <ng-container *ngFor="let playerName of playerNames; let i = index">
-        <div *ngIf="i === currentPlayerIndex" class="player">
-          <div>Puntuación para</div>
-
-          <div><strong class="player-name" data-test-id="player-name">{{playerName}}</strong></div>
-
-          <span class="score-display" data-test-id="player-punctuation">{{punctuations[i]}}</span>
-        </div>
-      </ng-container>
+      @for (playerName of playerNames; track playerName; let i = $index) {
+        @if (i === currentPlayerIndex) {
+          <div class="player">
+            <div>Puntuación para</div>
+            <div><strong class="player-name" data-test-id="player-name">{{playerName}}</strong></div>
+            <span class="score-display" data-test-id="player-punctuation">{{punctuations[i]}}</span>
+          </div>
+        }
+      }
     </div>
   </div>
 
@@ -22,8 +22,12 @@
       ←
     </button>
     <button class="next-player" data-test-id="kb-btn-next">
-      <ng-container *ngIf="currentPlayerIndex < playerNames.length - 1">→</ng-container>
-      <ng-container *ngIf="currentPlayerIndex === playerNames.length - 1">✔️</ng-container>
+      @if (currentPlayerIndex < playerNames.length - 1) {
+        →
+      }
+      @if (currentPlayerIndex === playerNames.length - 1) {
+        ✔️
+      }
     </button>
 
     <button class="score--10" data-test-id="kb-btn--10">-10</button>

@@ -1,9 +1,10 @@
 import { Component, HostBinding, Input } from '@angular/core';
 
 @Component({
-  selector: 'app-radio-button',
-  templateUrl: './radio-button.component.html',
-  styleUrls: ['./radio-button.component.scss'],
+    selector: 'app-radio-button',
+    templateUrl: './radio-button.component.html',
+    styleUrls: ['./radio-button.component.scss'],
+    standalone: false
 })
 export class RadioButtonComponent {
   @Input()

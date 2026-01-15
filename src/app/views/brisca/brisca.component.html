@@ -1,37 +1,47 @@
 <app-round-info></app-round-info>
 
 <div class="content">
-  <div class="player-container" data-test-id="player-container" *ngFor="let playerInfo of playersInfo; let i = index"
-    (click)="changeScoreOf(i)">
-    <div class="header">
-      <span *ngIf="i % 2 !== 0" data-test-id="score">({{playerInfo.score}})</span>
+  @for (playerInfo of playersInfo; track playerInfo; let i = $index) {
+    <div class="player-container" data-test-id="player-container" (click)="changeScoreOf(i)">
+      <div class="header">
+        @if (i % 2 !== 0) {
+          <span data-test-id="score">({{playerInfo.score}})</span>
+        }
 
-      <span class="name" data-test-id="player-name">{{playerInfo.name}}</span>
+        <span class="name" data-test-id="player-name">{{playerInfo.name}}</span>
 
-      <span *ngIf="i % 2 === 0" data-test-id="score">({{playerInfo.score}})</span>
+        @if (i % 2 === 0) {
+          <span data-test-id="score">({{playerInfo.score}})</span>
+        }
+      </div>
+      @for (stripeNumber of arrayOf(playerInfo.score); track stripeNumber) {
+        <div data-test-id="stripe" [ngClass]="{
+              stripe: true,
+              'stripe--delete-1': playerInfo.deletePointProgress === 1,
+                'stripe--delete-2': playerInfo.deletePointProgress === 2,
+                'stripe--delete-3': playerInfo.deletePointProgress === 3,
+                'stripe--delete-4': playerInfo.deletePointProgress === 4,
+                }">
+          @if (stripeNumber % BULLET_INTERVAL === 0) {
+            <div class="bullet" data-test-id="bullet">{{stripeNumber}}</div>
+          }
+        </div>
+      }
     </div>
-
-    <div *ngFor="let stripeNumber of arrayOf(playerInfo.score);" data-test-id="stripe" [ngClass]="{
-        stripe: true,
-         'stripe--delete-1': playerInfo.deletePointProgress === 1,
-          'stripe--delete-2': playerInfo.deletePointProgress === 2,
-           'stripe--delete-3': playerInfo.deletePointProgress === 3,
-           'stripe--delete-4': playerInfo.deletePointProgress === 4,
-           }">
-      <div *ngIf="stripeNumber % BULLET_INTERVAL === 0" class="bullet" data-test-id="bullet">{{stripeNumber}}</div>
-    </div>
-  </div>
+  }
 </div>
 
 <div class="playing-time">
   Tiempo de juego: {{playedTime}}
 </div>
 
-<div *ngIf="showDeleteBanner" class="delete-banner" data-test-id="delete-banner">
-  <span class="text">
-    Pulsa un cuadrante múltiples veces para eliminar un punto
-  </span>
-  <span class="close-button" (click)="closeDeleteBanner()" data-test-id="close-button"></span>
-</div>
+@if (showDeleteBanner) {
+  <div class="delete-banner" data-test-id="delete-banner">
+    <span class="text">
+      Pulsa un cuadrante múltiples veces para eliminar un punto
+    </span>
+    <span class="close-button" (click)="closeDeleteBanner()" data-test-id="close-button"></span>
+  </div>
+}
 
 <app-bottom-controls></app-bottom-controls>

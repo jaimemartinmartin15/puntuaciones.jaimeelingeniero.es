@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component, HostListener } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ROUTING_PATHS } from '../../constants/routes';
@@ -9,11 +8,9 @@ import { GameService, GameServiceWithFlags } from '../../game-services/game.serv
 const ROUND_INFO_FLAGS = ['game:gameStartEnd', 'game:rounds'] as const; //as Flag[]
 
 @Component({
-  selector: 'app-round-info',
-  standalone: true,
-  imports: [CommonModule],
-  templateUrl: './round-info.component.html',
-  styleUrls: ['./round-info.component.scss'],
+    selector: 'app-round-info',
+    templateUrl: './round-info.component.html',
+    styleUrls: ['./round-info.component.scss']
 })
 export class RoundInfoComponent {
   public gameService: GameService & GameServiceWithFlags<(typeof ROUND_INFO_FLAGS)[number]>;

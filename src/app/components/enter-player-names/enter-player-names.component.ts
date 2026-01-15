@@ -11,12 +11,11 @@ export interface EnterPlayerNamesModel {
 }
 
 @Component({
-  selector: 'app-enter-player-names',
-  standalone: true,
-  imports: [CommonModule, DragDropModule, GamesSvgModule, FormsModule],
-  templateUrl: './enter-player-names.component.html',
-  styleUrls: ['./enter-player-names.component.scss'],
-  providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => EnterPlayerNamesComponent), multi: true }],
+    selector: 'app-enter-player-names',
+    imports: [CommonModule, DragDropModule, GamesSvgModule, FormsModule],
+    templateUrl: './enter-player-names.component.html',
+    styleUrls: ['./enter-player-names.component.scss'],
+    providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => EnterPlayerNamesComponent), multi: true }]
 })
 export class EnterPlayerNamesComponent implements AfterViewInit {
   @ViewChildren('playerInput')

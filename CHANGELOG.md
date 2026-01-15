@@ -1,10 +1,12 @@
 # CHANGELOG
 
-## Unreleased
+## 3.0.0
 
 Fix dragging of players in game-config.
 
 Fix statistics graph for other game.
+
+Upgraded to angular 20.
 
 ## 2.2.0
 

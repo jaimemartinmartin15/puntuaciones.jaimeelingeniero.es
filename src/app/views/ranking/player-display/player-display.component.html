@@ -1,8 +1,14 @@
 <div class="position" data-test-id="position">
   <div class="number">{{playerPosition}}</div>
-  <div *ngIf="playerPosition === 1">🥇</div>
-  <div *ngIf="playerPosition === 2">🥈</div>
-  <div *ngIf="playerPosition === 3">🥉</div>
+  @if (playerPosition === 1) {
+    <div>🥇</div>
+  }
+  @if (playerPosition === 2) {
+    <div>🥈</div>
+  }
+  @if (playerPosition === 3) {
+    <div>🥉</div>
+  }
 </div>
 
 <div class="data">
@@ -17,12 +23,16 @@
       <strong (click)="navigateToSetNewScore()">{{gameService.getScoreLastRound(playerId)}}</strong>
     </div>
 
-    <div data-test-id="maximum-reached-score" *ngIf="gameService.hasFlagActive('ranking:playerDisplay:maximumReachedScore')">
-      Máximo alcanzado: {{gameService.getMaximumReachedScore(playerId)}}
-    </div>
+    @if (gameService.hasFlagActive('ranking:playerDisplay:maximumReachedScore')) {
+      <div data-test-id="maximum-reached-score">
+        Máximo alcanzado: {{gameService.getMaximumReachedScore(playerId)}}
+      </div>
+    }
 
-    <div data-test-id="number-of-rejoins" *ngIf="gameService.hasFlagActive('ranking:playerDisplay:numberOfRejoins')">
-      Reenganches: {{gameService.getNumberOfRejoins(playerId)}}
-    </div>
+    @if (gameService.hasFlagActive('ranking:playerDisplay:numberOfRejoins')) {
+      <div data-test-id="number-of-rejoins">
+        Reenganches: {{gameService.getNumberOfRejoins(playerId)}}
+      </div>
+    }
   </div>
 </div>

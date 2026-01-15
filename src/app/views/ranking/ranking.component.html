@@ -1,12 +1,17 @@
 <app-round-info></app-round-info>
 
-<div class="empty-state" *ngIf="!gameService.gameHasStarted()">
+@if (!gameService.gameHasStarted()) {
+  <div class="empty-state">
     Introduce al menos una ronda para mostrar el ranking
-</div>
+  </div>
+}
 
-<div class="players-list" *ngIf="gameService.gameHasStarted()">
-    <app-player-display *ngFor="let playerId of gameService.getRankingPlayers()" [playerId]="playerId">
-    </app-player-display>
-</div>
+@if (gameService.gameHasStarted()) {
+  <div class="players-list">
+    @for (playerId of gameService.getRankingPlayers(); track playerId) {
+      <app-player-display [playerId]="playerId"></app-player-display>
+    }
+  </div>
+}
 
 <app-bottom-controls></app-bottom-controls>

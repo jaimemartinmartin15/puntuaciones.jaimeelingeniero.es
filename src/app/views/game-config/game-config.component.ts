@@ -1,5 +1,5 @@
 import { DragDropModule } from '@angular/cdk/drag-drop';
-import { CommonModule, Location } from '@angular/common';
+import { Location } from '@angular/common';
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl, NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -15,10 +15,8 @@ import { GAME_SERVICES } from '../../game-services/utils';
 import { GamesSvgModule } from '../../svg/generated/games-svg.module';
 
 @Component({
-  selector: 'app-game-config',
-  standalone: true,
-  imports: [
-    CommonModule,
+    selector: 'app-game-config',
+    imports: [
     DragDropModule,
     ReactiveFormsModule,
     GamesSvgModule,
@@ -27,10 +25,10 @@ import { GamesSvgModule } from '../../svg/generated/games-svg.module';
     SelectModule,
     InputNumberScrollerComponent,
     RadioButtonGroupModule,
-    EnterPlayerNamesComponent,
-  ],
-  templateUrl: './game-config.component.html',
-  styleUrls: ['./game-config.component.scss'],
+    EnterPlayerNamesComponent
+],
+    templateUrl: './game-config.component.html',
+    styleUrls: ['./game-config.component.scss']
 })
 export class GameConfigComponent implements OnInit {
   public isEdition = false;

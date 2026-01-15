@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component, HostBinding, Input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Flag } from '../../../game-services/flags';
@@ -9,11 +8,9 @@ import { EnterScoreInput } from '../../../shared/enter-score/EnterScoreInput';
 const PLAYER_DISPLAY_FLAGS = ['ranking:playerDisplay', 'game:rounds'] as const; //as Flag[]
 
 @Component({
-  selector: 'app-player-display',
-  standalone: true,
-  imports: [CommonModule],
-  templateUrl: './player-display.component.html',
-  styleUrls: ['./player-display.component.scss'],
+    selector: 'app-player-display',
+    templateUrl: './player-display.component.html',
+    styleUrls: ['./player-display.component.scss']
 })
 export class PlayerDisplayComponent {
   public gameService: GameService & GameServiceWithFlags<(typeof PLAYER_DISPLAY_FLAGS)[number]>;

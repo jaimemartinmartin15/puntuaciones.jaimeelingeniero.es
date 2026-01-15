@@ -1,25 +1,29 @@
 <svg class="graph" #graph (mousedown)="onClickToShowPlayersPanelInfo($event)" [attr.viewBox]="viewBox"
-    data-test-id="graph">
-    <!-- round markers -->
-    <g class="round-markers">
-        <ng-container *ngFor="let roundMark of svgRoundMarkers">
-            <text [attr.x]="roundMark.text.x" [attr.y]="roundMark.text.y">{{roundMark.value}}</text>
-            <line [attr.x1]="roundMark.line.x1" [attr.y1]="roundMark.line.y1" [attr.x2]="roundMark.line.x2"
-                [attr.y2]="roundMark.line.y2">
-            </line>
-        </ng-container>
-    </g>
+  data-test-id="graph">
+  <!-- round markers -->
+  <g class="round-markers">
+    @for (roundMark of svgRoundMarkers; track roundMark) {
+      <text [attr.x]="roundMark.text.x" [attr.y]="roundMark.text.y">{{roundMark.value}}</text>
+      <line [attr.x1]="roundMark.line.x1" [attr.y1]="roundMark.line.y1" [attr.x2]="roundMark.line.x2"
+        [attr.y2]="roundMark.line.y2">
+      </line>
+    }
+  </g>
 
-    <!-- round panel info line -->
-    <line class="round-panel-info-line" *ngIf="showRoundPanel" [attr.x1]="svgSelectedRound.x1"
-        [attr.y1]="svgSelectedRound.y1" [attr.x2]="svgSelectedRound.x2" [attr.y2]="svgSelectedRound.y2" />
+  <!-- round panel info line -->
+  @if (showRoundPanel) {
+    <line class="round-panel-info-line" [attr.x1]="svgSelectedRound.x1"
+      [attr.y1]="svgSelectedRound.y1" [attr.x2]="svgSelectedRound.x2" [attr.y2]="svgSelectedRound.y2" />
+  }
 
-    <!-- limit score -->
-    <g class="limit-score" *ngIf="gameService.hasFlagActive('statistics:progressGraph:limitScore')">
-        <line x1="0" [attr.y1]="gameService.svgLimitScoreHeight" x2="100%"
-            [attr.y2]="gameService.svgLimitScoreHeight" />
+  <!-- limit score -->
+  @if (gameService.hasFlagActive('statistics:progressGraph:limitScore')) {
+    <g class="limit-score">
+      <line x1="0" [attr.y1]="gameService.svgLimitScoreHeight" x2="100%"
+        [attr.y2]="gameService.svgLimitScoreHeight" />
         <text x="27" [attr.y]="-gameService.svgLimitScoreHeight - 2">Límite</text>
-    </g>
+      </g>
+    }
 
     <!-- y axis -->
     <line class="axis" x1="0.5" y1="0" x2="0.5" y2="100%" />
@@ -28,44 +32,53 @@
     <line class="axis" x1="0" [attr.y1]="gameService.svgXAxisHeight" x2="100%" [attr.y2]="gameService.svgXAxisHeight" />
 
     <!-- player score lines  -->
-    <ng-container *ngFor="let line of playerLines; let i = index">
-        <path class="line" *ngIf="showPlayerGraphLines[i]" [attr.d]="line" [attr.stroke]="colors[i]" />
-    </ng-container>
-</svg>
+    @for (line of playerLines; track line; let i = $index) {
+      @if (showPlayerGraphLines[i]) {
+        <path class="line" [attr.d]="line" [attr.stroke]="colors[i]" />
+      }
+    }
+  </svg>
 
-<div class="legend">
-    <div class="legend-item" *ngFor="let playerName of gameService.playerNames; let id=index"
+  <div class="legend">
+    @for (playerName of gameService.playerNames; track playerName; let id = $index) {
+      <div class="legend-item"
         (click)="showPlayerGraphLines[id] = !showPlayerGraphLines[id]">
         <span class="dot-player" [attr.style]="'background-color: ' + colors[id]"></span>
         <span>{{playerName}}</span>
-    </div>
-</div>
+      </div>
+    }
+  </div>
 
-<div class="round-panel-info" *ngIf="showRoundPanel" data-test-id="round-panel-info">
-    <div class="round-number">
+  @if (showRoundPanel) {
+    <div class="round-panel-info" data-test-id="round-panel-info">
+      <div class="round-number">
         <span [ngClass]="{'hidden-arrow': selectedRound <= 1}" (click)="showRoundInfo(selectedRound - 1)">⬅️</span>
         <strong>Ronda {{ selectedRound }}</strong>
         <span [ngClass]="{'hidden-arrow': selectedRound >= gameService.getNextRoundNumber()-1}"
-            (click)="showRoundInfo(selectedRound + 1)">
-            ➡️
+          (click)="showRoundInfo(selectedRound + 1)">
+          ➡️
         </span>
-    </div>
-
-    <div class="player-display" *ngFor="let playerId of roundPanelPlayers">
-        <span class="dot-player" [attr.style]="'background-color: ' + colors[playerId]"></span>
-        <span class="name" (click)="showPlayerGraphLines[playerId] = !showPlayerGraphLines[playerId]">
+      </div>
+      @for (playerId of roundPanelPlayers; track playerId) {
+        <div class="player-display">
+          <span class="dot-player" [attr.style]="'background-color: ' + colors[playerId]"></span>
+          <span class="name" (click)="showPlayerGraphLines[playerId] = !showPlayerGraphLines[playerId]">
             {{gameService.getPlayerName(playerId)}}
-        </span>
-        <span class="accumulated-score">
+          </span>
+          <span class="accumulated-score">
             {{gameService.getTotalScore(playerId, selectedRound)}}
-        </span>
-        <span *ngIf="selectedRound > 1">
-            <ng-container *ngIf="playerMovements[playerId] > 0">
+          </span>
+          @if (selectedRound > 1) {
+            <span>
+              @if (playerMovements[playerId] > 0) {
                 ⬆️{{playerMovements[playerId] | toEmoji}}
-            </ng-container>
-            <ng-container *ngIf="playerMovements[playerId] < 0">
+              }
+              @if (playerMovements[playerId] < 0) {
                 ⬇️{{playerMovements[playerId] | toEmoji}}
-            </ng-container>
-        </span>
+              }
+            </span>
+          }
+        </div>
+      }
     </div>
-</div>
+  }

@@ -1,4 +1,4 @@
-@import "../../styles/colors";
+@use "../../styles/colors";
 
 :host {
   display: block;
@@ -8,7 +8,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border: 2px solid $color-orange;
+  border: 2px solid colors.$color-orange;
   border-radius: 5px;
   padding: 10px;
   font-size: 1.2rem;
@@ -18,8 +18,8 @@
   }
 
   &.disabled {
-    color: $color-text-disabled;
-    background-color: $color-background-disabled;
+    color: colors.$color-text-disabled;
+    background-color: colors.$color-background-disabled;
   }
 
   .arrow {
@@ -35,7 +35,7 @@
     }
 
     &.disabled {
-      background-color: $color-text-disabled;
+      background-color: colors.$color-text-disabled;
     }
   }
 }
@@ -44,7 +44,7 @@
   display: flex;
   flex-direction: column;
   margin-top: 5px;
-  background-color: $color-background-panel;
+  background-color: colors.$color-background-panel;
   border: 2px solid black;
   border-radius: 5px;
 }

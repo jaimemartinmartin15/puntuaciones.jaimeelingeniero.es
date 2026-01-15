@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { ROUTING_PATHS } from '../../constants/routes';
@@ -6,11 +5,10 @@ import { GameHolderService } from '../../game-services/game-holder.service';
 import { GameService, GameServiceWithFlags } from '../../game-services/game.service';
 
 @Component({
-  selector: 'app-bottom-controls',
-  standalone: true,
-  imports: [CommonModule, RouterLink],
-  templateUrl: './bottom-controls.component.html',
-  styleUrls: ['./bottom-controls.component.scss'],
+    selector: 'app-bottom-controls',
+    imports: [RouterLink],
+    templateUrl: './bottom-controls.component.html',
+    styleUrls: ['./bottom-controls.component.scss']
 })
 export class BottomControlsComponent {
   public gameService: GameService;

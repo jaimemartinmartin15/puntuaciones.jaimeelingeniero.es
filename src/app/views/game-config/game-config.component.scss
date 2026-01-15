@@ -1,4 +1,4 @@
-@import "../../styles/colors";
+@use "../../styles/colors";
 
 :host {
     height: 100dvh;
@@ -14,7 +14,7 @@
 
 app-enter-player-names,
 label {
-    color: $color-orange;
+    color: colors.$color-orange;
     margin-top: 20px;
     display: block;
 }

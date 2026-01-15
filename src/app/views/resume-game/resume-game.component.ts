@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component, Inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LOCAL_STORE_KEYS } from '../../constants/local-storage-keys';
@@ -8,11 +7,9 @@ import { GameService } from '../../game-services/game.service';
 import { GAME_SERVICES } from '../../game-services/utils';
 
 @Component({
-  selector: 'app-resume-game',
-  standalone: true,
-  imports: [CommonModule],
-  templateUrl: './resume-game.component.html',
-  styleUrls: ['./resume-game.component.scss'],
+    selector: 'app-resume-game',
+    templateUrl: './resume-game.component.html',
+    styleUrls: ['./resume-game.component.scss']
 })
 export class ResumeGameComponent implements OnInit {
   public gameService: GameService;

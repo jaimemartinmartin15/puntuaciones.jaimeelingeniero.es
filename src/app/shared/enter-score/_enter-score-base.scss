@@ -1,11 +1,11 @@
-@import "../../styles/colors";
+@use "../../styles/colors";
 
 :host {
   display: block;
   height: 100dvh;
   padding: 15px;
   box-sizing: border-box;
-  background-color: $color-blue;
+  background-color: colors.$color-blue;
   overflow: hidden;
 }
 
@@ -15,7 +15,7 @@
   justify-content: center;
   gap: 50px;
   padding: 20px;
-  border: 3px solid $color-orange;
+  border: 3px solid colors.$color-orange;
   border-radius: 5px;
   background-color: white;
   position: relative;
@@ -102,8 +102,8 @@
       }
 
       &:disabled {
-        background-color: $color-background-disabled;
-        color: $color-text-disabled;
+        background-color: colors.$color-background-disabled;
+        color: colors.$color-text-disabled;
         border: none;
       }
     }

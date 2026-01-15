@@ -1,4 +1,4 @@
-import { CommonModule, Location } from '@angular/common';
+import { Location } from '@angular/common';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { LOCAL_STORE_KEYS } from '../../constants/local-storage-keys';
@@ -10,12 +10,10 @@ import { enterScoreBaseAnimation } from '../../shared/enter-score/enter-score-ba
 const ENTER_SCORE_POCHA_FLAGS = ['enterScore', 'enterScore:pocha'] as const; //as Flag[]
 
 @Component({
-  selector: 'app-enter-score-pocha',
-  standalone: true,
-  imports: [CommonModule],
-  templateUrl: './enter-score-pocha.component.html',
-  styleUrls: ['./enter-score-pocha.component.scss'],
-  animations: [enterScoreBaseAnimation],
+    selector: 'app-enter-score-pocha',
+    templateUrl: './enter-score-pocha.component.html',
+    styleUrls: ['./enter-score-pocha.component.scss'],
+    animations: [enterScoreBaseAnimation]
 })
 export class EnterScorePochaComponent {
   public gameService: GameService & GameServiceWithFlags<(typeof ENTER_SCORE_POCHA_FLAGS)[number]>;

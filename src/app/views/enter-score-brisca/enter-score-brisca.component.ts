@@ -1,4 +1,4 @@
-import { CommonModule, Location } from '@angular/common';
+import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Flag } from '../../game-services/flags';
 import { GameHolderService } from '../../game-services/game-holder.service';
@@ -7,11 +7,9 @@ import { GameService, GameServiceWithFlags } from '../../game-services/game.serv
 const ENTER_SCORE_BRISCA_FLAGS = ['enterScore:brisca'] as const; //as Flag[]
 
 @Component({
-  selector: 'app-enter-score-brisca',
-  standalone: true,
-  imports: [CommonModule],
-  templateUrl: './enter-score-brisca.component.html',
-  styleUrls: ['./enter-score-brisca.component.scss'],
+    selector: 'app-enter-score-brisca',
+    templateUrl: './enter-score-brisca.component.html',
+    styleUrls: ['./enter-score-brisca.component.scss']
 })
 export class EnterScoreBriscaComponent implements OnInit {
   public gameService: GameService & GameServiceWithFlags<(typeof ENTER_SCORE_BRISCA_FLAGS)[number]>;

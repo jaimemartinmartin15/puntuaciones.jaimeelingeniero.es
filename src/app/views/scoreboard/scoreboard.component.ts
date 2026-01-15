@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BottomControlsComponent } from '../../components/bottom-controls/bottom-controls.component';
@@ -11,11 +10,10 @@ import { intervalArray } from '../../utils/arrays';
 const SCOREBOARD_FLAGS = ['scoreboard', 'game:gameStartEnd', 'game:rounds'] as const; // as Flag[]
 
 @Component({
-  selector: 'app-scoreboard',
-  standalone: true,
-  imports: [CommonModule, RoundInfoComponent, BottomControlsComponent],
-  templateUrl: './scoreboard.component.html',
-  styleUrls: ['./scoreboard.component.scss'],
+    selector: 'app-scoreboard',
+    imports: [RoundInfoComponent, BottomControlsComponent],
+    templateUrl: './scoreboard.component.html',
+    styleUrls: ['./scoreboard.component.scss']
 })
 export class ScoreboardComponent {
   public gameService: GameService & GameServiceWithFlags<(typeof SCOREBOARD_FLAGS)[number]>;
