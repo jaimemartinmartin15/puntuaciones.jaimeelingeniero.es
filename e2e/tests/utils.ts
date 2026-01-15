@@ -8,7 +8,7 @@ export function setupBrowserHooks(path = ''): void {
   beforeAll(async () => {
     browser = await puppeteer.launch({
       args: ['--no-sandbox', '--disable-setuid-sandbox'],
-      headless: 'new',
+      headless: true,
     });
   });
 
