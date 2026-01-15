@@ -85,7 +85,7 @@
         "icons": {
           "builder": "@jaimemartinmartin15/jei-devkit-angular-builders:generate-icons",
           "options": {
-            "configFile": "src/app/svg/svg.json"
+            "configFile": "src/app/svg.json"
           }
         },
         "e2e": {

@@ -15,7 +15,7 @@
       <input class="input" #playerInput type="text" [(ngModel)]="playerNames[i]" (ngModelChange)="onChangePlayerName()"
         [attr.data-test-id]="'player-input-'+i">
 
-      <svg appDealCardsSvg viewBox="0 0 1000 1000" (click)="onChangeDealingPlayer(i)" class="deal-cards-icon"
+      <svg appDealCardsSvg (click)="onChangeDealingPlayer(i)" class="deal-cards-icon"
         [attr.data-test-id]="'dealing-player-icon-'+i"
         [ngClass]="{'deal-cards-icon--active': dealingPlayerIndex === i}"></svg>
 
